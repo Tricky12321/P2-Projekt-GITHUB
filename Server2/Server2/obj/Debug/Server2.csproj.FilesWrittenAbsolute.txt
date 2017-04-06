@@ -1,0 +1,9 @@
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/obj/Debug/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/bin/Debug/Server2.exe.config
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/bin/Debug/Server2.exe.mdb
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/bin/Debug/Server2.pdb
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/bin/Debug/Server2.exe
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/obj/Debug/Server2.exe
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/obj/Debug/Server2.exe.mdb
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/obj/Debug/Server2.pdb
+/Users/Tricky/OneDrive/Visual Studio 2015/Projects/Server2/Server2/bin/Debug/Newtonsoft.Json.dll
