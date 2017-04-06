@@ -1,0 +1,12 @@
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\bin\Debug\Server2.exe.config
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\bin\Debug\Server2.exe
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\bin\Debug\Server2.pdb
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\bin\Debug\MySql.Data.dll
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\obj\Debug\Server.csprojResolveAssemblyReference.cache
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\obj\Debug\Server2.exe
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\Server2\Server2\obj\Debug\Server2.pdb
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\P2-Projekt-GITHUB\Server2\Server2\bin\Debug\Server2.exe.config
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\P2-Projekt-GITHUB\Server2\Server2\obj\Debug\Server2.exe
+C:\Users\Tricky\OneDrive\Visual Studio 2015\Projects\P2-Projekt-GITHUB\Server2\Server2\obj\Debug\Server2.pdb
