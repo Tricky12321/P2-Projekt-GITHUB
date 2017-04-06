@@ -98,7 +98,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="Server_TemporaryKey.pfx" />
     <None Include="VS\app.config" />
     <None Include="VS\packages.config" />
   </ItemGroup>
