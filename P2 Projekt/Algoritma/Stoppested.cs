@@ -8,7 +8,7 @@ namespace Algoritme
 {
     class Stoppested
     {
-        public List<DataAfPåstigning> AfPåstigningerList = new List<DataAfPåstigning>();
+        public List<StoppestedDataAfPåstigning> AfPåstigningerList = new List<StoppestedDataAfPåstigning>();
 
         int antalBesøg = 0;
 
@@ -23,7 +23,7 @@ namespace Algoritme
 
             foreach (DateTime tid in tidspunkter)
             {
-                DataAfPåstigning placeholder = new DataAfPåstigning();
+                StoppestedDataAfPåstigning placeholder = new StoppestedDataAfPåstigning();
                 placeholder.tid = tid;
                 AfPåstigningerList.Add(placeholder);
             }

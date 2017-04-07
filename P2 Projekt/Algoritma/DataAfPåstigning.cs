@@ -9,8 +9,12 @@ namespace Algoritme
     class DataAfPåstigning
     {
         public DateTime tid;
-        public Bus bus;
         public int afstigninger;
         public int påstigninger;
+    }
+
+    class StoppestedDataAfPåstigning : DataAfPåstigning
+    {
+        public Bus bus;
     }
 }

@@ -8,6 +8,8 @@ namespace Algoritme
 {
     class Bus
     {
+        List<DataAfPåstigning> busPassagerListe = new List<DataAfPåstigning>();
+
         public int busID;
         public GPS placering;
         public int passengersTotal;
@@ -21,5 +23,9 @@ namespace Algoritme
             this.rute = rute;
         }
 
+        /*public UpdatePassengersTotal ()
+        {
+
+        }*/
     }
 }

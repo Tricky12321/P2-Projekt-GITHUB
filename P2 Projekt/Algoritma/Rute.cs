@@ -10,10 +10,10 @@ namespace Algoritme
     {
         public List<Stoppested> AfPåRuteList = new List<Stoppested>();
         
-        public Rute (int ruteID, params Stoppested[] stoppestedID)
+        public Rute (int ruteID, params Stoppested[] stoppested)
         {
             ruteID = this.ruteID;
-            foreach (Stoppested stop in stoppestedID)
+            foreach (Stoppested stop in stoppested)
             {
                 AfPåRuteList.Add(stop);
             }

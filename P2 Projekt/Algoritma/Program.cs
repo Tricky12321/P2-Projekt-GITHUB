@@ -60,7 +60,7 @@ namespace Algoritme
             {
                 Console.WriteLine("\n" + stop.stoppestedID);
 
-                foreach (DataAfPåstigning tid in stop.AfPåstigningerList)
+                foreach (StoppestedDataAfPåstigning tid in stop.AfPåstigningerList)
                 {
                     Console.WriteLine(tid.tid.ToString());
                     Console.WriteLine(tid.afstigninger);
@@ -69,7 +69,6 @@ namespace Algoritme
             }
 
             Console.ReadKey();
-
         }
     }
 }
