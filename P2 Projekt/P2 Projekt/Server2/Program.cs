@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 public static class Program
 {
@@ -15,6 +16,7 @@ public static class Program
         * 3. IPv6 (0000:0000:0000:0000:0000:0000:0000:0000/FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF/::)
         */
         StartAll();
+        RunTest();
         Console.ReadKey();
         return 0;
     }
@@ -42,5 +44,20 @@ public static class Program
         mySQL.StartmySQL();
         // Start så IPv4 og/eller IPv6
         Server.StartServer(true, true);
+    }
+
+    public static void RunTest()
+    {
+        Thread.Sleep(2000);
+        Console.WriteLine("Waiting 2 sec before starting test");
+        Thread.Sleep(2000);
+        /*
+        string[] Colums = new string[] {"server_os", "function", "description"};
+        string[] Values = new string[] { Utilities.GetOS(), "RunTests", "Køre test på Programmet"};
+        mySQL.Insert("logging", Colums, Values);
+
+        */
+        mySQL.RunTest();
+        Console.WriteLine("Testing Done!");
     }
 }

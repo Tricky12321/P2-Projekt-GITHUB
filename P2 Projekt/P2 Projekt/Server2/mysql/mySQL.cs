@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MySql.Data.MySqlClient;
-using System.Data;
 using System.Threading;
 
 public static class mySQL
@@ -17,10 +14,11 @@ public static class mySQL
     private static string _password = "hSvi97RQMUaf7m9o";   // Tilfældig adgangskode, så den ikke bliver gættet
     private static string _database = "bussystem";          // Den database, som der skal forbindes til
     // ---------------------------------------------------------------------------------------------------
-    private static string _ip => OS.IsLinux ? _localIP : _publicIP;
+    private static string _ip => OS.IsLinux ? _localIP : _publicIP; // Hvis OS er linux, skal den bruge lokal IP (127.0.0.1)
     private static string _connectionString => $"SERVER={_ip};uid={_username};PASSWORD={_password};DATABASE={_database};"; // Den streng, som indeholder alt 
     private static MySqlConnection _sqlConnect = new MySqlConnection(_connectionString); // Definere den forbindelse til databasen
-    public static bool Connected;
+    public static bool Connected;                           // True hvis der er forbindelse til databasen, da serveren startede
+    private static bool _firstConnect;                      // Bliver sat til true, hvis det er første gang. 
     // ---------------------------------------------------------------------------------------------------
     public static void Start()
     {
@@ -48,6 +46,7 @@ public static class mySQL
             // Åben en forbindelse
             _sqlConnect.Open();
             Connected = true;
+            _firstConnect = true;
             return true;
         }
         catch (MySqlException ex)
@@ -55,14 +54,133 @@ public static class mySQL
             switch (ex.Number)
             {
                 case 0:
-                    throw new ConnectionFailedException("Connection Failed/Acces Denied\n"+ex.ToString());
+                    throw new ConnectionFailedException("Connection Failed/Acces Denied\n" + ex.ToString());
                 case 1045:
                     throw new ConnectionFailedException("Invalid Username/Password\n" + ex.ToString());
-                
-                
             }
             return false;
         }
+        finally
+        {
+            _sqlConnect.Close();
+        }
+    }
+
+    public static bool CheckConnection()
+    {
+        if (!_firstConnect)
+        {
+            throw new NotConnectedException("There is no connection made to the Database");
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public static bool RunQuery(string Query)
+    {
+        try
+        {
+            MySqlCommand cmd = _sqlConnect.CreateCommand();
+            cmd.CommandText = Query;
+            _sqlConnect.Open();
+            cmd.ExecuteNonQuery();
+            // Console.WriteLine($"{_sqlConnect.ConnectionString}");
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            _sqlConnect.Close();
+        }
+        return true;
+    }
+
+    public static string RunQueryWithReturn(string Query)
+    {
+        try
+        {
+            MySqlCommand cmd = _sqlConnect.CreateCommand();
+            cmd.CommandText = Query;
+            _sqlConnect.Open();
+            object result = cmd.ExecuteReader();
+            if (result != null)
+            {
+                result[0];
+            }
+            //Console.WriteLine($"{_sqlConnect.ConnectionString}");
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            _sqlConnect.Close();
+        }
+        return "";
+    }
+
+    public static bool Insert(string table, string[] colums, string[] values)
+    {
+        // TODO: Skal optimeres... meget langsom...
+        // --------------------------------------------------
+        // Handle Colums
+        // --------------------------------------------------
+        #region Colums
+        string ColumsQuery;
+        ColumsQuery = "(";
+        foreach (string colum in colums)
+        {
+            if (colum == colums.Last())
+            {
+                ColumsQuery += $"`{colum}`";
+            }
+            else
+            {
+                ColumsQuery += $"`{colum}`,";
+            }
+        }
+        ColumsQuery += ")";
+        #endregion
+        // --------------------------------------------------
+        // Handle Values
+        // --------------------------------------------------
+        #region Values
+
+        string ValuesQuery;
+        ValuesQuery = "(";
+        foreach (string value in values)
+        {
+            if (value == "NULL")
+            {
+                ValuesQuery += $"{value}";
+            }
+            else
+            {
+                ValuesQuery += $"'{value}'";
+            }
+            if (value != values.Last())
+            {
+                ValuesQuery += ",";
+            }
+        }
+        ValuesQuery += ")";
+        #endregion
+        // --------------------------------------------------
+        string TotalQuery = $"INSERT INTO `{table}` {ColumsQuery} VALUES {ValuesQuery};";
+        RunQuery(TotalQuery);
+        return true;
+
+    }
+
+
+    public static void RunTest()
+    {
+        RunQueryWithReturn("SELECT * FROM `logging`");
     }
 }
 
@@ -79,6 +197,24 @@ public class ConnectionFailedException : Exception
     }
 
     public ConnectionFailedException(string message, Exception inner) : base(message, inner)
+    {
+
+    }
+}
+
+public class NotConnectedException : Exception
+{
+    public NotConnectedException()
+    {
+
+    }
+
+    public NotConnectedException(string message) : base(message)
+    {
+
+    }
+
+    public NotConnectedException(string message, Exception inner) : base(message, inner)
     {
 
     }
