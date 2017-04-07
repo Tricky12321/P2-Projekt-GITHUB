@@ -109,4 +109,18 @@ public static class MysqlControls
         Values = $"{colums}='{values}'";
         Mysql.RunQuery($"UPDATE `{table}` SET {Values} WHERE {whereCondition}");
     }
+
+    public static void UpdateNetworkObject(NetworkObject NWO)
+    {
+        int count = NWO.GetCollumsDB().Count();
+        for (int i = 0; i < count; i++)
+        {
+            UpdateWhere(NWO.GetTableName(), NWO.GetCollumsDB()[i], NWO.GetValues()[i], $"`{NWO.GetIDCollumName()}`='{NWO.GetID()}'");
+        }
+    }
+
+    public static TableDecode GetUpdateFromTable(NetworkObject NWO)
+    {
+        return SelectAllWhere(NWO.GetTableName(), $"`{NWO.GetIDCollumName()}`='{NWO.GetID()}'");
+    }
 }

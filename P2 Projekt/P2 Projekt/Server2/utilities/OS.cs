@@ -7,6 +7,7 @@ public class OS
 {
     public static bool IsLinux
     {
+        // Tjekker om variabler i Envoirment OSVersion.Platform stemmer overens med dem som er kendt fra linux.
         get
         {
             int p = (int)Environment.OSVersion.Platform;
