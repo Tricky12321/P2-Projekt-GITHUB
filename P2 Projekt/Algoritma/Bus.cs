@@ -21,11 +21,23 @@ namespace Algoritme
             this.busID = busID;
             this.capacity = capacity;
             this.rute = rute;
+
+            /*
+            EventArgs += new TjekIndEventHandler(TjekInd);
+            EventArgs += new TjekUdEventHandler(TjekUd);
+            */
         }
 
-        /*public UpdatePassengersTotal ()
+        public void TjekInd(object sender, EventArgs e)
         {
+            ++passengersTotal;
+        }
 
-        }*/
+        public void TjekUd()
+        {
+            --passengersTotal;
+        }
+
+
     }
 }
