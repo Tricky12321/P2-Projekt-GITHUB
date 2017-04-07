@@ -16,6 +16,7 @@ public class Server
     public static bool IPV6Started = false;
     private const uint ByteSize = 1024; // Data buffer size for incommming data
     private ServerType _serverType;
+
     public Server(uint Port)
     {
         //IpAdress = IP;
@@ -160,6 +161,7 @@ public class Server
             Server SocketServerIPv4 = new Server(12943, ServerType.Ipv4);
             Thread IPv4Thread = new Thread(new ThreadStart(SocketServerIPv4.StartListening));
             IPv4Thread.Start();
+            Log.LogData("ServerStart", "Startede IPv4 Socket Server");
         }
         // Hvis den skal starte IPV6 Server
         if (IPv6)
@@ -172,6 +174,8 @@ public class Server
             Server SocketServerIPv6 = new Server(12943, ServerType.Ipv6);
             Thread IPv6Thread = new Thread(new ThreadStart(SocketServerIPv6.StartListening));
             IPv6Thread.Start();
+            Log.LogData("ServerStart", "Startede IPv6 Socket Server");
+
         }
 
     }
