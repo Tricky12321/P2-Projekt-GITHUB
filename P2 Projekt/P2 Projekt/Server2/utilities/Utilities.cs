@@ -21,4 +21,20 @@ public static class Utilities
         Print.PrintColorLine(OS.IsLinux ? "Linux" : OS.IsWindows ? "Windows" : "Unknown" , ConsoleColor.Yellow);
         Print.PrintLine(ConsoleColor.Green);
     }
+
+    public static string GetOS()
+    {
+        if (OS.IsLinux)
+        {
+            return "Linux";
+        } else if (OS.IsWindows)
+        {
+            return "Windows";
+        } else
+        {
+            return "Unknown";
+        }
+
+    }
+
 }

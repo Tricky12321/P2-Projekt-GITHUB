@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MySql.Data.MySqlClient;
-using System.Data;
 using System.Threading;
 
-public static class mySQL
+public static class Mysql
 {
     // IP -> Hvis Linux, brug 127.0.0.1 ellers 172.25.11.120 
     //(Hvis det er linux, er mysql databasen på localhost (127.0.0.1) ellers brug public IP 172.25.11.120)
@@ -17,10 +14,11 @@ public static class mySQL
     private static string _password = "hSvi97RQMUaf7m9o";   // Tilfældig adgangskode, så den ikke bliver gættet
     private static string _database = "bussystem";          // Den database, som der skal forbindes til
     // ---------------------------------------------------------------------------------------------------
-    private static string _ip => OS.IsLinux ? _localIP : _publicIP;
+    private static string _ip => OS.IsLinux ? _localIP : _publicIP; // Hvis OS er linux, skal den bruge lokal IP (127.0.0.1)
     private static string _connectionString => $"SERVER={_ip};uid={_username};PASSWORD={_password};DATABASE={_database};"; // Den streng, som indeholder alt 
     private static MySqlConnection _sqlConnect = new MySqlConnection(_connectionString); // Definere den forbindelse til databasen
-    public static bool Connected;
+    public static bool Connected;                           // True hvis der er forbindelse til databasen, da serveren startede
+    private static bool _firstConnect;                      // Bliver sat til true, hvis det er første gang. 
     // ---------------------------------------------------------------------------------------------------
     public static void Start()
     {
@@ -34,11 +32,11 @@ public static class mySQL
 
     public static void StartmySQL()
     {
-        Thread mySQLThread = new Thread(new ThreadStart(mySQL.Start));
+        Thread mySQLThread = new Thread(new ThreadStart(Mysql.Start));
         mySQLThread.Start();
         // Venter på at MYSQL har forbindelse.
         // Kør INGEN andre kommandoer før der er forbindelse til MYSQL
-        Utilities.WaitFor(ref mySQL.Connected);
+        Utilities.WaitFor(ref Mysql.Connected);
     }
 
     public static bool Connect()
@@ -48,6 +46,7 @@ public static class mySQL
             // Åben en forbindelse
             _sqlConnect.Open();
             Connected = true;
+            _firstConnect = true;
             return true;
         }
         catch (MySqlException ex)
@@ -55,31 +54,96 @@ public static class mySQL
             switch (ex.Number)
             {
                 case 0:
-                    throw new ConnectionFailedException("Connection Failed/Acces Denied\n"+ex.ToString());
+                    throw new ConnectionFailedException("Connection Failed/Acces Denied\n" + ex.ToString());
                 case 1045:
                     throw new ConnectionFailedException("Invalid Username/Password\n" + ex.ToString());
-                
-                
             }
             return false;
         }
-    }
-}
-
-public class ConnectionFailedException : Exception
-{
-    public ConnectionFailedException()
-    {
-
+        finally
+        {
+            _sqlConnect.Close();
+        }
     }
 
-    public ConnectionFailedException(string message) : base(message)
+    public static bool CheckConnection()
     {
-
+        if (!_firstConnect)
+        {
+            throw new NotConnectedException("There is no connection made to the Database");
+        }
+        else
+        {
+            return true;
+        }
     }
 
-    public ConnectionFailedException(string message, Exception inner) : base(message, inner)
+    public static bool RunQuery(string Query)
     {
+        try
+        {
+            MySqlCommand cmd = _sqlConnect.CreateCommand();
+            cmd.CommandText = Query;
+            _sqlConnect.Open();
+            cmd.ExecuteNonQuery();
+            // Console.WriteLine($"{_sqlConnect.ConnectionString}");
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            _sqlConnect.Close();
+        }
+        return true;
+    }
 
+    public static TableDecode RunQueryWithReturn(string Query)
+    {
+        TableDecode TableContent;
+        try
+        {
+            // Hvilken commando skal der køres (Query)
+            MySqlCommand cmd = _sqlConnect.CreateCommand();
+            cmd.CommandText = Query;
+            // Åbner forbindelsen til databasen (OPEN)
+            _sqlConnect.Open();
+            MySqlDataReader Reader = cmd.ExecuteReader();
+            // Sikre sig at der er noget at hente i databasen.
+            if (!Reader.HasRows)
+            {
+                throw new EmptyTableException("The tabel is empty, are you sure this is what you wanted?");
+            }
+            TableContent = new TableDecode(Reader);
+            Reader.Close();
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            // Sørger for at vi lukker mysql forbindelsen
+            _sqlConnect.Close();
+        }
+        return TableContent;
+    }
+
+
+    private static string GetDBString(string SqlFieldName, MySqlDataReader Reader)
+    {
+        return Reader[SqlFieldName].Equals(DBNull.Value) ? String.Empty : Reader.GetString(SqlFieldName);
+    }
+
+    public static void RunTest()
+    {
+        TableDecode Output = RunQueryWithReturn("SELECT * FROM `logging`");
+    }
+
+    public static string GetColumContent(string colum, MySqlDataReader Reader)
+    {
+        return Reader[colum].Equals(DBNull.Value) ? String.Empty : Reader.GetString(colum);
     }
 }
