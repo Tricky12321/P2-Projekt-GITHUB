@@ -3,7 +3,7 @@ using System.Linq;
 using MySql.Data.MySqlClient;
 using System.Threading;
 
-public static class mySQL
+public static class Mysql
 {
     // IP -> Hvis Linux, brug 127.0.0.1 ellers 172.25.11.120 
     //(Hvis det er linux, er mysql databasen på localhost (127.0.0.1) ellers brug public IP 172.25.11.120)
@@ -32,11 +32,11 @@ public static class mySQL
 
     public static void StartmySQL()
     {
-        Thread mySQLThread = new Thread(new ThreadStart(mySQL.Start));
+        Thread mySQLThread = new Thread(new ThreadStart(Mysql.Start));
         mySQLThread.Start();
         // Venter på at MYSQL har forbindelse.
         // Kør INGEN andre kommandoer før der er forbindelse til MYSQL
-        Utilities.WaitFor(ref mySQL.Connected);
+        Utilities.WaitFor(ref Mysql.Connected);
     }
 
     public static bool Connect()
@@ -99,19 +99,25 @@ public static class mySQL
         return true;
     }
 
-    public static string RunQueryWithReturn(string Query)
+    public static TableDecode RunQueryWithReturn(string Query)
     {
+        TableDecode TableContent;
         try
         {
+            // Hvilken commando skal der køres (Query)
             MySqlCommand cmd = _sqlConnect.CreateCommand();
             cmd.CommandText = Query;
+            // Åbner forbindelsen til databasen (OPEN)
             _sqlConnect.Open();
-            object result = cmd.ExecuteReader();
-            if (result != null)
+            MySqlDataReader Reader = cmd.ExecuteReader();
+            // Sikre sig at der er noget at hente i databasen.
+            if (!Reader.HasRows)
             {
-                result[0];
+                throw new EmptyTableException("The tabel is empty, are you sure this is what you wanted?");
             }
-            //Console.WriteLine($"{_sqlConnect.ConnectionString}");
+            TableContent = new TableDecode(Reader);
+            Reader.Close();
+
         }
         catch (Exception)
         {
@@ -119,103 +125,25 @@ public static class mySQL
         }
         finally
         {
+            // Sørger for at vi lukker mysql forbindelsen
             _sqlConnect.Close();
         }
-        return "";
+        return TableContent;
     }
 
-    public static bool Insert(string table, string[] colums, string[] values)
+
+    private static string GetDBString(string SqlFieldName, MySqlDataReader Reader)
     {
-        // TODO: Skal optimeres... meget langsom...
-        // --------------------------------------------------
-        // Handle Colums
-        // --------------------------------------------------
-        #region Colums
-        string ColumsQuery;
-        ColumsQuery = "(";
-        foreach (string colum in colums)
-        {
-            if (colum == colums.Last())
-            {
-                ColumsQuery += $"`{colum}`";
-            }
-            else
-            {
-                ColumsQuery += $"`{colum}`,";
-            }
-        }
-        ColumsQuery += ")";
-        #endregion
-        // --------------------------------------------------
-        // Handle Values
-        // --------------------------------------------------
-        #region Values
-
-        string ValuesQuery;
-        ValuesQuery = "(";
-        foreach (string value in values)
-        {
-            if (value == "NULL")
-            {
-                ValuesQuery += $"{value}";
-            }
-            else
-            {
-                ValuesQuery += $"'{value}'";
-            }
-            if (value != values.Last())
-            {
-                ValuesQuery += ",";
-            }
-        }
-        ValuesQuery += ")";
-        #endregion
-        // --------------------------------------------------
-        string TotalQuery = $"INSERT INTO `{table}` {ColumsQuery} VALUES {ValuesQuery};";
-        RunQuery(TotalQuery);
-        return true;
-
+        return Reader[SqlFieldName].Equals(DBNull.Value) ? String.Empty : Reader.GetString(SqlFieldName);
     }
-
 
     public static void RunTest()
     {
-        RunQueryWithReturn("SELECT * FROM `logging`");
-    }
-}
-
-public class ConnectionFailedException : Exception
-{
-    public ConnectionFailedException()
-    {
-
+        TableDecode Output = RunQueryWithReturn("SELECT * FROM `logging`");
     }
 
-    public ConnectionFailedException(string message) : base(message)
+    public static string GetColumContent(string colum, MySqlDataReader Reader)
     {
-
-    }
-
-    public ConnectionFailedException(string message, Exception inner) : base(message, inner)
-    {
-
-    }
-}
-
-public class NotConnectedException : Exception
-{
-    public NotConnectedException()
-    {
-
-    }
-
-    public NotConnectedException(string message) : base(message)
-    {
-
-    }
-
-    public NotConnectedException(string message, Exception inner) : base(message, inner)
-    {
-
+        return Reader[colum].Equals(DBNull.Value) ? String.Empty : Reader.GetString(colum);
     }
 }

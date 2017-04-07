@@ -41,7 +41,7 @@ public static class Program
         //IpV6Thread.Start();
         #endregion
         // Start mySQL serveren først!
-        mySQL.StartmySQL();
+        Mysql.StartmySQL();
         // Start så IPv4 og/eller IPv6
         Server.StartServer(true, true);
     }
@@ -57,7 +57,7 @@ public static class Program
         mySQL.Insert("logging", Colums, Values);
 
         */
-        mySQL.RunTest();
+        Mysql.RunTest();
         Console.WriteLine("Testing Done!");
     }
 }
