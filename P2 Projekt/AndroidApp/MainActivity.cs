@@ -12,11 +12,11 @@ namespace AndroidApp
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-
+            
             // Set our view from the "main" layout resource
             SetContentView (Resource.Layout.Main);
 
-            EditText FuckDigTekst = FindViewById<EditText>(Resource.Id.Fuckdigtekst);
+            TextView FuckDigTekst = FindViewById<TextView>(Resource.Id.Fuckdigtekst);
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {

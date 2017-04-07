@@ -1,0 +1,26 @@
+﻿Revert "Revert "Revert "Revert "Rettede enkelte fejl i serverens start""""
+
+This reverts commit aded0d4a6e1802453e7318cceef5cc4136ab6d3b.
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch Server
+# Your branch is ahead of 'origin/Server' by 2 commits.
+#   (use "git push" to publish your local commits)
+#
+# Changes to be committed:
+#	modified:   P2 Projekt/P2 Projekt/Server2/Program.cs
+#	modified:   P2 Projekt/P2 Projekt/Server2/Server.csproj
+#	modified:   P2 Projekt/P2 Projekt/Server2/Virtual Client/client.cs
+#	modified:   P2 Projekt/P2 Projekt/Server2/server/Server.cs
+#
+# Changes not staged for commit:
+#	modified:   P2 Projekt/P2 Projekt.sln
+#	deleted:    P2 Projekt/P2 Projekt/Server2/packages.config
+#
+# Untracked files:
+#	P2 Projekt/P2 Projekt/Server2/Interfaces/
+#	P2 Projekt/P2 Projekt/Server2/NetworkObject.cs
+#	P2 Projekt/P2 Projekt/Server2/VS/packages.config
+#
+
