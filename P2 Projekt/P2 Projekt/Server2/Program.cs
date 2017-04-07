@@ -11,7 +11,7 @@ public static class Program
         // Printer lige om det er linux eller ej
         Utilities.CheckOS();
         StartAll();
-        // RunTest();
+        RunTest();
         Console.ReadKey(); // Readkey fordi programmet helst ikke bare skulle stoppe. 
         return 0;
     }
@@ -34,12 +34,7 @@ public static class Program
         Thread.Sleep(2000);
         Console.WriteLine("Waiting 2 sec before starting test");
         Thread.Sleep(2000);
-        /*
-        string[] Colums = new string[] {"server_os", "function", "description"};
-        string[] Values = new string[] { Utilities.GetOS(), "RunTests", "Køre test på Programmet"};
-        mySQL.Insert("logging", Colums, Values);
-        */
-        Mysql.RunTest();
+        ServerCommands.WaitForCommand();
         Console.WriteLine("Testing Done!");
     }
 }

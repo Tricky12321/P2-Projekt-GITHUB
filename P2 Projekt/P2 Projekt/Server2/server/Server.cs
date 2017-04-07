@@ -12,6 +12,10 @@ public enum ServerType
 public class Server
 {
     private uint _port;
+    public uint GetPort => _port;
+    public static Server IPv4Server = null;
+    public static Server IPv6Server = null;
+
     public static bool IPV4Started = false;
     public static bool IPV6Started = false;
     private const uint ByteSize = 1024; // Data buffer size for incommming data
@@ -67,6 +71,7 @@ public class Server
             Socket listenerv4 = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             listenerv4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV4Started = true;
+            IPv4Server = this;
             SocketServer(localEndPointv4, listenerv4);
 
         }
@@ -78,6 +83,7 @@ public class Server
             Socket listenerv6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
             listenerv6.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV6Started = true;
+            IPv6Server = this;
             SocketServer(localEndPointv6, listenerv6);
         }
     }
@@ -196,6 +202,7 @@ public class Server
     private void HandleObject(string Obj)
     {
         Type type = Json.GetTypeFromString(Obj);
-        Json.Deserialize(Obj).Start();
+        var obj = Json.Deserialize(Obj);
+        obj.Start();
     }
 }
