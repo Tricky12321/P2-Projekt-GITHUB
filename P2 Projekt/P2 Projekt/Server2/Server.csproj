@@ -98,6 +98,8 @@
     <Compile Include="Server\ServerCommands.cs" />
     <Compile Include="Utilities\Print.cs" />
     <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Virtual Client\Client.cs" />
+    <Compile Include="Virtual Client\TestObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
