@@ -11,7 +11,6 @@ public static class MysqlControls
         {
             throw new NotValidQueryException("There must be the same amount of colums as values");
         }
-        // TODO: Skal optimeres... meget langsom...
         // --------------------------------------------------
         // Handle Colums
         // --------------------------------------------------
@@ -75,5 +74,39 @@ public static class MysqlControls
     public static TableDecode SelectAllWhere(string table, string whereCondition)
     {
         return Mysql.RunQueryWithReturn($"SELECT * FROM `{table}` WHERE {whereCondition}");
+    }
+
+    public static TableDecode SelectWhere(string table, string condition, string whereCondition)
+    {
+        return Mysql.RunQueryWithReturn($"SELECT `{condition}` FROM `{table}` WHERE {whereCondition}");
+    }
+
+    public static void DelteAll(string table)
+    {
+        Mysql.RunQueryWithReturn($"DELETE * FROM `{table}`");
+    }
+
+    public static void DelteAllWhere(string table, string whereCondition)
+    {
+        Mysql.RunQueryWithReturn($"DELETE * FROM `{table}` WHERE {whereCondition}");
+    }
+
+    public static void DelteWhere(string table, string condition, string whereCondition)
+    {
+        Mysql.RunQueryWithReturn($"DELETE {condition} FROM `{table}` WHERE {whereCondition}");
+    }
+
+    public static void UpdateAll(string table, string colums, string values)
+    {
+        string Query;
+        Query = $"{colums}='{values}'";
+        Mysql.RunQuery($"UPDATE `{table}` SET {Query}");
+    }
+
+    public static void UpdateWhere(string table, string colums, string values, string whereCondition)
+    {
+        string Values;
+        Values = $"{colums}='{values}'";
+        Mysql.RunQuery($"UPDATE `{table}` SET {Values} WHERE {whereCondition}");
     }
 }

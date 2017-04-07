@@ -16,7 +16,7 @@ public static class Program
         * 3. IPv6 (0000:0000:0000:0000:0000:0000:0000:0000/FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF/::)
         */
         StartAll();
-        RunTest();
+        // RunTest();
         Console.ReadKey();
         return 0;
     }
@@ -55,7 +55,6 @@ public static class Program
         string[] Colums = new string[] {"server_os", "function", "description"};
         string[] Values = new string[] { Utilities.GetOS(), "RunTests", "Køre test på Programmet"};
         mySQL.Insert("logging", Colums, Values);
-
         */
         Mysql.RunTest();
         Console.WriteLine("Testing Done!");

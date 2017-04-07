@@ -101,6 +101,7 @@ public static class Mysql
 
     public static TableDecode RunQueryWithReturn(string Query)
     {
+        Log.LogData("RunQueryWIthReturn", $"{Query} blev kørt");
         TableDecode TableContent;
         try
         {
@@ -131,19 +132,8 @@ public static class Mysql
         return TableContent;
     }
 
-
-    private static string GetDBString(string SqlFieldName, MySqlDataReader Reader)
-    {
-        return Reader[SqlFieldName].Equals(DBNull.Value) ? String.Empty : Reader.GetString(SqlFieldName);
-    }
-
     public static void RunTest()
     {
         TableDecode Output = RunQueryWithReturn("SELECT * FROM `logging`");
-    }
-
-    public static string GetColumContent(string colum, MySqlDataReader Reader)
-    {
-        return Reader[colum].Equals(DBNull.Value) ? String.Empty : Reader.GetString(colum);
     }
 }
