@@ -9,13 +9,19 @@ public enum ServerType
 {
     Ipv6, Ipv4
 }
+
 public class Server
 {
     private uint _port;
+    public uint GetPort => _port;
+    public static Server IPv4Server = null;
+    public static Server IPv6Server = null;
+
     public static bool IPV4Started = false;
     public static bool IPV6Started = false;
     private const uint ByteSize = 1024; // Data buffer size for incommming data
     private ServerType _serverType;
+
     public Server(uint Port)
     {
         //IpAdress = IP;
@@ -66,6 +72,7 @@ public class Server
             Socket listenerv4 = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             listenerv4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV4Started = true;
+            IPv4Server = this;
             SocketServer(localEndPointv4, listenerv4);
 
         }
@@ -77,6 +84,7 @@ public class Server
             Socket listenerv6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
             listenerv6.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV6Started = true;
+            IPv6Server = this;
             SocketServer(localEndPointv6, listenerv6);
         }
     }
@@ -118,7 +126,8 @@ public class Server
                 data = null;
                 // An incoming connection needs to be processed.  
                 HandleConnection(handler, ref bytes, ref data);
-                Console.WriteLine($"Incomming connection from {handler.RemoteEndPoint.ToString()}");
+                Console.Write($"Incomming connection from ");
+                Print.PrintColorLine(handler.RemoteEndPoint.ToString(), ConsoleColor.Yellow);
                 //Console.WriteLine(data);
                 Ping.Stop();
                 if (IsObject(ref data))
@@ -160,6 +169,7 @@ public class Server
             Server SocketServerIPv4 = new Server(12943, ServerType.Ipv4);
             Thread IPv4Thread = new Thread(new ThreadStart(SocketServerIPv4.StartListening));
             IPv4Thread.Start();
+            Log.LogData("ServerStart", "Startede IPv4 Socket Server");
         }
         // Hvis den skal starte IPV6 Server
         if (IPv6)
@@ -172,6 +182,8 @@ public class Server
             Server SocketServerIPv6 = new Server(12943, ServerType.Ipv6);
             Thread IPv6Thread = new Thread(new ThreadStart(SocketServerIPv6.StartListening));
             IPv6Thread.Start();
+            Log.LogData("ServerStart", "Startede IPv6 Socket Server");
+
         }
 
     }
@@ -192,6 +204,7 @@ public class Server
     private void HandleObject(string Obj)
     {
         Type type = Json.GetTypeFromString(Obj);
-        Json.Deserialize(Obj).Start();
+        var obj = Json.Deserialize(Obj);
+        obj.Start();
     }
 }

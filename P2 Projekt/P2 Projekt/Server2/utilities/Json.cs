@@ -7,7 +7,6 @@ public static class Json
     public static string Serialize<T>(T Obj)
     {
         return $"object,{typeof(T).ToString()}|{JsonConvert.SerializeObject(Obj)}";
-        // return $"object,{typeof(T).ToString()}|{new JavaScriptSerializer().Serialize(Obj)}";
     }
 
     public static Type GetTypeFromString(string JsonObj)

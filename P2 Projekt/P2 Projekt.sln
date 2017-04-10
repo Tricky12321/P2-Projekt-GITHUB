@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "P2 Projekt\Server2\Server.csproj", "{7EA32F19-F59E-4DD3-AB32-F08F0859C4A0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algoritme", "Algoritma\Algoritme.csproj", "{C782F1D8-5369-419B-873F-2E29EB46104C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidApp", "AndroidApp\AndroidApp.csproj", "{A9E5E982-DEFA-4356-8571-E66C6DF38B88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +15,6 @@ Global
 		{7EA32F19-F59E-4DD3-AB32-F08F0859C4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EA32F19-F59E-4DD3-AB32-F08F0859C4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EA32F19-F59E-4DD3-AB32-F08F0859C4A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C782F1D8-5369-419B-873F-2E29EB46104C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C782F1D8-5369-419B-873F-2E29EB46104C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C782F1D8-5369-419B-873F-2E29EB46104C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C782F1D8-5369-419B-873F-2E29EB46104C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

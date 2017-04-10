@@ -70,37 +70,41 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\MySql.Data.6.9.9\lib\net40\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.8.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MySql.Data.6.8.8\lib\net40\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="mysql\Log.cs" />
-    <Compile Include="utilities\Exceptions.cs" />
-    <Compile Include="utilities\IpAdresse.cs" />
-    <Compile Include="utilities\Json.cs" />
-    <Compile Include="utilities\OS.cs" />
-    <Compile Include="mysql\mySQL.cs" />
-    <Compile Include="NetworkObject.cs" />
+    <Compile Include="Mysql\MysqlControls.cs" />
+    <Compile Include="Mysql\Row.cs" />
+    <Compile Include="Mysql\TableDecoding.cs" />
+    <Compile Include="Utilities\Exceptions.cs" />
+    <Compile Include="Utilities\IpAdresse.cs" />
+    <Compile Include="Utilities\Json.cs" />
+    <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Utilities\OS.cs" />
+    <Compile Include="Mysql\Mysql.cs" />
+    <Compile Include="Interfaces\NetworkObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="server\Server.cs" />
-    <Compile Include="server\ServerCommands.cs" />
-    <Compile Include="utilities\Print.cs" />
-    <Compile Include="utilities\Utilities.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\ServerCommands.cs" />
+    <Compile Include="Utilities\Print.cs" />
+    <Compile Include="Utilities\Utilities.cs" />
+    <Compile Include="Virtual Client\Client.cs" />
+    <Compile Include="Virtual Client\TestObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="VS\packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="VS\app.config" />
-    <None Include="VS\packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -119,6 +123,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

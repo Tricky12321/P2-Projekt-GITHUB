@@ -4,30 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Algoritma
+namespace Algoritme
 {
-    struct coordinate
-    {
-        int xCoordinate;
-        int yCoordinate;
-    }
-
-    struct passagerAfPå
-    {
-        DateTime tid;
-        int afstigninger;
-        int påstigninger;
-    }
-
     class Stoppested
     {
-        List<passagerAfPå> AfPåstigningerList = new List<passagerAfPå>();
-        public Stoppested (params DateTime[] besøgstider)
+        public List<StoppestedDataAfPåstigning> AfPåstigningerList = new List<StoppestedDataAfPåstigning>();
+
+        int antalBesøg = 0;
+
+        public Stoppested (int ID, coordinate coor, params DateTime[] tidspunkter)
         {
-            foreach(DateTime tidspunkt in besøgstider)
+            stoppestedID = ID;
+
+            coordinate lokalitet;
+            lokalitet.xCoordinate = coor.xCoordinate;
+            lokalitet.yCoordinate = coor.yCoordinate;
+            stoppestedLok = lokalitet;
+
+            foreach (DateTime tid in tidspunkter)
             {
-                
+                StoppestedDataAfPåstigning placeholder = new StoppestedDataAfPåstigning();
+                placeholder.tid = tid;
+                AfPåstigningerList.Add(placeholder);
             }
+        }
+
+        public void UpdatePassengers (int af, int på)
+        {
+            AfPåstigningerList[antalBesøg].afstigninger = af;
+            AfPåstigningerList[antalBesøg].påstigninger = på;
+            ++antalBesøg;
         }
 
         public int stoppestedID { get; set; }
