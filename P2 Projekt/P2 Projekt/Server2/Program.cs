@@ -31,10 +31,7 @@ public static class Program
 
     public static void RunTest()
     {
-        Thread.Sleep(2000);
-        Console.WriteLine("Waiting 2 sec before starting test");
-        Thread.Sleep(2000);
+        Thread.Sleep(1000);
         ServerCommands.WaitForCommand();
-        Console.WriteLine("Testing Done!");
     }
 }
