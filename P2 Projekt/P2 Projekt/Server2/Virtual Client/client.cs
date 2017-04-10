@@ -55,7 +55,6 @@ public class Client
                 // Receive the response from the remote device.  
                 int bytesRec = sender.Receive(bytes);
                 output = Encoding.UTF8.GetString(bytes, 0, bytesRec);
-                Print.PrintColorLine(output, ConsoleColor.Cyan);
                 // Release the socket.  
                 sender.Shutdown(SocketShutdown.Both);
                 sender.Close();
@@ -73,12 +72,15 @@ public class Client
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());
             }
+
         }
         catch (Exception e)
         {
             Console.WriteLine(e.ToString());
         }
+
         return output;
+
     }
 }
 

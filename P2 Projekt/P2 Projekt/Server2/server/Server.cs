@@ -9,7 +9,6 @@ public enum ServerType
 {
     Ipv6, Ipv4
 }
-
 public class Server
 {
     private uint _port;
@@ -126,8 +125,7 @@ public class Server
                 data = null;
                 // An incoming connection needs to be processed.  
                 HandleConnection(handler, ref bytes, ref data);
-                Console.Write($"Incomming connection from ");
-                Print.PrintColorLine(handler.RemoteEndPoint.ToString(), ConsoleColor.Yellow);
+                Console.WriteLine($"Incomming connection from {handler.RemoteEndPoint.ToString()}");
                 //Console.WriteLine(data);
                 Ping.Stop();
                 if (IsObject(ref data))
