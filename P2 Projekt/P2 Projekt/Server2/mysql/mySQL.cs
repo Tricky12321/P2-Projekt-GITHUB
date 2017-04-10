@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MySql.Data.MySqlClient;
-using System.Data;
 using System.Threading;
 
-public static class mySQL
+public static class Mysql
 {
     // IP -> Hvis Linux, brug 127.0.0.1 ellers 172.25.11.120 
     //(Hvis det er linux, er mysql databasen på localhost (127.0.0.1) ellers brug public IP 172.25.11.120)
@@ -17,11 +14,11 @@ public static class mySQL
     private static string _password = "hSvi97RQMUaf7m9o";   // Tilfældig adgangskode, så den ikke bliver gættet
     private static string _database = "bussystem";          // Den database, som der skal forbindes til
     // ---------------------------------------------------------------------------------------------------
-    private static string _ip => OS.IsLinux ? _localIP : _publicIP;
+    private static string _ip => OS.IsLinux ? _localIP : _publicIP; // Hvis OS er linux, skal den bruge lokal IP (127.0.0.1)
     private static string _connectionString => $"SERVER={_ip};uid={_username};PASSWORD={_password};DATABASE={_database};"; // Den streng, som indeholder alt 
     private static MySqlConnection _sqlConnect = new MySqlConnection(_connectionString); // Definere den forbindelse til databasen
-    public static bool Connected;
-    private static bool _firstConnect;
+    public static bool Connected;                           // True hvis der er forbindelse til databasen, da serveren startede
+    private static bool _firstConnect;                      // Bliver sat til true, hvis det er første gang. 
     // ---------------------------------------------------------------------------------------------------
     public static void Start()
     {
@@ -35,11 +32,11 @@ public static class mySQL
 
     public static void StartmySQL()
     {
-        Thread mySQLThread = new Thread(new ThreadStart(mySQL.Start));
+        Thread mySQLThread = new Thread(new ThreadStart(Mysql.Start));
         mySQLThread.Start();
         // Venter på at MYSQL har forbindelse.
         // Kør INGEN andre kommandoer før der er forbindelse til MYSQL
-        Utilities.WaitFor(ref mySQL.Connected);
+        Utilities.WaitFor(ref Mysql.Connected);
     }
 
     public static bool Connect()
@@ -88,8 +85,8 @@ public static class mySQL
             MySqlCommand cmd = _sqlConnect.CreateCommand();
             cmd.CommandText = Query;
             _sqlConnect.Open();
-            cmd.ExecuteReader();
-            Console.WriteLine($"{_sqlConnect.ConnectionString}");
+            cmd.ExecuteNonQuery();
+            // Console.WriteLine($"{_sqlConnect.ConnectionString}");
         }
         catch (Exception)
         {
@@ -102,92 +99,41 @@ public static class mySQL
         return true;
     }
 
-    public static bool Insert(string table, string[] colums, string[] values)
+    public static TableDecode RunQueryWithReturn(string Query)
     {
-        // TODO: Skal optimeres... meget langsom...
-        // --------------------------------------------------
-        // Handle Colums
-        // --------------------------------------------------
-        #region Colums
-        string ColumsQuery;
-        ColumsQuery = "(";
-        foreach (string colum in colums)
+        Log.LogData("RunQueryWIthReturn", $"{Query} blev kørt");
+        TableDecode TableContent;
+        try
         {
-            if (colum == colums.Last())
+            // Hvilken commando skal der køres (Query)
+            MySqlCommand cmd = _sqlConnect.CreateCommand();
+            cmd.CommandText = Query;
+            // Åbner forbindelsen til databasen (OPEN)
+            _sqlConnect.Open();
+            MySqlDataReader Reader = cmd.ExecuteReader();
+            // Sikre sig at der er noget at hente i databasen.
+            if (!Reader.HasRows)
             {
-                ColumsQuery += $"`{colum}`";
+                throw new EmptyTableException("The tabel is empty, are you sure this is what you wanted?");
             }
-            else
-            {
-                ColumsQuery += $"`{colum}`,";
-            }
-        }
-        ColumsQuery += ")";
-        #endregion
-        // --------------------------------------------------
-        // Handle Values
-        // --------------------------------------------------
-        #region Values
+            TableContent = new TableDecode(Reader);
+            Reader.Close();
 
-        string ValuesQuery;
-        ValuesQuery = "(";
-        foreach (string value in values)
+        }
+        catch (Exception)
         {
-            if (value == "NULL")
-            {
-                ValuesQuery += $"{value}";
-            }
-            else
-            {
-                ValuesQuery += $"'{value}'";
-            }
-            if (value != values.Last())
-            {
-                ValuesQuery += ",";
-            }
+            throw;
         }
-        ValuesQuery += ")";
-        #endregion
-        // --------------------------------------------------
-        string TotalQuery = $"INSERT INTO `{table}` {ColumsQuery} VALUES {ValuesQuery};";
-        RunQuery(TotalQuery);
-        return true;
-
-    }
-}
-
-public class ConnectionFailedException : Exception
-{
-    public ConnectionFailedException()
-    {
-
+        finally
+        {
+            // Sørger for at vi lukker mysql forbindelsen
+            _sqlConnect.Close();
+        }
+        return TableContent;
     }
 
-    public ConnectionFailedException(string message) : base(message)
+    public static void RunTest()
     {
-
-    }
-
-    public ConnectionFailedException(string message, Exception inner) : base(message, inner)
-    {
-
-    }
-}
-
-public class NotConnectedException : Exception
-{
-    public NotConnectedException()
-    {
-
-    }
-
-    public NotConnectedException(string message) : base(message)
-    {
-
-    }
-
-    public NotConnectedException(string message, Exception inner) : base(message, inner)
-    {
-
+        TableDecode Output = RunQueryWithReturn("SELECT * FROM `logging`");
     }
 }
