@@ -94,7 +94,6 @@
     <Compile Include="Database Objects\Bus.cs" />
     <Compile Include="Database Objects\BusRoute.cs" />
     <Compile Include="Database Objects\BusStop.cs" />
-    <Compile Include="mysql\mySQL.cs" />
     <Compile Include="NetworkObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
