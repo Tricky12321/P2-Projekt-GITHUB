@@ -20,7 +20,18 @@ namespace AndroidApp
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
-                FuckDigTekst.Text = "Elsker dig";
+                try
+                {
+                    Client Test = new Client();
+                    Test.SendTestObject();
+                    FuckDigTekst.Text = "ANTON ER IKKE MADS, SÅ DERFOR SEJ!";
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+                
             };
 
         }
