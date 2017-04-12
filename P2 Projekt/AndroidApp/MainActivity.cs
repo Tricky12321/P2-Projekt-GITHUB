@@ -12,26 +12,25 @@ namespace AndroidApp
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            
+
             // Set our view from the "main" layout resource
-            SetContentView (Resource.Layout.Main);
+            SetContentView(Resource.Layout.Main);
 
             TextView FuckDigTekst = FindViewById<TextView>(Resource.Id.Fuckdigtekst);
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
-                try
+                Client Test = new Client();
+                string response = Test.SendTestObject();
+                if (response == "1")
                 {
-                    Client Test = new Client();
-                    Test.SendTestObject();
-                    FuckDigTekst.Text = "ANTON ER IKKE MADS, SÅ DERFOR SEJ!";
+                    FuckDigTekst.Text = $"SUCCESS: {response}";
                 }
-                catch (Exception)
+                else
                 {
+                    FuckDigTekst.Text = $"FAILED: {response}";
+                }
 
-                    throw;
-                }
-                
             };
 
         }
