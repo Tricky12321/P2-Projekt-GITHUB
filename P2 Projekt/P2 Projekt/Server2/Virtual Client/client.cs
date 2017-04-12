@@ -18,7 +18,8 @@ public static class IPHandle
 public class Client
 {
     private const int BytesToSend = 1024;
-    private string _host = "127.0.0.1";
+    //private string _host = "127.0.0.1";
+    private string _host = "192.168.84.124";
     private uint _port = Server.IPv4Server.GetPort;
 
     public string SendTestObject()

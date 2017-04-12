@@ -18,7 +18,10 @@ public static class IPHandle
 public class Client
 {
     private const int BytesToSend = 1024;
-    private string _host = "172.25.11.120";
+    //private string _host = "192.168.84.124"; // Router
+    private string _host = "172.25.11.120"; // AAU
+    //private string _host = "192.168.0.102"; // Lokal
+
     private uint _port = 12943;
 
     public string SendTestObject()
