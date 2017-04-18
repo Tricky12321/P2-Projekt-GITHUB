@@ -18,11 +18,17 @@ public static class IPHandle
 public class Client
 {
     private const int BytesToSend = 1024;
-    //private string _host = "192.168.84.124"; // Router
-    private string _host = "172.25.11.120"; // AAU
-    //private string _host = "192.168.0.102"; // Lokal
+    //private string _host = "192.168.84.124";  // Router
+    private string _host = "172.25.11.120";     // AAU
+    //private string _host = "192.168.0.102";   // Lokal
+    //private string _host = "172.24.18.136";
 
     private uint _port = 12943;
+    public string LocalEndPoint;
+    public string GetHost()
+    {
+        return _host;
+    }
 
     public string SendTestObject()
     {
@@ -38,16 +44,15 @@ public class Client
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, (int)_port);
 
             Socket sender;
-            sender = new Socket(IPHandler.IsIPV6(ipAddress) ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Create a TCP/IP  socket.  
             // Connect the socket to the remote endpoint. Catch any errors.  
             try
             {
                 sender.Connect(remoteEP);
                 // Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
-
+                LocalEndPoint = sender.LocalEndPoint.ToString();
                 // Encode the data string into a byte array.  
-
                 byte[] msg = Encoding.UTF8.GetBytes(Json.Serialize(new TestObject()) + "<EOF>");
                 if (msg.Length > BytesToSend)
                 {
