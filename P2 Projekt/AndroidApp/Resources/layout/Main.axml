@@ -2,13 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1">
+        <ImageButton
+            android:src="@drawable/hamburgericonny1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton1"
+            android:background="@android:color/background_light" />
+        <Button
+            android:text="Favoritter"
+            android:id="@+id/favButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <TextView
+        android:text="Hvor skal du på?"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:textColor="@android:color/background_dark"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:gravity="center" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="30.0dp"
+        android:id="@+id/editText1"
+        android:background="@android:color/background_light" />
+    <TextView
+        android:text="Hvornår?"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:textColor="@android:color/background_dark"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:gravity="center" />
+    <TimePicker
+        android:layout_width="match_parent"
+        android:layout_height="25.5dp"
+        android:id="@+id/timePicker1"
+        android:text="Hvornår?" />
+    <TextView
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nytid" />
     <TextView
         android:text="Fuck dig"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Fuckdigtekst" />
+        android:id="@+id/Fuckdigtekst"
+        android:textColor="@android:color/background_dark" />
     <Button
         android:text="Ændr 'Fuck dig' til ' Elsker dig'"
         android:layout_width="match_parent"

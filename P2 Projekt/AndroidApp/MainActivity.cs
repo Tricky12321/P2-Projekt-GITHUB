@@ -18,6 +18,9 @@ namespace AndroidApp
 
             TextView FuckDigTekst = FindViewById<TextView>(Resource.Id.Fuckdigtekst);
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
+            TimePicker pick_button = FindViewById<TimePicker>(Resource.Id.timePicker1);
+           
+            
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
                 Client Test = new Client();
