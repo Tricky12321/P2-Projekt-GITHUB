@@ -18,7 +18,7 @@ public static class Utilities
     public static void CheckOS()
     {
         Console.Write($"OS: ");
-        Print.PrintColorLine(OS.IsLinux ? "Linux" : OS.IsWindows ? "Windows" : "Unknown" , ConsoleColor.Yellow);
+        Print.PrintColorLine(OS.IsLinux ? "Linux" : OS.IsWindows ? "Windows" : "Unknown", ConsoleColor.Yellow);
         Print.PrintLine(ConsoleColor.Green);
     }
 
@@ -27,10 +27,12 @@ public static class Utilities
         if (OS.IsLinux)
         {
             return "Linux";
-        } else if (OS.IsWindows)
+        }
+        else if (OS.IsWindows)
         {
             return "Windows";
-        } else
+        }
+        else
         {
             return "Unknown";
         }
