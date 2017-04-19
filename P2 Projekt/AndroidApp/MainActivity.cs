@@ -18,13 +18,7 @@ namespace AndroidApp
 
             TextView FuckDigTekst = FindViewById<TextView>(Resource.Id.Fuckdigtekst);
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
-            TimePicker timepicker = FindViewById<TimePicker>(Resource.Id.timePicker1);
-            ny_tid = FindViewById<TextView>(Resource.Id.nytid);
-            Button ny_tid_knap = FindViewById<Button>(Resource.Id.nytid_knap);
             Button resultButton = FindViewById<Button>(Resource.Id.ResultButton);
-
-            ny_tid_knap.Click += delegate { ShowTimePickerDialog(); };
-
             resultButton.Click += (object sender, EventArgs e) =>
             {
                 var intent = new Intent(this, typeof(BusResults));
@@ -50,22 +44,28 @@ namespace AndroidApp
 
             /* Gør rejsetidspunkt-knapperne klar */
             ny_tid = FindViewById<TextView>(Resource.Id.nytid);
-            Button ny_tid_knap = FindViewById<Button>(Resource.Id.nytid_knap);
-            ny_tid_knap.Click += delegate { ShowTimePickerDialog(); };
+            ny_tid.SetTextSize(Android.Util.ComplexUnitType.Sp ,30);
+            ny_tid.Click += delegate { ShowTimePickerDialog(); };
 
-
-
+            EditText StoppestedInput = FindViewById<EditText>(Resource.Id.StoppestedInput);
+            StoppestedInput.ClearFocus();
+            StoppestedInput.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) =>
+            {
+                StoppestedInputString = StoppestedInput.Text;
+            };
+            
             /* Sætter rejsetidspunktet til nuværende tidspunkt */
             CurrentTime = DateTime.Now;
             hour = CurrentTime.Hour;
             minutes = CurrentTime.Minute;
-
             UpdateDisplay(hour, minutes);
+            
         }
         /* Rejsetidspunkt-variable */
         TextView ny_tid;
         int hour;
         int minutes;
+        string StoppestedInputString;
         DateTime CurrentTime;
 
         /* Rejsetidspunkt-metoder */
