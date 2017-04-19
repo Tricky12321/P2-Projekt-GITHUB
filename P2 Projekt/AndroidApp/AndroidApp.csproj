@@ -61,6 +61,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TimePickerFragment.cs" />
     <Compile Include="Client\client.cs" />
     <Compile Include="KnapÆndrer.cs" />
     <Compile Include="MainActivity.cs" />

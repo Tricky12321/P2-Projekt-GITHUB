@@ -7,7 +7,7 @@ using Android.OS;
 namespace AndroidApp
 {
     [Activity(Label = "LasseogAnton", MainLauncher = true, Icon = "@drawable/icon")]
-    public class MainActivity : Activity
+    public class MainActivity : Activity, TimePickerDialog.IOnTimeSetListener
     {
         protected override void OnCreate(Bundle bundle)
         {
@@ -18,8 +18,11 @@ namespace AndroidApp
 
             TextView FuckDigTekst = FindViewById<TextView>(Resource.Id.Fuckdigtekst);
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
-            TimePicker pick_button = FindViewById<TimePicker>(Resource.Id.timePicker1);
-           
+            TimePicker timepicker = FindViewById<TimePicker>(Resource.Id.timePicker1);
+            ny_tid = FindViewById<TextView>(Resource.Id.nytid);
+            Button ny_tid_knap = FindViewById<Button>(Resource.Id.nytid_knap);
+
+            ny_tid_knap.Click += delegate { ShowTimePickerDialog(); };
             
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
@@ -38,6 +41,29 @@ namespace AndroidApp
 
             };
 
+            hour = 2;
+            minutes = 25;
+
+            UpdateDisplay(hour, minutes);
+        }
+        TextView ny_tid;
+        int hour;
+        int minutes;
+
+        void ShowTimePickerDialog()
+        {
+            var dialog = new TimePickerFragment(this, hour, minutes, this);
+            dialog.Show(FragmentManager, null);
+        }
+
+        public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
+        {
+            UpdateDisplay(hourOfDay, minute);
+        }
+
+        void UpdateDisplay(int selectedHours, int selectedMinutes)
+        {
+            ny_tid.Text = selectedHours + ":" + selectedMinutes;
         }
     }
 }

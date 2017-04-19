@@ -47,11 +47,11 @@
         android:textStyle="bold"
         android:typeface="serif"
         android:gravity="center" />
-    <TimePicker
+    <Button
+        android:text="Vælg tid"
         android:layout_width="match_parent"
-        android:layout_height="25.5dp"
-        android:id="@+id/timePicker1"
-        android:text="Hvornår?" />
+        android:layout_height="wrap_content"
+        android:id="@+id/nytid_knap" />
     <TextView
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -70,4 +70,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/KnapAendrer" />
+    <TimePicker
+        android:layout_width="match_parent"
+        android:layout_height="25.5dp"
+        android:id="@+id/timePicker1"
+        android:text="Hvornår?" />
 </LinearLayout>

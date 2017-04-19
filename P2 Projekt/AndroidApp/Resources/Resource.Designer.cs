@@ -87,14 +87,17 @@ namespace AndroidApp
 			// aapt resource value: 0x7f050007
 			public const int nytid = 2131034119;
 			
+			// aapt resource value: 0x7f050006
+			public const int nytid_knap = 2131034118;
+			
 			// aapt resource value: 0x7f050003
 			public const int textView1 = 2131034115;
 			
 			// aapt resource value: 0x7f050005
 			public const int textView2 = 2131034117;
 			
-			// aapt resource value: 0x7f050006
-			public const int timePicker1 = 2131034118;
+			// aapt resource value: 0x7f05000a
+			public const int timePicker1 = 2131034122;
 			
 			static Id()
 			{
