@@ -13,7 +13,7 @@ using Android.Widget;
 namespace AndroidApp
 {
     [Activity(Label = "BusResults")]
-    public class BusResults : Activity
+    public class BusResults : ListActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -21,13 +21,15 @@ namespace AndroidApp
 
             SetContentView(Resource.Layout.Results);
 
-            Button backButton = FindViewById<Button>(Resource.Id.BackButton);
+            IList<string> busses = Intent.Extras.GetStringArrayList("busses") ?? new string[0];
+            this.ListAdapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, busses);
 
+            
+            /*Button backButton = FindViewById<Button>(Resource.Id.BackButton);
             backButton.Click += (object sender, EventArgs e) =>
             {
-                StartActivity(typeof(MainActivity));
-                
-            };
+                this.OnBackPressed();
+            };*/
         }
     }
 }

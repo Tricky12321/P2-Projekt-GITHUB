@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Widget;
@@ -18,18 +19,8 @@ namespace AndroidApp
 
             TextView FuckDigTekst = FindViewById<TextView>(Resource.Id.Fuckdigtekst);
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
-            TimePicker timepicker = FindViewById<TimePicker>(Resource.Id.timePicker1);
-            ny_tid = FindViewById<TextView>(Resource.Id.nytid);
-            Button ny_tid_knap = FindViewById<Button>(Resource.Id.nytid_knap);
             Button resultButton = FindViewById<Button>(Resource.Id.ResultButton);
-
-            ny_tid_knap.Click += delegate { ShowTimePickerDialog(); };
-
-            resultButton.Click += (object sender, EventArgs e) =>
-            {
-                var intent = new Intent(this, typeof(BusResults));
-                StartActivity(intent);
-            };
+            resultButton.Click += delegate { ShowResults(); };
             
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
@@ -50,29 +41,36 @@ namespace AndroidApp
 
             /* Gør rejsetidspunkt-knapperne klar */
             ny_tid = FindViewById<TextView>(Resource.Id.nytid);
-            Button ny_tid_knap = FindViewById<Button>(Resource.Id.nytid_knap);
-            ny_tid_knap.Click += delegate { ShowTimePickerDialog(); };
+            ny_tid.Click += delegate { ShowTimePickerDialog(); };
 
 
 
             /* Sætter rejsetidspunktet til nuværende tidspunkt */
             CurrentTime = DateTime.Now;
-            hour = CurrentTime.Hour;
+            hours = CurrentTime.Hour;
             minutes = CurrentTime.Minute;
 
-            UpdateDisplay(hour, minutes);
+            UpdateDisplay(hours, minutes);
         }
         /* Rejsetidspunkt-variable */
         TextView ny_tid;
-        int hour;
+        int hours;
         int minutes;
         DateTime CurrentTime;
+        static List<string> busses = new List<string>() { "Hej", "med", "dig" };
 
         /* Rejsetidspunkt-metoder */
         void ShowTimePickerDialog()
         {
-            var dialog = new TimePickerFragment(this, hour, minutes, this);
+            var dialog = new TimePickerFragment(this, hours, minutes, this);
             dialog.Show(FragmentManager, null);
+        }
+
+        void ShowResults()
+        {
+            var intent = new Intent(this, typeof(BusResults));
+            intent.PutStringArrayListExtra("busses", busses);
+            StartActivity(intent);
         }
 
         public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
