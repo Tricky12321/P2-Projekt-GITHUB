@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mysql\MysqlControls.cs" />
+    <Compile Include="Mysql\MysqlObject.cs" />
     <Compile Include="Mysql\Row.cs" />
     <Compile Include="Mysql\TableDecoding.cs" />
     <Compile Include="Utilities\ArrayHandler.cs" />
