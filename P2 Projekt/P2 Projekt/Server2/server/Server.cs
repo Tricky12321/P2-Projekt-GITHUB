@@ -160,7 +160,7 @@ public class Server
     {
         if (!IsIDRequest) // Hvis det er alle som er requestet
         {
-
+            
         }
         else // Hvis der kun er requestet en enkelt. 
         {
@@ -271,6 +271,11 @@ public class Server
 
     private void HandleSocketConnectionThread(object Handler_pre)
     {
+        if (Handler_pre == null)
+        {
+            Console.WriteLine("Der er ikke noget object?!");
+            return;
+        }
         Socket handler = Handler_pre as Socket;
         string data;
         string response;
@@ -288,7 +293,7 @@ public class Server
             data = null;
             response = "1";
             // An incoming connection needs to be processed.  
-            double SizeOfMsg = Math.Round((double)HandleConnection((Socket)handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
+            double SizeOfMsg = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
             PingClient = PingRemote(handler.RemoteEndPoint);
             Console.Write($"Incomming connection from ");
             int NonNullElements = ArrayHandler.CountNonZeroElementsInByteArray(bytes);

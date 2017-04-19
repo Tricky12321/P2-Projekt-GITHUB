@@ -5,7 +5,7 @@ using System.Text;
 
 public static class MysqlControls
 {
-    public static bool Insert(string table, string[] colums, string[] values)
+    public static bool Insert(string table, string[] colums, string[] values, bool NoLog = false)
     {
         if (colums.Count() != values.Count())
         {
@@ -56,7 +56,8 @@ public static class MysqlControls
         #endregion
         // --------------------------------------------------
         string TotalQuery = $"INSERT INTO `{table}` {ColumsQuery} VALUES {ValuesQuery};";
-        Mysql.RunQuery(TotalQuery);
+        Mysql.RunQuery(TotalQuery, NoLog);
+
         return true;
 
     }
@@ -79,6 +80,17 @@ public static class MysqlControls
     public static TableDecode SelectWhere(string table, string condition, string whereCondition)
     {
         return Mysql.RunQueryWithReturn($"SELECT `{condition}` FROM `{table}` WHERE {whereCondition}");
+    }
+
+    public static TableDecode SelectOne(string table)
+    {
+        return Mysql.RunQueryWithReturn($"SELECT * FROM `{table}` LIMIT 1");
+    }
+
+    public static TableDecode SelectOneWhere(string table, string whereCondition)
+    {
+        return Mysql.RunQueryWithReturn($"SELECT * FROM `{table}` WHERE {whereCondition} LIMIT 1");
+
     }
 
     public static void DelteAll(string table)
@@ -110,6 +122,55 @@ public static class MysqlControls
         Mysql.RunQuery($"UPDATE `{table}` SET {Values} WHERE {whereCondition}");
     }
 
+    public static void UpdateWhere(string table, string[] colums, string[] values, string whereCondition)
+    {
+        // --------------------------------------------------
+        // Handle Colums
+        // --------------------------------------------------
+        #region Colums
+        string ColumsQuery;
+        ColumsQuery = "(";
+        foreach (string colum in colums)
+        {
+            if (colum == colums.Last())
+            {
+                ColumsQuery += $"`{colum}`";
+            }
+            else
+            {
+                ColumsQuery += $"`{colum}`,";
+            }
+        }
+        ColumsQuery += ")";
+        #endregion
+        // --------------------------------------------------
+        // Handle Values
+        // --------------------------------------------------
+        #region Values
+
+        string ValuesQuery;
+        ValuesQuery = "(";
+        foreach (string value in values)
+        {
+            if (value == "NULL")
+            {
+                ValuesQuery += $"{value}";
+            }
+            else
+            {
+                ValuesQuery += $"'{value}'";
+            }
+            if (value != values.Last())
+            {
+                ValuesQuery += ",";
+            }
+        }
+        ValuesQuery += ")";
+        #endregion
+        // --------------------------------------------------
+        UpdateWhere(table, ColumsQuery, ValuesQuery, whereCondition);
+    }
+
     public static void UpdateNetworkObject(NetworkObject NWO)
     {
         int count = NWO.GetCollumsDB().Count();
@@ -123,4 +184,23 @@ public static class MysqlControls
     {
         return SelectAllWhere(NWO.GetTableName(), $"`{NWO.GetIDCollumName()}`='{NWO.GetID()}'");
     }
+
+    public static bool IsIDInDatabase(NetworkObject Obj)
+    {
+        TableDecode Tbl = SelectOneWhere(Obj.GetTableName(), Obj.WhereID());
+        return Tbl.RowData.Count != 0;
+    }
+
+    public static string[] GetColumsFromDBRaw(string TableName)
+    {
+        TableDecode output = Mysql.RunQueryWithReturn($"SHOW COLUMNS FROM {TableName}");
+        List<string> OutputArray = new List<string>();
+        foreach (var colum in output.RowData)
+        {
+            OutputArray.Add(colum.Values[0]);   
+        }
+        return OutputArray.ToArray();
+    }
+
+    
 }
