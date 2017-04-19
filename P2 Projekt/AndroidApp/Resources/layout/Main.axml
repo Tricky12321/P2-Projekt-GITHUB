@@ -36,7 +36,8 @@
         android:layout_width="match_parent"
         android:layout_height="30.0dp"
         android:id="@+id/editText1"
-        android:background="@android:color/background_light" />
+        android:background="@android:color/background_light"
+        android:textColor="@android:color/background_dark" />
     <TextView
         android:text="Hvornår?"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -53,11 +54,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/nytid_knap" />
     <TextView
-        android:text="Medium Text"
+        android:text="00:00"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/nytid" />
+        android:id="@+id/nytid"
+        android:gravity="center"
+        android:textSize="30"
+        android:textStyle="bold" />
     <TextView
         android:text="Fuck dig"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -75,4 +79,11 @@
         android:layout_height="25.5dp"
         android:id="@+id/timePicker1"
         android:text="Hvornår?" />
+    <Button
+        android:text="Se busser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ResultButton"
+        android:gravity="center"
+        android:layout_gravity="center" />
 </LinearLayout>
