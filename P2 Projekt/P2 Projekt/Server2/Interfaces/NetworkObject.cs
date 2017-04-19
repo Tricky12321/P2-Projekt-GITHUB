@@ -9,13 +9,21 @@ public interface NetworkObject
 
     string[] GetCollumsDB();
 
+    string[] GetValues();
+
+    string[] GetValuesDB();
+
     int GetID();
 
     string GetIDCollumName();
 
     string GetTableName();
 
-    void GetUpdate(TableDecode TableContent);
+    void GetUpdate();
 
-    string[] GetValues();
+    void Update(TableDecode TableContent);
+
+    TableDecode GetThisFromDB();
+
+    string WhereID();
 }

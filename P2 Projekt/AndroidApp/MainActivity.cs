@@ -41,10 +41,16 @@ namespace AndroidApp
 
             /* Gør rejsetidspunkt-knapperne klar */
             ny_tid = FindViewById<TextView>(Resource.Id.nytid);
+            ny_tid.SetTextSize(Android.Util.ComplexUnitType.Sp ,30);
             ny_tid.Click += delegate { ShowTimePickerDialog(); };
 
-
-
+            EditText StoppestedInput = FindViewById<EditText>(Resource.Id.StoppestedInput);
+            StoppestedInput.ClearFocus();
+            StoppestedInput.TextChanged += (object sender, Android.Text.TextChangedEventArgs e) =>
+            {
+                StoppestedInputString = StoppestedInput.Text;
+            };
+            
             /* Sætter rejsetidspunktet til nuværende tidspunkt */
             CurrentTime = DateTime.Now;
             hours = CurrentTime.Hour;
@@ -56,6 +62,7 @@ namespace AndroidApp
         TextView ny_tid;
         int hours;
         int minutes;
+        string StoppestedInputString;
         DateTime CurrentTime;
         static List<string> busses = new List<string>() { "Hej", "med", "dig" };
 

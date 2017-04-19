@@ -44,7 +44,7 @@ public class Client
 
                 // Encode the data string into a byte array.  
                 //Console.WriteLine(LongString + LongString + LongString + LongString + LongString);
-                string JsonString = Json.Serialize(new TestObject(123, "ASDF", "QWÅØXZYABC", ";:_,.-*'@^~`´?=!#/€$£@€\\[]{}()", "Ð ¼ ½ ¾ » ¶ µ ± ® ©", LongString + LongString + LongString)) + "<EOF>";
+                string JsonString = Json.Serialize(new TestObject(123, "ASDF", "QWÅØXZYABC", ";:_,.-*@^~?=!#/€$£@€\\[]{}()", "Ð ¼ ½ ¾ » ¶ µ ± ® ©", LongString)) + "<EOF>";
                 byte[] msg = Encoding.UTF8.GetBytes(JsonString);
 
                 /*

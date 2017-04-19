@@ -3,7 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray">
+    android:background="@android:color/darker_gray"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -35,7 +37,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="30.0dp"
-        android:id="@+id/editText1"
+        android:id="@+id/StoppestedInput"
         android:background="@android:color/background_light"
         android:textColor="@android:color/background_dark" />
     <TextView
@@ -55,7 +57,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/nytid"
         android:gravity="center"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:backgroundTint="#00000000"
+        android:foregroundTint="#00000000" />
+    <Button
+        android:text="Se busser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ResultButton"
+        android:gravity="center"
+        android:layout_gravity="center" />
     <TextView
         android:text="Fuck dig"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -68,11 +79,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/KnapAendrer" />
-    <Button
-        android:text="Se busser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ResultButton"
-        android:gravity="center"
-        android:layout_gravity="center" />
 </LinearLayout>
