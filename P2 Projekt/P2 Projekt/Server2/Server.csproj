@@ -85,10 +85,13 @@
     <Compile Include="Mysql\MysqlControls.cs" />
     <Compile Include="Mysql\Row.cs" />
     <Compile Include="Mysql\TableDecoding.cs" />
+    <Compile Include="Server\HandleConnection.cs" />
+    <Compile Include="Utilities\ArrayHandler.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Utilities\IpAdresse.cs" />
     <Compile Include="Utilities\Json.cs" />
     <Compile Include="Utilities\Log.cs" />
+    <Compile Include="Utilities\objectTypes.cs" />
     <Compile Include="Utilities\OS.cs" />
     <Compile Include="Mysql\Mysql.cs" />
     <Compile Include="Interfaces\NetworkObject.cs" />

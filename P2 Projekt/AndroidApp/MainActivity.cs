@@ -22,7 +22,7 @@ namespace AndroidApp
             {
                 Client Test = new Client();
                 string response = Test.SendTestObject();
-                KnapÆndrer.Text = Test.GetHost();
+                KnapÆndrer.Text = Test.Host;
                 if (response == "1")
                 {
                     FuckDigTekst.Text = $"SUCCESS: {response}";
