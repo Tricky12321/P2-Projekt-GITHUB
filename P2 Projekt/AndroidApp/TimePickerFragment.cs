@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Reflection;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -25,11 +25,12 @@ namespace AndroidApp
             this.hour = hour;
             this.minute = minute;
             this.listener = listener;
+            
         }
 
         public override Dialog OnCreateDialog(Bundle savedState)
         {
-            var dialog = new TimePickerDialog(context, listener, hour, minute, false);
+            var dialog = new TimePickerDialog(context, listener, hour, minute, true);
             return dialog;
         }
     }

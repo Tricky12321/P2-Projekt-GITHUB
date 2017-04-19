@@ -96,9 +96,6 @@ namespace AndroidApp
 			// aapt resource value: 0x7f050005
 			public const int textView2 = 2131034117;
 			
-			// aapt resource value: 0x7f05000a
-			public const int timePicker1 = 2131034122;
-			
 			static Id()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
