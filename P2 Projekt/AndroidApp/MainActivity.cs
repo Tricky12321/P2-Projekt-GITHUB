@@ -21,8 +21,15 @@ namespace AndroidApp
             TimePicker timepicker = FindViewById<TimePicker>(Resource.Id.timePicker1);
             ny_tid = FindViewById<TextView>(Resource.Id.nytid);
             Button ny_tid_knap = FindViewById<Button>(Resource.Id.nytid_knap);
+            Button resultButton = FindViewById<Button>(Resource.Id.ResultButton);
 
             ny_tid_knap.Click += delegate { ShowTimePickerDialog(); };
+
+            resultButton.Click += (object sender, EventArgs e) =>
+            {
+                var intent = new Intent(this, typeof(BusResults));
+                StartActivity(intent);
+            };
             
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
