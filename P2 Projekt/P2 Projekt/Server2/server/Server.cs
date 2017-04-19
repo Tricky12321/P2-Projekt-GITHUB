@@ -4,6 +4,8 @@ using System.Text;
 using System.Net.Sockets;
 using System.Diagnostics;
 using System.Threading;
+using System.Net.NetworkInformation;
+using System.Collections.Generic;
 
 public enum ServerType
 {
@@ -13,14 +15,28 @@ public enum ServerType
 public class Server
 {
     private uint _port;
+
     public uint GetPort => _port;
+
     public static Server IPv4Server = null;
+
     public static Server IPv6Server = null;
 
+    private const int NumberOfWorkers = 5;
+
     public static bool IPV4Started = false;
+
     public static bool IPV6Started = false;
+
     private const uint ByteSize = 1024; // Data buffer size for incommming data
+
+    private const uint KBSize = 1024;
+
+    private Thread WorkerDelagateThread;
+
     private ServerType _serverType;
+
+    public List<Socket> ConnectionWaiting = new List<Socket> { };
 
     public Server(uint Port)
     {
@@ -73,18 +89,21 @@ public class Server
             listenerv4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV4Started = true;
             IPv4Server = this;
+            WorkerDelagateThread = new Thread(new ThreadStart(HandleWorkers));
+            WorkerDelagateThread.Start();
             SocketServer(localEndPointv4, listenerv4);
-
         }
         // IPV6 SERVER ->->->->->->->->->->->->->->->->->
         else if (_serverType == ServerType.Ipv6)
         {
             Console.WriteLine("Type: IPv6");
-            IPEndPoint localEndPointv6 = new IPEndPoint(IPAddress.IPv6Any,(int)_port);
+            IPEndPoint localEndPointv6 = new IPEndPoint(IPAddress.IPv6Any, (int)_port);
             Socket listenerv6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
             listenerv6.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV6Started = true;
             IPv6Server = this;
+            WorkerDelagateThread = new Thread(new ThreadStart(HandleWorkers));
+            WorkerDelagateThread.Start();
             SocketServer(localEndPointv6, listenerv6);
         }
     }
@@ -99,65 +118,88 @@ public class Server
         return false;
     }
 
+    private bool IsRequest(ref string Input)
+    {
+        // Hvis det første ord er Request
+        if (Input.Substring(0, Input.IndexOf(',')) == "request")
+        {
+            Input = Input.Replace("<EOF>", "");
+            return true;
+        }
+        return false;
+    }
+
+    public ObjectTypes GetRequestType(ref string input)
+    {
+        // Strengen uden request
+        input.Replace("request,", "");
+        // Checkstring bliver lige simpel
+        string checkString = input.Substring(0, input.IndexOf(","));
+        // input = input.Substring(input.IndexOf(","),input.Length-input.IndexOf(",")); //--Not needed at this time
+        if (checkString == "Bus")
+        {
+            return ObjectTypes.Bus;
+        }
+        else if (checkString == "BusStop")
+        {
+            return ObjectTypes.BusStop;
+        }
+        else
+        {
+            throw new UnknownObjectException("Ukendt object forventet");
+        }
+    }
+
+    public string GetRequestParams(string input)
+    {
+        // Retunere enten et ID, eller ALL
+        return input.Substring(input.IndexOf(","));
+    }
+
+    private string GenerateResponse(ObjectTypes ObjType, bool IsIDRequest)
+    {
+        if (!IsIDRequest) // Hvis det er alle som er requestet
+        {
+
+        }
+        else // Hvis der kun er requestet en enkelt. 
+        {
+
+        }
+        return "1";
+    }
+
+    public string CheckMessage(string data)
+    {
+        if (IsObject(ref data))
+        {
+            HandleObject(data);
+        }
+        else if (IsRequest(ref data))
+        {
+            ObjectTypes ObjType = GetRequestType(ref data);
+            bool IsIDRequest = GetRequestParams(data) != "ALL";
+            return GenerateResponse(ObjType, IsIDRequest);
+        }
+        return "1";
+    }
+
     private void SocketServer(IPEndPoint localEndPoint, Socket listener)
     {
-        string data;
-        byte[] bytes = new Byte[ByteSize];
 
         listener.Bind(localEndPoint);
         listener.Listen(100);
         // Start listening for connections. 
         Console.WriteLine($"IP: {localEndPoint.Address}");
         Console.Write("Server Starting...");
-        Print.PrintSuccessFailedLine(_serverType == ServerType.Ipv4 ?IPV4Started:IPV6Started);
+        Print.PrintSuccessFailedLine(_serverType == ServerType.Ipv4 ? IPV4Started : IPV6Started);
         Print.PrintLine(ConsoleColor.Green);
-
+        // StartWorkers();
         //Console.WriteLine($"{localEndPoint.Address.ToString()}:{localEndPoint.Port.ToString()}");
         while (true)
         {
-            Stopwatch Ping = new Stopwatch();
-            Stopwatch PingObject = new Stopwatch();
             Socket handler = listener.Accept();
-            try
-            {
-                Ping.Restart();
-                PingObject.Restart();
-                // Program is suspended while waiting for an incoming connection.  
-                data = null;
-                // An incoming connection needs to be processed.  
-                HandleConnection(handler, ref bytes, ref data);
-                Console.Write($"Incomming connection from ");
-                Print.PrintColorLine(handler.RemoteEndPoint.ToString(), ConsoleColor.Yellow);
-                //Console.WriteLine(data);
-                Ping.Stop();
-                if (IsObject(ref data))
-                {
-                    HandleObject(data);
-                }
-                PingObject.Stop();
-                // Message to return to sender
-
-                byte[] msg = Encoding.UTF8.GetBytes("1");
-                handler.Send(msg);
-
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e.ToString());
-
-            }
-            finally
-            {
-
-                Console.WriteLine($"Ping: {Ping.ElapsedMilliseconds} ms");
-                Console.WriteLine($"Ping_Object: {PingObject.ElapsedMilliseconds} ms");
-
-                
-                // Shutdown somehow causes problems when running on linux...
-                // handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
-            }
+            ConnectionWaiting.Add(handler);
         }
     }
 
@@ -183,28 +225,110 @@ public class Server
             Thread IPv6Thread = new Thread(new ThreadStart(SocketServerIPv6.StartListening));
             IPv6Thread.Start();
             Log.LogData("ServerStart", "Startede IPv6 Socket Server");
-
         }
 
     }
 
-    private void HandleConnection(Socket handler, ref byte[] bytes, ref string data)
+    private long HandleConnection(Socket handler, ref byte[] bytes, ref string data)
     {
-        bytes = new byte[ByteSize];
-        int bytesRec = handler.Receive(bytes);
-        data += Encoding.UTF8.GetString(bytes, 0, bytesRec);
-        /*
-        if (data.IndexOf("<EOF>") > -1)
+        data = "";
+        int bytesRec = 0;
+        List<byte> Bytes = new List<byte>(1024 * 4);
+        do
         {
-            break;
+            bytes = new byte[1];
+            bytesRec = handler.Receive(bytes);
+            Bytes.Add(bytes[0]);
+        } while (handler.Available > 0);
+        data = Encoding.UTF8.GetString(Bytes.ToArray(), 0, Bytes.Count);
+        if (data.IndexOf("<EOF>") == -1)
+        {
+            throw new NoEndOfFileFoundException();
         }
-        */
+        return Bytes.Count;
+
     }
 
     private void HandleObject(string Obj)
     {
         Type type = Json.GetTypeFromString(Obj);
-        var obj = Json.Deserialize(Obj);
+        NetworkObject obj = Json.Deserialize(Obj);
         obj.Start();
+    }
+
+    private long PingRemote(EndPoint Remote)
+    {
+        long pingTime = 0;
+        Ping pingSender = new Ping();
+        PingReply reply = pingSender.Send(Remote.ToString().Substring(0, Remote.ToString().IndexOf(":")));
+        pingTime = reply.RoundtripTime;
+        return pingTime;
+    }
+
+    // --------------------------------------------------------------
+    // ------------------------ THREAD WORK HERE --------------------
+    // --------------------------------------------------------------
+
+    private void HandleSocketConnectionThread(object Handler_pre)
+    {
+        Socket handler = Handler_pre as Socket;
+        string data;
+        string response;
+        byte[] bytes = new byte[] { };
+        long PingClient = 0;
+        Stopwatch Ping = new Stopwatch();
+        Stopwatch PingObject = new Stopwatch();
+        Stopwatch PingTotal = new Stopwatch();
+        try
+        {
+            Ping.Restart();
+            PingObject.Restart();
+            PingTotal.Restart();
+            // Program is suspended while waiting for an incoming connection.  
+            data = null;
+            response = "1";
+            // An incoming connection needs to be processed.  
+            double SizeOfMsg = Math.Round((double)HandleConnection((Socket)handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
+            PingClient = PingRemote(handler.RemoteEndPoint);
+            Console.Write($"Incomming connection from ");
+            int NonNullElements = ArrayHandler.CountNonZeroElementsInByteArray(bytes);
+            Print.PrintColorLine(handler.RemoteEndPoint.ToString(), ConsoleColor.Yellow);
+            Print.PrintColorLine($"Size: {SizeOfMsg.ToString()} KB", ConsoleColor.Green);
+            //Console.WriteLine(data);
+            Ping.Stop();
+            // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
+            CheckMessage(data);
+            PingObject.Stop();
+            // Laver Response om fra en string til bytes baseret på UTF8
+            byte[] msg = Encoding.UTF8.GetBytes(response);
+            // Sender beskeden. 
+            handler.Send(msg);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.ToString());
+        }
+        finally
+        {
+            PingTotal.Stop();
+            // handler.Shutdown(SocketShutdown.Both); //--Skaber problemer på Linux
+            handler.Close();
+            Print.PrintColorLine($"Ping: {PingClient} ms | {Ping.ElapsedMilliseconds} ms | {PingObject.ElapsedMilliseconds} ms | {PingTotal.ElapsedMilliseconds} ms", ConsoleColor.Yellow);
+        }
+    }
+
+    private void HandleWorkers()
+    {
+        while (true)
+        {
+            if (ConnectionWaiting.Count > 0)
+            {
+                Thread NewThread = new Thread(new ParameterizedThreadStart(HandleSocketConnectionThread));
+                Socket handler = ConnectionWaiting[0];
+                ConnectionWaiting.Remove(ConnectionWaiting[0]);
+                NewThread.Start(handler);
+            }
+        }
     }
 }
