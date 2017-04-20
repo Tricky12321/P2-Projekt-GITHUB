@@ -77,6 +77,7 @@ namespace AndroidApp
         {
             var intent = new Intent(this, typeof(BusResults));
             intent.PutStringArrayListExtra("busses", busses);
+            
             StartActivity(intent);
         }
 
