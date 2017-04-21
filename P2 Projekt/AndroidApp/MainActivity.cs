@@ -64,8 +64,7 @@ namespace AndroidApp
         int minutes;
         string StoppestedInputString;
         DateTime CurrentTime;
-        static List<string> busses = new List<string>() { "Hej", "med", "dig" };
-
+        
         /* Rejsetidspunkt-metoder */
         void ShowTimePickerDialog()
         {
@@ -75,9 +74,9 @@ namespace AndroidApp
 
         void ShowResults()
         {
+            List<string> stopOgTid = new List<string>() { StoppestedInputString, hours.ToString(), minutes.ToString() };
             var intent = new Intent(this, typeof(BusResults));
-            intent.PutStringArrayListExtra("busses", busses);
-            
+            intent.PutStringArrayListExtra("stopOgTid", stopOgTid);
             StartActivity(intent);
         }
 
