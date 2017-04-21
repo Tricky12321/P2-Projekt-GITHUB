@@ -47,4 +47,11 @@ public static class Print
     {
         PrintColorLine(Value.ToString(), Value ? ConsoleColor.Green : ConsoleColor.Red);
     }
+
+    public static void PrintCenterColor(string First, string ColorText, string Second, ConsoleColor Color)
+    {
+        Console.Write($"{First}");
+        PrintColor(ColorText, Color);
+        Console.WriteLine($"{Second}");
+    }
 }

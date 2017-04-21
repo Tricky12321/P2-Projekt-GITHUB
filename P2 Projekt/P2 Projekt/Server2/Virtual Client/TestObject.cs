@@ -15,7 +15,7 @@ public class TestObject : MysqlObject
     public override void Start()
     {
         Log.LogData("TestObject", "TestObject Rechived");
-        Console.WriteLine("Test object rechived!");
+        //Console.WriteLine("Test object rechived!");
         if (ShowInfo)
         {
             Console.WriteLine($"{TestID1}");
@@ -27,7 +27,7 @@ public class TestObject : MysqlObject
         }
         else
         {
-            Console.WriteLine("Data er skjult");
+            // Console.WriteLine("Data er skjult");
         }
         UploadToDatabase();
 
@@ -38,8 +38,9 @@ public class TestObject : MysqlObject
 
     }
 
-    public TestObject (int Test1, string Test2, string Test3, string Test4, string Test5, string Test6)
+    public TestObject (int ID ,int Test1, string Test2, string Test3, string Test4, string Test5, string Test6)
     {
+        this.ID = ID;
         TestID1 = Test1;
         TestID2 = Test2;
         TestID3 = Test3;

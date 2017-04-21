@@ -100,12 +100,13 @@ public static class Mysql
 
 
         }
-
+        MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
         try
         {
-            MySqlCommand cmd = _sqlConnect.CreateCommand();
+            
+            MySqlCommand cmd = SqlConnection.CreateCommand();
             cmd.CommandText = Query;
-            _sqlConnect.Open();
+            SqlConnection.Open();
             cmd.ExecuteNonQuery();
             // Console.WriteLine($"{_sqlConnect.ConnectionString}");
         }
@@ -115,23 +116,24 @@ public static class Mysql
         }
         finally
         {
-            _sqlConnect.Close();
+            SqlConnection.Close();
         }
         return true;
     }
 
     public static TableDecode RunQueryWithReturn(string Query)
     {
-
         Log.LogData("RunQueryWIthReturn", $"{Query} blev kørt");
         TableDecode TableContent;
+        MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
+
         try
         {
             // Hvilken commando skal der køres (Query)
-            MySqlCommand cmd = _sqlConnect.CreateCommand();
+            MySqlCommand cmd = SqlConnection.CreateCommand();
             cmd.CommandText = Query;
             // Åbner forbindelsen til databasen (OPEN)
-            _sqlConnect.Open();
+            SqlConnection.Open();
             MySqlDataReader Reader = cmd.ExecuteReader();
             // Sikre sig at der er noget at hente i databasen.
             if (!Reader.HasRows)
@@ -149,7 +151,7 @@ public static class Mysql
         finally
         {
             // Sørger for at vi lukker mysql forbindelsen
-            _sqlConnect.Close();
+            SqlConnection.Close();
         }
         return TableContent;
     }

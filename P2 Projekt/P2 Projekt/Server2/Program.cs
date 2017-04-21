@@ -6,6 +6,30 @@ public static class Program
 {
     public static List<NetworkObject> ClassesToHandle = new List<NetworkObject>();
 
+    public static void TestObject()
+    {
+        // Lavet et nyt Test Object
+        Test TestObj = new Test();                                                  
+        // Laver et nyt stopur
+        System.Diagnostics.Stopwatch Timer = new System.Diagnostics.Stopwatch();    
+        // Starter stopuret
+        Timer.Start();                                                              
+        //serialiseere objectet
+        string JsonString = Json.Serialize(TestObj);                                
+        // Stopper stopuret
+        Timer.Stop();                                                               
+        // Udskriver tiden
+        Console.WriteLine($"Serialise: {Timer.ElapsedMilliseconds} ms");            
+        // Genstarter stopuret
+        Timer.Restart();                                                            
+        // Deserialiserer objectet
+        Test TestObjDe = Json.Deserialize(JsonString)[0] as Test;                      
+        // Stopper stopuret
+        Timer.Stop();                                                               
+        // Udskriver tiden
+        Console.WriteLine($"Deserialise: {Timer.ElapsedMilliseconds} ms");       
+    }
+
     public static int Main(String[] args)
     {
         // Printer lige om det er linux eller ej
