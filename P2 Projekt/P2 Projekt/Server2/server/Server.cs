@@ -331,8 +331,8 @@ public class Server
             {
                 Thread NewThread = new Thread(new ParameterizedThreadStart(HandleSocketConnectionThread));
                 Socket handler = ConnectionWaiting[0];
-                ConnectionWaiting.Remove(ConnectionWaiting[0]);
                 NewThread.Start(handler);
+                ConnectionWaiting.Remove(ConnectionWaiting[0]);
             }
         }
     }
