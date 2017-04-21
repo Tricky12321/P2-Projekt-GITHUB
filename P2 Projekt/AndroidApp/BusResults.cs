@@ -13,25 +13,41 @@ using Android.Widget;
 namespace AndroidApp
 {
     [Activity(Label = "BusResults")]
-    public class BusResults : ListActivity
+    public class BusResults : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Results);
 
-            BusResultsCell [] busser = new BusResultsCell[]{ new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4)};
+            IList<string> _stopOgTid = Intent.Extras.GetStringArrayList("stopOgTid") ?? new string[0];
+            var busliste = new List<BusResultsCell>();
+            //var ServerBusListe = new List<Bus>();
+            // noget magi fra serveren med _stopOgTid
+            // ServerBusListe = magi;
 
-            //IList<string> busses = Intent.Extras.GetStringArrayList("busses") ?? new string[0];
-            this.ListAdapter = new BusResultsAdapter(this, busser);
+            /* foreach (Bus bus in ServerBusListe)
+             * {
+             *     busliste.Add(new BusResultsCell(bus));
+             * }
+             * */
+            //busliste = BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
             
-            
-            
-            /*Button backButton = FindViewById<Button>(Resource.Id.BackButton);
-            backButton.Click += (object sender, EventArgs e) =>
+            Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
+            HomeButton.Click += (object sender, EventArgs e) =>
             {
                 this.OnBackPressed();
-            };*/
+            };
+
+            ListView BusList = FindViewById<ListView>(Resource.Id.BusList);
+            BusList.Adapter = new BusResultsAdapter(this, busliste.ToArray<BusResultsCell>());
+
+            
+
+            
+            
+            
+
         }
     }
 }
