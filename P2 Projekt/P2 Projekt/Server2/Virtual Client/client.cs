@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-
+using System.Collections.Generic;
 public static class IPHandle
 {
     public static IPAddress ResolveIpV4(string IP)
@@ -44,7 +44,12 @@ public class Client
 
                 // Encode the data string into a byte array.  
                 //Console.WriteLine(LongString + LongString + LongString + LongString + LongString);
-                string JsonString = Json.Serialize(new TestObject(123, "ASDFasdf", "QWÅØXZYABC", ";:_,.-*@^~?=!#/€$£@€\\[]{}()", "Ð ¼ ½ ¾ » ¶ µ ± ® ©", LongString)) + "<EOF>";
+                List<TestObject> TestObjects = new List<TestObject>() {};
+                for (int i = 0; i < 15; i++)
+                {
+                    TestObjects.Add(new TestObject(i,123, "ASDFasdf", "QWÅØXZYABC", ";:_,.-*@^~?=!#/€$£@€\\[]{}()", "Ð ¼ ½ ¾ » ¶ µ ± ® ©", LongString));
+                }
+                string JsonString = Json.Serialize(TestObjects) + "<EOF>";
                 byte[] msg = Encoding.UTF8.GetBytes(JsonString);
 
                 /*

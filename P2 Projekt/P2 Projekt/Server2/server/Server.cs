@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Net.NetworkInformation;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 public enum ServerType
 {
@@ -252,8 +253,13 @@ public class Server
     private void HandleObject(string Obj)
     {
         Type type = Json.GetTypeFromString(Obj);
-        NetworkObject obj = Json.Deserialize(Obj);
-        obj.Start();
+        List<NetworkObject> Objects = Json.Deserialize(Obj);
+        Print.PrintCenterColor("Got: ", Objects.Count.ToString(), " Objects", ConsoleColor.Cyan);
+        foreach (NetworkObject SingleObject in Objects)
+        {
+            Thread SingleObjectThread = new Thread(new ThreadStart(SingleObject.Start));
+            SingleObjectThread.Start();
+        }
     }
 
     private long PingRemote(EndPoint Remote)
@@ -298,7 +304,9 @@ public class Server
             Console.Write($"Incomming connection from ");
             int NonNullElements = ArrayHandler.CountNonZeroElementsInByteArray(bytes);
             Print.PrintColorLine(handler.RemoteEndPoint.ToString(), ConsoleColor.Yellow);
-            Print.PrintColorLine($"Size: {SizeOfMsg.ToString()} KB", ConsoleColor.Green);
+            Console.Write($"Size: ");
+            Print.PrintColor(SizeOfMsg.ToString(), ConsoleColor.Green);
+            Console.WriteLine(" KB");
             //Console.WriteLine(data);
             Ping.Stop();
             // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
