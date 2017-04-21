@@ -3,12 +3,14 @@
     p1:orientation="vertical"
     p1:layout_width="match_parent"
     p1:layout_height="match_parent"
-    p1:id="@+id/linearLayout1">
+    p1:id="@+id/linearLayout1"
+    p1:background="#003163">
     <LinearLayout
         p1:orientation="horizontal"
         p1:layout_width="match_parent"
         p1:layout_height="wrap_content"
-        p1:id="@+id/linearLayout2">
+        p1:id="@+id/linearLayout2"
+        p1:background="#E5B300">
         <Button
             p1:layout_width="52.5dp"
             p1:layout_height="48.0dp"
@@ -20,7 +22,9 @@
             p1:layout_width="match_parent"
             p1:layout_height="match_parent"
             p1:id="@+id/textView1"
-            p1:gravity="center" />
+            p1:gravity="center"
+            p1:textColor="#000000"
+            p1:textStyle="bold" />
     </LinearLayout>
     <ListView
         p1:minWidth="25px"

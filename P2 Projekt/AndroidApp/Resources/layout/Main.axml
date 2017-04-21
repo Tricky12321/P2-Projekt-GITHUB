@@ -3,36 +3,38 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
+    android:background="#003163"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout1">
-        <ImageButton
-            android:src="@drawable/hamburgericonny1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton1"
-            android:background="@android:color/background_light" />
+        android:layout_height="40dp"
+        android:id="@+id/linearLayout1"
+        android:background="#E5B300">
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:id="@+id/button1"
+            android:background="@drawable/hamburgericonny" />
         <Button
             android:text="Favoritter"
             android:id="@+id/favButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#E5B300"
+            android:textColor="#000000" />
     </LinearLayout>
     <TextView
         android:text="Hvor skal du på?"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35.7dp"
         android:id="@+id/textView1"
-        android:textColor="@android:color/background_dark"
+        android:textColor="#ffffff"
         android:textAllCaps="false"
         android:textStyle="bold"
-        android:typeface="serif"
+        android:typeface="normal"
         android:gravity="center" />
     <EditText
         android:layout_width="match_parent"
@@ -44,31 +46,34 @@
         android:text="Hvornår?"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="43.3dp"
         android:id="@+id/textView2"
-        android:textColor="@android:color/background_dark"
+        android:textColor="#ffffff"
         android:textStyle="bold"
-        android:typeface="serif"
+        android:typeface="normal"
         android:gravity="center" />
     <TextView
         android:text="00:00"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45.0dp"
         android:id="@+id/nytid"
         android:gravity="center"
         android:textStyle="bold"
         android:backgroundTint="#00000000"
-        android:foregroundTint="#00000000" />
+        android:foregroundTint="#00000000"
+        android:layout_marginBottom="15.3dp" />
     <Button
         android:text="Se busser"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="34.7dp"
         android:id="@+id/ResultButton"
         android:gravity="center"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:background="#E5B300"
+        android:textColor="#000000" />
     <TextView
-        android:text="Fuck dig"
+        android:text="Fuck dig igen"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,5 +83,7 @@
         android:text="Ændr 'Fuck dig' til ' Elsker dig'"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/KnapAendrer" />
+        android:id="@+id/KnapAendrer"
+        android:background="#E5B300"
+        android:textColor="#000000" />
 </LinearLayout>
