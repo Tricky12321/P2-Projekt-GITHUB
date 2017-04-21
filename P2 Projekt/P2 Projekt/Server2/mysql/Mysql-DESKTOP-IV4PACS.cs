@@ -78,29 +78,8 @@ public static class Mysql
         }
     }
 
-    public static bool RunQuery(string Query, bool NoLog = false)
+    public static bool RunQuery(string Query)
     {
-        if (!NoLog)
-        {
-            try
-            {
-                string LogQuery = Query;
-                if (Query.Length > 50)
-                {
-                    LogQuery = Query.Substring(0, 45);
-                    LogQuery += "...";
-
-                }
-                Log.LogData("RunQuery", $"{LogQuery} blev kørt");
-            }
-            catch (Exception)
-            {
-
-            }
-
-
-        }
-
         try
         {
             MySqlCommand cmd = _sqlConnect.CreateCommand();
@@ -122,7 +101,6 @@ public static class Mysql
 
     public static TableDecode RunQueryWithReturn(string Query)
     {
-
         Log.LogData("RunQueryWIthReturn", $"{Query} blev kørt");
         TableDecode TableContent;
         try
@@ -136,7 +114,7 @@ public static class Mysql
             // Sikre sig at der er noget at hente i databasen.
             if (!Reader.HasRows)
             {
-                // throw new EmptyTableException("The tabel is empty, are you sure this is what you wanted?");
+                throw new EmptyTableException("The tabel is empty, are you sure this is what you wanted?");
             }
             TableContent = new TableDecode(Reader);
             Reader.Close();

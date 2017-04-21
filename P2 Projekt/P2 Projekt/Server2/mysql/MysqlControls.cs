@@ -125,50 +125,19 @@ public static class MysqlControls
     public static void UpdateWhere(string table, string[] colums, string[] values, string whereCondition)
     {
         // --------------------------------------------------
-        // Handle Colums
-        // --------------------------------------------------
-        #region Colums
-        string ColumsQuery;
-        ColumsQuery = "(";
-        foreach (string colum in colums)
+        List<string> val_n_col = new List<string>();
+        for (int i = 0; i < colums.Count(); i++)
         {
-            if (colum == colums.Last())
-            {
-                ColumsQuery += $"`{colum}`";
-            }
-            else
-            {
-                ColumsQuery += $"`{colum}`,";
-            }
+            val_n_col.Add($"{colums[i]}='{values[i]}', ");
         }
-        ColumsQuery += ")";
-        #endregion
-        // --------------------------------------------------
-        // Handle Values
-        // --------------------------------------------------
-        #region Values
+        StringBuilder FinalValAndColString = new StringBuilder();
+        foreach (string item in val_n_col)
+        {
+            FinalValAndColString.Append(item);
+        }
+        string finalString = FinalValAndColString.ToString().Substring(0, FinalValAndColString.ToString().Length - 2);
 
-        string ValuesQuery;
-        ValuesQuery = "(";
-        foreach (string value in values)
-        {
-            if (value == "NULL")
-            {
-                ValuesQuery += $"{value}";
-            }
-            else
-            {
-                ValuesQuery += $"'{value}'";
-            }
-            if (value != values.Last())
-            {
-                ValuesQuery += ",";
-            }
-        }
-        ValuesQuery += ")";
-        #endregion
-        // --------------------------------------------------
-        UpdateWhere(table, ColumsQuery, ValuesQuery, whereCondition);
+        Mysql.RunQuery($"UPDATE `{table}` SET {finalString} WHERE {whereCondition}");
     }
 
     public static void UpdateNetworkObject(NetworkObject NWO)
