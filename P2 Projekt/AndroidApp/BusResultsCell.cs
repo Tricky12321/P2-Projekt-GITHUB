@@ -18,9 +18,10 @@ namespace AndroidApp
     {
         /* Skal tage imod et bus objekt + hvad den ellers har brug for, og omdanne det til strings,
          * som BusResultsAdapter kan vise */
-        public BusResultsCell (Bus bus)
+        public BusResultsCell (/*Bus bus*/)
         {
-            BusID = bus.busID;
+            /*
+             * BusID = bus.busID;
             Tidspunkt = bus.AnkomstTid;
             PasNu = $"Pas. nu: {bus.PassengersTotal}/{bus.CapacitySitting + bus.CapacityStanding}";
             PasForv = $"Pas. Forv.: {bus.Forventet}/{bus.CapacitySitting + bus.CapacityStanding}";
@@ -33,6 +34,7 @@ namespace AndroidApp
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;
             else
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusOverfyldt;
+                */
         }
         public string BusID;
         public string Tidspunkt;
