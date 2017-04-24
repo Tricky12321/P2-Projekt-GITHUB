@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class GPS : MysqlObject
+public class GPS
 {
     public double xCoordinate;
     public double yCoordinate;
