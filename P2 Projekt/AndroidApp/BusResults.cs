@@ -21,7 +21,7 @@ namespace AndroidApp
             SetContentView(Resource.Layout.Results);
 
             IList<string> _stopOgTid = Intent.Extras.GetStringArrayList("stopOgTid") ?? new string[0];
-            var busliste = new List<BusResultsCell>();
+            //var busliste = new List<BusResultsCell>();
             //var ServerBusListe = new List<Bus>();
             // noget magi fra serveren med _stopOgTid
             // ServerBusListe = magi;
@@ -31,7 +31,7 @@ namespace AndroidApp
              *     busliste.Add(new BusResultsCell(bus));
              * }
              * */
-            //busliste = BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
+            BusResultsCell []busliste = new BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
             
             Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
             HomeButton.Click += (object sender, EventArgs e) =>

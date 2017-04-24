@@ -38,9 +38,9 @@ namespace AndroidApp
         {
             Android.Views.View view = convertView; // re-use an existing view, if one is available
             if (view == null) // otherwise create a new one
-                view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = Busser[position].ToString();
-            view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(Busser[position].KapacitetStatusBillede);
+                view = context.LayoutInflater.Inflate(Resource.Layout.CellLayout0, null);
+            view.FindViewById<TextView>(Resource.Id.text1).Text = Busser[position].ToString();
+            view.FindViewById<ImageView>(Resource.Id.KapacitetIkon).SetImageResource(Busser[position].KapacitetStatusBillede);
 
             return view;
         }
