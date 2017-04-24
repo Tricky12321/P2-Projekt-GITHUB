@@ -16,6 +16,7 @@ public class TestObject : MysqlObject
     {
         Log.LogData("TestObject", "TestObject Rechived");
         //Console.WriteLine("Test object rechived!");
+        /*
         if (ShowInfo)
         {
             Console.WriteLine($"{TestID1}");
@@ -29,6 +30,7 @@ public class TestObject : MysqlObject
         {
             // Console.WriteLine("Data er skjult");
         }
+        */
         UploadToDatabase();
 
     }

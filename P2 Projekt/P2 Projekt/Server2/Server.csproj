@@ -90,7 +90,14 @@
     <Compile Include="Mysql\MysqlObject.cs" />
     <Compile Include="Mysql\Row.cs" />
     <Compile Include="Mysql\TableDecoding.cs" />
+    <Compile Include="Objecter\AfPåTidCombi.cs" />
+    <Compile Include="Objecter\Bus.cs" />
+    <Compile Include="Objecter\GPS.cs" />
+    <Compile Include="Objecter\Rute.cs" />
+    <Compile Include="Objecter\Stoppested.cs" />
+    <Compile Include="Objecter\StoppestedMTid.cs" />
     <Compile Include="Objecter\Test.cs" />
+    <Compile Include="Objecter\Tidspunkt.cs" />
     <Compile Include="Utilities\ArrayHandler.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Utilities\IpAdresse.cs" />

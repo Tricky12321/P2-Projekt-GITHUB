@@ -159,10 +159,22 @@ public class Server
 
     private string GenerateResponse(ObjectTypes ObjType, bool IsIDRequest)
     {
+        //Stregen er : request,ALL,{OBJECT},{WHERE}
         if (!IsIDRequest) // Hvis det er alle som er requestet
         {
-            
+            switch (ObjType)
+            {
+                case ObjectTypes.Bus:
+                    
+                    break;
+                case ObjectTypes.BusStop:
+
+                    break;
+                default:
+                    throw new UnknownObjectException("Dette er et ukendt object");
+            }
         }
+        //Stregen er : request,{ID},{OBJECT},{WHERE}
         else // Hvis der kun er requestet en enkelt. 
         {
 
