@@ -2256,7 +2256,7 @@ namespace AndroidApp
 			public const int BusList = 2131165351;
 			
 			// aapt resource value: 0x7f07006b
-			public const int FavoritIkon = 2131165291;
+			public const int FavoritKnap = 2131165291;
 			
 			// aapt resource value: 0x7f07007d
 			public const int Fuckdigtekst = 2131165309;

@@ -24,11 +24,15 @@ namespace AndroidApp
             Tidspunkt = "13:01";
             PasNu = "Pas. nu: 25/60";
             PasForv = "Pas. Forv.: 40/60";
-            
+
             if (Vælger == 0)
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
             else if (Vælger == 1)
+            {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusNaesteningensiddepladser;
+                BusID = "571X - En by i Rusland";
+                Tidspunkt = "257:30";
+            }
             else if (Vælger == 2)
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;
             else
