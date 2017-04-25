@@ -41,13 +41,6 @@ namespace AndroidApp
 
             ListView BusList = FindViewById<ListView>(Resource.Id.BusList);
             BusList.Adapter = new BusResultsAdapter(this, busliste.ToArray<BusResultsCell>());
-
-            
-
-            
-            
-            
-
         }
     }
 }
