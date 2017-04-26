@@ -7,7 +7,7 @@ using Android.OS;
 
 namespace AndroidApp
 {
-    [Activity(Label = "SmartBus", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "SmartBus", MainLauncher = true, Icon = "@drawable/SmartBusIcon1")]
     public class MainActivity : Activity, TimePickerDialog.IOnTimeSetListener
     {
         protected override void OnCreate(Bundle bundle)
@@ -118,7 +118,7 @@ namespace AndroidApp
         /* Rejsetidspunkt-metoder */
         void ShowTimePickerDialog()
         {
-            var dialog = new TimePickerFragment(this, hours, minutes, this);
+            var dialog = new TimePicker(this, hours, minutes, this);
             dialog.Show(FragmentManager, null);
         }
 
@@ -130,7 +130,7 @@ namespace AndroidApp
             StartActivity(intent);
         }
 
-        public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
+        public void OnTimeSet(Android.Widget.TimePicker view, int hourOfDay, int minute)
         {
             UpdateDisplay(hourOfDay, minute);
         }

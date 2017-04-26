@@ -2230,14 +2230,17 @@ namespace AndroidApp
 			// aapt resource value: 0x7f0200aa
 			public const int mr_ic_play_light = 2130837674;
 			
-			// aapt resource value: 0x7f0200ad
-			public const int notification_template_icon_bg = 2130837677;
+			// aapt resource value: 0x7f0200ae
+			public const int notification_template_icon_bg = 2130837678;
 			
 			// aapt resource value: 0x7f0200ab
-			public const int smiley2 = 2130837675;
+			public const int SmartBusIcon1 = 2130837675;
 			
 			// aapt resource value: 0x7f0200ac
-			public const int smiley3 = 2130837676;
+			public const int smiley2 = 2130837676;
+			
+			// aapt resource value: 0x7f0200ad
+			public const int smiley3 = 2130837677;
 			
 			static Drawable()
 			{
@@ -2907,7 +2910,7 @@ namespace AndroidApp
 			public const int abc_select_dialog_material = 2130903064;
 			
 			// aapt resource value: 0x7f030019
-			public const int CellLayout0 = 2130903065;
+			public const int BusResultCellLayout = 2130903065;
 			
 			// aapt resource value: 0x7f03001a
 			public const int design_bottom_sheet_dialog = 2130903066;
