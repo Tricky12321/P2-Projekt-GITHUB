@@ -36,12 +36,15 @@
         android:textStyle="bold"
         android:typeface="normal"
         android:gravity="center" />
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="30.0dp"
-        android:id="@+id/StoppestedInput"
-        android:background="@android:color/background_light"
-        android:textColor="@android:color/background_dark" />
+    <AutoCompleteTextView
+        android:id="@+id/autocomplete_stoppested"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:dropDownVerticalOffset="2.0dp"
+        android:background="#FFF"
+        android:textColor="#000" />
     <TextView
         android:text="Hvornår?"
         android:textAppearance="?android:attr/textAppearanceLarge"

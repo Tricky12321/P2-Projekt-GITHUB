@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="1dip"
-    android:paddingBottom="1dip"
+    android:paddingTop="10dip"
+    android:paddingBottom="10dip"
     android:paddingStart="8dip"
     android:paddingEnd="8dip">
     <ImageView
         android:id="@+id/KapacitetIkon"
         android:layout_width="32dip"
-        android:layout_height="32dip"
+        android:layout_height="52dip"
         android:src="@drawable/KapacitetStatusMasserafplads" />
     <TextView
         android:id="@+id/text1"
-        android:layout_width="wrap_content"
+        android:layout_width="270dip"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart" />
-    <ImageView
-        android:id="@+id/FavoritIkon"
+    <Button
+        android:id="@+id/FavoritKnap"
+        android:paddingTop="30dip"
         android:layout_width="32dip"
         android:layout_height="32dip"
-        android:src="@drawable/FavoritValg"
-        android:layout_alignParentRight="true"
+        android:background="@drawable/FavoritValg"
         android:layout_gravity="right" />
 </LinearLayout>

@@ -2230,14 +2230,17 @@ namespace AndroidApp
 			// aapt resource value: 0x7f0200aa
 			public const int mr_ic_play_light = 2130837674;
 			
-			// aapt resource value: 0x7f0200ad
-			public const int notification_template_icon_bg = 2130837677;
+			// aapt resource value: 0x7f0200ae
+			public const int notification_template_icon_bg = 2130837678;
 			
 			// aapt resource value: 0x7f0200ab
-			public const int smiley2 = 2130837675;
+			public const int SmartBusIcon1 = 2130837675;
 			
 			// aapt resource value: 0x7f0200ac
-			public const int smiley3 = 2130837676;
+			public const int smiley2 = 2130837676;
+			
+			// aapt resource value: 0x7f0200ad
+			public const int smiley3 = 2130837677;
 			
 			static Drawable()
 			{
@@ -2259,7 +2262,7 @@ namespace AndroidApp
 			public const int FavButton = 2131165307;
 			
 			// aapt resource value: 0x7f07006b
-			public const int FavoritIkon = 2131165291;
+			public const int FavoritKnap = 2131165291;
 			
 			// aapt resource value: 0x7f070078
 			public const int FavoriteList = 2131165304;
@@ -2335,6 +2338,9 @@ namespace AndroidApp
 			
 			// aapt resource value: 0x7f07001e
 			public const int always = 2131165214;
+			
+			// aapt resource value: 0x7f070079
+			public const int autocomplete_stoppested = 2131165305;
 			
 			// aapt resource value: 0x7f07001b
 			public const int beginning = 2131165211;
@@ -2910,7 +2916,7 @@ namespace AndroidApp
 			public const int abc_select_dialog_material = 2130903064;
 			
 			// aapt resource value: 0x7f030019
-			public const int CellLayout0 = 2130903065;
+			public const int BusResultCellLayout = 2130903065;
 			
 			// aapt resource value: 0x7f03001a
 			public const int design_bottom_sheet_dialog = 2130903066;
@@ -3006,7 +3012,7 @@ namespace AndroidApp
 			public const int select_dialog_multichoice_material = 2130903096;
 			
 			// aapt resource value: 0x7f030039
-			public const int select_dialog_singlechoice_material = 2130903097;
+			public const int StoppestedLayout = 2130903097;
 			
 			// aapt resource value: 0x7f03003a
 			public const int support_simple_spinner_dropdown_item = 2130903098;
