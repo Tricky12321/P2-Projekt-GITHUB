@@ -124,6 +124,7 @@
     <Compile Include="BusResultsAdapter.cs" />
     <Compile Include="BusResultsCell.cs" />
     <Compile Include="BusResults.cs" />
+    <Compile Include="FavoriteBusses.cs" />
     <Compile Include="TimePickerFragment.cs" />
     <Compile Include="Client\client.cs" />
     <Compile Include="Client\objectTypes.cs" />
@@ -147,6 +148,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\CellLayout0.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\Favorite.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

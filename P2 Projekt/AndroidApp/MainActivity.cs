@@ -21,6 +21,9 @@ namespace AndroidApp
             Button KnapÆndrer = FindViewById<Button>(Resource.Id.KnapAendrer);
             Button resultButton = FindViewById<Button>(Resource.Id.ResultButton);
             resultButton.Click += delegate { ShowResults(); };
+
+            Button FavoriteButton = FindViewById<Button>(Resource.Id.FavButton);
+            FavoriteButton.Click += delegate { ShowFavorites(); };
             
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
@@ -77,6 +80,12 @@ namespace AndroidApp
             List<string> stopOgTid = new List<string>() { StoppestedInputString, hours.ToString(), minutes.ToString() };
             var intent = new Intent(this, typeof(BusResults));
             intent.PutStringArrayListExtra("stopOgTid", stopOgTid);
+            StartActivity(intent);
+        }
+
+        void ShowFavorites()
+        {
+            var intent = new Intent(this, typeof(FavoriteBusses));
             StartActivity(intent);
         }
 
