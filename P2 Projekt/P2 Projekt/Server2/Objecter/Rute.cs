@@ -9,7 +9,7 @@ public class Rute : MysqlObject
     public List<Stoppested> AfPåRuteList = new List<Stoppested>();
 
     public int ruteID;
-    public string ruteName { get; set; }
+    public string ruteName;
 
     public override string ToString()
     {
@@ -64,6 +64,11 @@ public class Rute : MysqlObject
     public override TableDecode GetThisFromDB()
     {
         return MysqlControls.SelectAllWhere(GetTableName(), WhereID());
+    }
+
+    public override TableDecode GetThisFromDB(string WhereCondition)
+    {
+        throw new NotImplementedException();
     }
 
     public override string WhereID()

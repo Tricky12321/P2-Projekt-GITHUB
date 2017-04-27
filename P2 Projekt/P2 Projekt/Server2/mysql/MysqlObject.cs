@@ -28,6 +28,8 @@ public abstract class MysqlObject : NetworkObject
 
     public abstract string WhereID();
 
+    public abstract TableDecode GetThisFromDB(string WhereCondition);
+
     public void UploadToDatabase()
     {
         
@@ -38,7 +40,7 @@ public abstract class MysqlObject : NetworkObject
         {
             string[] Colums = MysqlControls.GetColumsFromDBRaw(GetTableName());
             string[] Values = GetValues();
-            MysqlControls.Insert(GetTableName(), Colums, GetValues());
+            MysqlControls.Insert(GetTableName(), Colums, Values);
         }
     }
 }

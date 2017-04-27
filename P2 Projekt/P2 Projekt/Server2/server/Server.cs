@@ -133,7 +133,7 @@ public class Server
     public ObjectTypes GetRequestType(ref string input)
     {
         // Strengen uden request
-        input.Replace("request,", "");
+        input = input.Replace("request,", "");
         // Checkstring bliver lige simpel
         string checkString = input.Substring(0, input.IndexOf(","));
         // input = input.Substring(input.IndexOf(","),input.Length-input.IndexOf(",")); //--Not needed at this time
@@ -151,34 +151,38 @@ public class Server
         }
     }
 
+    public string GetWhereCondition(ref string input)
+    {
+        // Retunere alt efter hvad der er valgt som object, så der kun er where condition tilbage
+        //Stregen er : request,ALL,{OBJECT},{WHERE}
+        return input.Substring(input.IndexOf(',')+1);
+    }
+
     public string GetRequestParams(string input)
     {
         // Retunere enten et ID, eller ALL
         return input.Substring(input.IndexOf(","));
     }
 
-    private string GenerateResponse(ObjectTypes ObjType, bool IsIDRequest)
+    private string GenerateResponse(ObjectTypes ObjType, string WhereCondition)
     {
+        TableDecode OutputObject;
         //Stregen er : request,ALL,{OBJECT},{WHERE}
-        if (!IsIDRequest) // Hvis det er alle som er requestet
+        switch (ObjType)
         {
-            switch (ObjType)
-            {
-                case ObjectTypes.Bus:
-                    
-                    break;
-                case ObjectTypes.BusStop:
+            case ObjectTypes.Bus:
+                Bus BusObject = new Bus();
+                OutputObject = BusObject.GetThisFromDB(WhereCondition);
+                BusObject.Update(OutputObject);
+                string OutputString = Json.Serialize(BusObject);
+                return OutputString;
+            case ObjectTypes.BusStop:
 
-                    break;
-                default:
-                    throw new UnknownObjectException("Dette er et ukendt object");
-            }
+                break;
+            default:
+                throw new UnknownObjectException("Dette er et ukendt object");
         }
-        //Stregen er : request,{ID},{OBJECT},{WHERE}
-        else // Hvis der kun er requestet en enkelt. 
-        {
-
-        }
+        
         return "1";
     }
 
@@ -191,8 +195,9 @@ public class Server
         else if (IsRequest(ref data))
         {
             ObjectTypes ObjType = GetRequestType(ref data);
-            bool IsIDRequest = GetRequestParams(data) != "ALL";
-            return GenerateResponse(ObjType, IsIDRequest);
+            string WhereCondition = GetWhereCondition(ref data);
+            string Response = GenerateResponse(ObjType, WhereCondition);
+            return Response;
         }
         return "1";
     }
@@ -322,8 +327,10 @@ public class Server
             //Console.WriteLine(data);
             Ping.Stop();
             // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
-            CheckMessage(data);
+            response = CheckMessage(data);
+            response += "<EOF>";
             PingObject.Stop();
+            // Tester om objectet der skal retuneres kan deserailiseres...
             // Laver Response om fra en string til bytes baseret på UTF8
             byte[] msg = Encoding.UTF8.GetBytes(response);
             // Sender beskeden. 

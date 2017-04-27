@@ -33,7 +33,7 @@ public class AfPåTidCombi : MysqlObject
 
     public override string GetTableName()
     {
-        return "AfpåTid";
+        return "AfpaaTid";
     }
 
     public override void GetUpdate()
@@ -71,6 +71,11 @@ public class AfPåTidCombi : MysqlObject
     public override TableDecode GetThisFromDB()
     {
         return MysqlControls.SelectAllWhere(GetTableName(), WhereID());
+    }
+
+    public override TableDecode GetThisFromDB(string WhereCondition)
+    {
+        throw new NotImplementedException();
     }
 
     public override string WhereID()

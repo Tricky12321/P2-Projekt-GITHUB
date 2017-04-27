@@ -116,6 +116,7 @@
     <Compile Include="Utilities\SerializeThreadClass.cs" />
     <Compile Include="Utilities\Utilities.cs" />
     <Compile Include="Virtual Client\Client.cs" />
+    <Compile Include="Virtual Client\RealClient.cs" />
     <Compile Include="Virtual Client\TestObject.cs" />
   </ItemGroup>
   <ItemGroup>
