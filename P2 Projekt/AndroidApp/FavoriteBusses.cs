@@ -42,16 +42,48 @@ namespace AndroidApp
                 this.OnBackPressed();
             };
 
+            var favoritArray = MakeFavoriteStrings();
 
+            ListView FavoritListe = FindViewById<ListView>(Resource.Id.FavoriteList);
+            FavoritListe.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, favoritArray);
+
+            FavoritListe.ItemClick += (object sender, AdapterView.ItemClickEventArgs args) =>
+            {
+                string[] arrayToSearch = ArrayToSearch(args);
+                var intent = new Intent(this, typeof(BusResults));
+                intent.PutStringArrayListExtra("stopOgTid", arrayToSearch);
+                Toast.MakeText(this, $"Søger på bus {favoritListe[args.Position].Stoppested}", ToastLength.Short).Show();
+                StartActivity(intent);
+            };
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            var favoritArray = MakeFavoriteStrings();
+            ListView FavoritListe = FindViewById<ListView>(Resource.Id.FavoriteList);
+            FavoritListe.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, favoritArray);
+        }
+
+        private string[] MakeFavoriteStrings()
+        {
             var favoritArray = new string[favoritListe.Count];
 
             for (int i = 0; i < favoritListe.Count; i++)
             {
-                 favoritArray[i] = $"Bus: {favoritListe[i].Bus} \nAnkommer ved: {favoritListe[i].Stoppested} \nTid: {favoritListe[i].Tid}";
+                favoritArray[i] = $"Bus: {favoritListe[i].Bus} \nAnkommer ved: {favoritListe[i].Stoppested} \nTid: {favoritListe[i].Tid}";
             }
 
-            ListView FavoritListe = FindViewById<ListView>(Resource.Id.FavoriteList);
-            FavoritListe.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, favoritArray);
+            return favoritArray;
+        }
+
+        private string[] ArrayToSearch(AdapterView.ItemClickEventArgs args)
+        {
+            Favorite favorit = favoritListe[args.Position];
+            string[] splitTid = favorit.Tid.Split(':');
+            var arrayToSearch = new string[4] { favorit.Stoppested, splitTid[0], splitTid[1], favorit.Bus};
+
+            return arrayToSearch;
         }
     }
 }
