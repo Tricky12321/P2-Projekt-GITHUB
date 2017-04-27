@@ -42,6 +42,12 @@ namespace AndroidApp
             view.FindViewById<TextView>(Resource.Id.text1).Text = Busser[position].ToString();
             view.FindViewById<ImageView>(Resource.Id.KapacitetIkon).SetImageResource(Busser[position].KapacitetStatusBillede);
 
+            view.FindViewById<Android.Widget.Button>(Resource.Id.FavoritKnap).Click += (object sender, EventArgs e) => 
+            {
+
+                FavoriteBusses.favoritListe.Add(new Favorite(Busser[position].BusID, "Stoppested", Busser[position].Tidspunkt));
+            };
+
             return view;
         }
     }

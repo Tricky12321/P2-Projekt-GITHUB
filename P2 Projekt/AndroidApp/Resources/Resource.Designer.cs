@@ -2282,9 +2282,6 @@ namespace AndroidApp
 			// aapt resource value: 0x7f07007f
 			public const int ResultButton = 2131165311;
 			
-			// aapt resource value: 0x7f07007c
-			public const int StoppestedInput = 2131165308;
-			
 			// aapt resource value: 0x7f07009b
 			public const int action0 = 2131165339;
 			
@@ -2339,8 +2336,8 @@ namespace AndroidApp
 			// aapt resource value: 0x7f07001e
 			public const int always = 2131165214;
 			
-			// aapt resource value: 0x7f070079
-			public const int autocomplete_stoppested = 2131165305;
+			// aapt resource value: 0x7f07007c
+			public const int autocomplete_stoppested = 2131165308;
 			
 			// aapt resource value: 0x7f07001b
 			public const int beginning = 2131165211;
@@ -3012,10 +3009,13 @@ namespace AndroidApp
 			public const int select_dialog_multichoice_material = 2130903096;
 			
 			// aapt resource value: 0x7f030039
-			public const int StoppestedLayout = 2130903097;
+			public const int select_dialog_singlechoice_material = 2130903097;
 			
 			// aapt resource value: 0x7f03003a
-			public const int support_simple_spinner_dropdown_item = 2130903098;
+			public const int StoppestedLayout = 2130903098;
+			
+			// aapt resource value: 0x7f03003b
+			public const int support_simple_spinner_dropdown_item = 2130903099;
 			
 			static Layout()
 			{

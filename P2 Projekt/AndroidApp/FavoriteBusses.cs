@@ -12,23 +12,25 @@ using Android.Widget;
 
 namespace AndroidApp
 {
-    public struct Favorit
+    public struct Favorite
     {
         public string Bus;
         public string Stoppested;
         public string Tid;
 
-        public Favorit(string bus, string stoppested, string tid)
+        public Favorite(string bus, string stoppested, string tid)
         {
             Bus = bus;
             Stoppested = stoppested;
             Tid = tid;
         }
     }
-
     [Activity(Label = "FavoriteBusses")]
     public class FavoriteBusses : Activity
     {
+        public static List<Favorite> favoritListe = new List<Favorite>();
+
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -40,9 +42,6 @@ namespace AndroidApp
                 this.OnBackPressed();
             };
 
-            var favoritListe = new List<Favorit>();
-            favoritListe.Add(new Favorit("25A", "Ferslev", "13:00"));
-            favoritListe.Add(new Favorit("2A", "Jomfru Ane Gade", "14:45"));
 
             var favoritArray = new string[favoritListe.Count];
 
