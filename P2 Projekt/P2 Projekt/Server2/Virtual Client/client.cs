@@ -3,15 +3,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Collections.Generic;
-public static class IPHandle
-{
-    public static IPAddress ResolveIpV4(string IP)
-    {
-        int intAddress = BitConverter.ToInt32(IPAddress.Parse(IP).GetAddressBytes(), 0);
-        string ipAddress = new IPAddress(BitConverter.GetBytes(intAddress)).ToString();
-        return new IPAddress(BitConverter.GetBytes(intAddress));
-    }
-}
 
 public class Client
 {
@@ -19,6 +10,7 @@ public class Client
     //private string _host = "192.168.84.124";
     private uint _port = Server.IPv4Server.GetPort;
     private string LongString = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet pretium ex, id hendrerit tortor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi pulvinar, sem vitae porttitor lacinia, est lorem egestas sem, ac elementum urna quam sed lacus. Phasellus sagittis euismod velit eu eleifend. Pellentesque et vulputate nibh. Sed mi ante, vestibulum nec lobortis vitae, suscipit quis libero. Integer vitae ultricies augue. Morbi mauris urna, tristique sit amet molestie ut, interdum ut magna. Vestibulum ullamcorper interdum consequat. Vestibulum vitae ante ut nunc scelerisque semper eu eget eros. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc ultricies massa in fermentum feugiat. Proin a placerat risus. In congue lacus nibh, ut pretium ante dapibus ac. Suspendisse finibus nunc ut tempus aliquam. Cras in nibh hendrerit, suscipit nisl ac, placerat massa. Vestibulum fringilla accumsan orci. Sed nec dolor vitae orci pharetra auctor vitae nec purus. Praesent luctus erat at commodo fermentum. Vivamus nec aliquet turpis, eu molestie elit. In auctor, odio vitae dictum tempus, dui lorem hendrerit tellus, ac pellentesque mauris nisl vitae lacus. Nullam non tempor ex, mollis lacinia ex. Vivamus pellentesque ex ac mi sodales congue. Integer vel leo a augue scelerisqu interdum. Integer volutpat mollis felis ac iaculis. Sed rhoncus turpis at elit pellentesque fermentum.";
+
     public void SendTestObject()
     {
 

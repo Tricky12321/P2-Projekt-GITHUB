@@ -107,6 +107,11 @@ public class TestObject : MysqlObject
         return MysqlControls.SelectAllWhere(GetTableName(), WhereID());
     }
 
+    public override TableDecode GetThisFromDB(string WhereCondition)
+    {
+        throw new NotImplementedException();
+    }
+
     public override string WhereID()
     {
         return $"`{GetIDCollumName()}`={GetID()}";

@@ -56,7 +56,9 @@ public static class ServerCommands
                 TestClientThread.Start();
                 //Mysql.RunTest();
                 // Laver en ny tråd til at køre den virtuelle klient i, dette sikre at serveren køre som den skal og ikke bliver langsom. 
-
+                break;
+            case "realclient":
+                Program.TestRealClient();
                 break;
             default:
                 break;

@@ -10,14 +10,20 @@ public static class Json
     public const string SplitterString = "\n***NEWELEMENT***\n";
     public static string Serialize<T>(T Obj)
     {
-        return $"object,{typeof(T).ToString()}|{JsonConvert.SerializeObject(Obj)}";
+        string ObjectType = typeof(T).ToString();
+        // get type of object:
+        if (typeof(T).ToString() == "System.Object")
+        {
+            ObjectType = Obj.GetType().ToString();
+        }
+        return $"object,{ObjectType}|{JsonConvert.SerializeObject(Obj)}";
     }
 
     public static void SerializeThreaded(object Obj)
     {
         SerializeThreadObject NewObj = (Obj as SerializeThreadObject);
         JsonSerializerSettings Settings = new JsonSerializerSettings();
-        lock(NewObj.OutputString)
+        lock (NewObj.OutputString)
         {
             NewObj.OutputString.Append($"object,{NewObj.ObjType.ToString()}|{JsonConvert.SerializeObject(NewObj.Obj)}" + SplitterString);
         }
@@ -49,7 +55,7 @@ public static class Json
             Counter = 0;
             // Går alle trådene igennem
             foreach (Thread SingleThread in SerializeThreads)
-            { 
+            {
                 // Hvis tråden er død (færdig) så tæl counter op. 
                 if (SingleThread.IsAlive == false)
                 {
@@ -94,9 +100,13 @@ public static class Json
 
     public static void DeSerializeThreaded(object Obj)
     {
+        (Obj as DeSerializeThreadObject).Obj = (Obj as DeSerializeThreadObject).Obj.Replace(@"\", string.Empty);
+        (Obj as DeSerializeThreadObject).Obj = (Obj as DeSerializeThreadObject).Obj.Replace("<EOF>", string.Empty);
         DeSerializeThreadObject NewObj = (Obj as DeSerializeThreadObject);
         var obj = Activator.CreateInstance(NewObj.ObjType);
-        obj = obj = JsonConvert.DeserializeObject(NewObj.Obj, NewObj.ObjType);
+        //NewObj.Obj = NewObj.Obj.Replace(@"\", string.Empty);
+        Debug.Print($"Deserialiser string: {NewObj.Obj}");
+        obj = JsonConvert.DeserializeObject(NewObj.Obj, NewObj.ObjType);
         lock (NewObj.OutputList)
         {
             NewObj.OutputList.Add(obj as NetworkObject);
@@ -111,17 +121,9 @@ public static class Json
         string[] Objs = Obj.Split(new string[] { SplitterString }, StringSplitOptions.None);
         Objs = TrimJsonList(Objs);
         List<NetworkObject> ListObjects = new List<NetworkObject> { };
-        Debug.Print($"DeSerializing {Objs.Length-1} of type {TypeOfObject.ToString()}");
+        Debug.Print($"DeSerializing {Objs.Length - 1} of type {TypeOfObject.ToString()}");
         List<Thread> DeSerializeThreads = new List<Thread> { };
         int Counter = 0;
-        if (Objs.Length != 16)
-        {
-            foreach (string Test in Objs)
-            {
-                Debug.Print(Test);
-            }
-            throw new Exception("List size is wrong");
-        }
         // Laver tråde, samme som Serialize<T>(List<T> ObjList) |||SE DEN FOR KOMMENTERET KODE|||
         foreach (string SingleObj in Objs)
         {
