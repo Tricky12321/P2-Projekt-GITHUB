@@ -30,6 +30,28 @@ public static class Program
         Console.WriteLine($"Deserialise: {Timer.ElapsedMilliseconds} ms");       
     }
 
+    public static void TestRealClient()
+    {
+        RealClient TestClient = new RealClient();
+        Bus TestBus = new Bus();
+        /*
+        TestBus.busID = 1;
+        TestBus.busLok = new GPS();
+        TestBus.busLok.xCoordinate = 54.2123;
+        TestBus.busLok.yCoordinate = -21.2123;
+        TestBus.busName = "2 Væddeløbsbanen";
+        TestBus.CapacitySitting = 32;
+        TestBus.CapacityStanding = 20;
+        TestBus.besøgteStop = 123;
+        TestBus.rute = new Rute();
+        TestBus.rute.ruteName = "asdf";
+        TestBus.rute.ruteID = 1;
+        TestClient.SendObject(TestBus, typeof(Bus));
+        */
+        List<NetworkObject> NwO = TestClient.RequestAllWhere(ObjectTypes.Bus, "`ID`=1");
+
+    }
+
     public static int Main(String[] args)
     {
         // Printer lige om det er linux eller ej

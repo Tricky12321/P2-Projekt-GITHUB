@@ -37,6 +37,13 @@ public static class MysqlControls
 
         string ValuesQuery;
         ValuesQuery = "(";
+        // Fix at punktum bliver til komma af en eller anden grund... Vi gider ikke danske tal...
+        for (int i = 0; i < values.Count(); i++)
+        {
+            values[i] = values[i].Replace(",", ".");
+        }
+        // Nu kan vi fortsætte
+        int k = 1;
         foreach (string value in values)
         {
             if (value == "NULL")
@@ -47,10 +54,12 @@ public static class MysqlControls
             {
                 ValuesQuery += $"'{value}'";
             }
-            if (value != values.Last())
+            // 
+            if (k != values.Count())
             {
                 ValuesQuery += ",";
             }
+            k++;
         }
         ValuesQuery += ")";
         #endregion

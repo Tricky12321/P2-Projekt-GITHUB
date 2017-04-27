@@ -55,6 +55,11 @@ public class Test : MysqlObject
         throw new NotImplementedException();
     }
 
+    public override TableDecode GetThisFromDB(string WhereCondition)
+    {
+        throw new NotImplementedException();
+    }
+
     public override string WhereID()
     {
         throw new NotImplementedException();

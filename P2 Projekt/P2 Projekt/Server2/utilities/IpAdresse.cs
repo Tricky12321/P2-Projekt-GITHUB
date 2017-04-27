@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System;
 
 public static class IPHandler
 {
@@ -34,5 +35,12 @@ public static class IPHandler
             }
         }
         return null;
+    }
+
+    public static IPAddress ResolveIpV4(string IP)
+    {
+        int intAddress = BitConverter.ToInt32(IPAddress.Parse(IP).GetAddressBytes(), 0);
+        string ipAddress = new IPAddress(BitConverter.GetBytes(intAddress)).ToString();
+        return new IPAddress(BitConverter.GetBytes(intAddress));
     }
 }
