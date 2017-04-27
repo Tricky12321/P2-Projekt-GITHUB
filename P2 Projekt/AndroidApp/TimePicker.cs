@@ -12,14 +12,14 @@ using Android.Widget;
 
 namespace AndroidApp
 {
-    class TimePickerFragment : DialogFragment
+    class TimePicker : DialogFragment
     {
         private readonly Context context;
         private int hour;
         private int minute;
         private readonly TimePickerDialog.IOnTimeSetListener listener;
 
-        public TimePickerFragment(Context context, int hour, int minute, TimePickerDialog.IOnTimeSetListener listener)
+        public TimePicker(Context context, int hour, int minute, TimePickerDialog.IOnTimeSetListener listener)
         {
             this.context = context;
             this.hour = hour;

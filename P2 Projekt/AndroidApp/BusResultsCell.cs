@@ -18,8 +18,27 @@ namespace AndroidApp
     {
         /* Skal tage imod et bus objekt + hvad den ellers har brug for, og omdanne det til strings,
          * som BusResultsAdapter kan vise */
-        public BusResultsCell (/*Bus bus*/)
+        public BusResultsCell (/*Bus bus*/ int Vælger)
         {
+            BusID = "25A - Ferslev";
+            Tidspunkt = "13:01";
+            PasNu = "Pas. nu: 25/60";
+            PasForv = "Pas. Forv.: 40/60";
+
+            if (Vælger == 0)
+                KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
+            else if (Vælger == 1)
+            {
+                KapacitetStatusBillede = Resource.Drawable.KapacitetStatusNaesteningensiddepladser;
+                BusID = "571X - En by i Rusland";
+                Tidspunkt = "257:30";
+            }
+            else if (Vælger == 2)
+                KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;
+            else
+                KapacitetStatusBillede = Resource.Drawable.KapacitetStatusOverfyldt;
+
+
             /*
              * BusID = bus.busID;
             Tidspunkt = bus.AnkomstTid;

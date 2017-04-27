@@ -38,9 +38,15 @@ namespace AndroidApp
         {
             Android.Views.View view = convertView; // re-use an existing view, if one is available
             if (view == null) // otherwise create a new one
-                view = context.LayoutInflater.Inflate(Android.Resource.Layout.ActivityListItem, null);
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = Busser[position].ToString();
-            view.FindViewById<ImageView>(Android.Resource.Id.Icon).SetImageResource(Busser[position].KapacitetStatusBillede);
+                view = context.LayoutInflater.Inflate(Resource.Layout.BusResultCellLayout, null);
+            view.FindViewById<TextView>(Resource.Id.text1).Text = Busser[position].ToString();
+            view.FindViewById<ImageView>(Resource.Id.KapacitetIkon).SetImageResource(Busser[position].KapacitetStatusBillede);
+
+            view.FindViewById<Android.Widget.Button>(Resource.Id.FavoritKnap).Click += (object sender, EventArgs e) => 
+            {
+
+                FavoriteBusses.favoritListe.Add(new Favorite(Busser[position].BusID, "Stoppested", Busser[position].Tidspunkt));
+            };
 
             return view;
         }
