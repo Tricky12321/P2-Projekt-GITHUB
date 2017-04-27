@@ -19,19 +19,36 @@ namespace AndroidApp
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Results);
+            
 
             IList<string> _stopOgTid = Intent.Extras.GetStringArrayList("stopOgTid") ?? new string[0];
+
+            bool FiltrerEfterBusNavn;
             //var busliste = new List<BusResultsCell>();
             //var ServerBusListe = new List<Bus>();
             // noget magi fra serveren med _stopOgTid
             // ServerBusListe = magi;
 
+            if (_stopOgTid.Count == 4)
+                FiltrerEfterBusNavn = true;
+
             /* foreach (Bus bus in ServerBusListe)
              * {
+             *     if (FiltrerEfterBusNavn)
+             *     {
+             *         if (bus.BusName == _stopOgTid[3])
+             *             {
+             *                 busliste.Add(new BusResultsCell(bus));
+             *             }  
+             *     }
+             *     else
+             *     {
              *     busliste.Add(new BusResultsCell(bus));
-             * }
-             * */
-            BusResultsCell []busliste = new BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
+             *     }
+             * } */
+
+
+            BusResultsCell[]busliste = new BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
             
             Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
             HomeButton.Click += (object sender, EventArgs e) =>

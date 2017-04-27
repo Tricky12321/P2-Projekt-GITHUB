@@ -24,6 +24,7 @@ namespace AndroidApp
             Tidspunkt = "13:01";
             PasNu = "Pas. nu: 25/60";
             PasForv = "Pas. Forv.: 40/60";
+            Stoppested = "Jomfru Ane Gade";
 
             if (Vælger == 0)
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
@@ -31,13 +32,20 @@ namespace AndroidApp
             {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusNaesteningensiddepladser;
                 BusID = "571X - En by i Rusland";
-                Tidspunkt = "257:30";
+                Tidspunkt = "13:05";
             }
             else if (Vælger == 2)
+            {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;
+                BusID = "5 - Universitetet";
+                Tidspunkt = "13:10";
+            }
             else
+            {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusOverfyldt;
-
+                BusID = "12 - Gug Øst";
+                Tidspunkt = "13:16";
+            }
 
             /*
              * BusID = bus.busID;
@@ -59,6 +67,7 @@ namespace AndroidApp
         public string Tidspunkt;
         public string PasNu;
         public string PasForv;
+        public string Stoppested;
         public int KapacitetStatusBillede;
 
         public override string ToString()

@@ -44,8 +44,12 @@ namespace AndroidApp
 
             view.FindViewById<Android.Widget.Button>(Resource.Id.FavoritKnap).Click += (object sender, EventArgs e) => 
             {
-
-                FavoriteBusses.favoritListe.Add(new Favorite(Busser[position].BusID, "Stoppested", Busser[position].Tidspunkt));
+                Favorite tempbus = new Favorite(Busser[position].BusID, Busser[position].Stoppested, Busser[position].Tidspunkt);
+                if (!FavoriteBusses.favoritListe.Contains(tempbus))
+                {
+                    FavoriteBusses.favoritListe.Add(tempbus);
+                    Toast.MakeText(this.context, "Tilføjet til favoritter!", ToastLength.Short).Show();
+                }
             };
 
             return view;
