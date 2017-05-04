@@ -6,10 +6,9 @@ using System.Collections.Generic;
 using JsonSerializer;
 public class RealClient
 {
-    private string _host = "127.0.0.1";
-    //private string _host = "192.168.84.124";
-    private uint _port = Server.IPv4Server.GetPort;
-
+    //private string _host = "127.0.0.1";
+    private string _host = "172.25.11.120";
+    private uint _port = 12943;
     public void SendObject(object ObjToSend, Type TypeOfObj)
     {
 
@@ -21,7 +20,7 @@ public class RealClient
         {
             IPAddress[] IPs = Dns.GetHostEntry(_host).AddressList;
             IPAddress ipAddress = IPHandler.GetIpV4(IPs);
-            IPEndPoint remoteEP = new IPEndPoint(ipAddress, (int)_port);
+            IPEndPoint remoteEP = new IPEndPoint(ipAddress, 12);
 
             Socket sender;
             sender = new Socket(IPHandler.IsIPV6(ipAddress) ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
