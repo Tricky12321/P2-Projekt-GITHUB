@@ -48,7 +48,7 @@ public class RealClient
                 // Receive the response from the remote device.  
                 int bytesRec = sender.Receive(bytes);
                 output = Encoding.UTF8.GetString(bytes, 0, bytesRec);
-                Print.PrintColorLine(output, ConsoleColor.Cyan);
+                // Print.PrintColorLine(output, ConsoleColor.Cyan);
                 // Release the socket.  
                 sender.Shutdown(SocketShutdown.Both);
                 sender.Close();
