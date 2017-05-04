@@ -96,7 +96,14 @@ public class Bus : MysqlObject
 
     public override TableDecode GetThisFromDB(string WhereCondition)
     {
-        return MysqlControls.SelectAllWhere(GetTableName(), WhereCondition);
+        if (WhereCondition == "None")
+        {
+            return MysqlControls.SelectAll(GetTableName());
+        }
+        else
+        {
+            return MysqlControls.SelectAllWhere(GetTableName(), WhereCondition);
+        }
     }
 
     public override string WhereID()

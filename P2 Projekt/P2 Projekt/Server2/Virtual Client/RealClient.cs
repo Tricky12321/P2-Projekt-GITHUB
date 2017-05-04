@@ -78,7 +78,11 @@ public class RealClient
     public List<NetworkObject> RequestAllWhere(ObjectTypes ObjType, string WhereCondition)
     {
         //Stregen er : request,{OBJECT},{WHERE}
-        string RequestString = $"request,{ObjType.ToString()},{WhereCondition}";
+        if (WhereCondition == "")
+        {
+            WhereCondition = "None";
+        }
+        string RequestString = $"request,ALL,{ObjType.ToString()},{WhereCondition}";
         // Data buffer for incoming data.  
         byte[] bytes = new byte[] { };
         string ReturnString = "No response";
@@ -110,7 +114,14 @@ public class RealClient
                 // Receive the response from the remote device. 
                 long bytesRec = HandleConnection(sender, ref bytes, ref ReturnString);
                 //long bytesRec = sender.Receive(bytes);
-                ReturnList = Json.Deserialize(ReturnString);
+                if (ReturnString != "1<EOF>")
+                {
+                    ReturnList = Json.Deserialize(ReturnString);
+                } else
+                {
+                    System.Diagnostics.Debug.Print("Der er ikke noget at deseralisere");
+
+                }
                 //Print.PrintColorLine(ReturnString, ConsoleColor.Cyan);
 
                 // Release the socket.  

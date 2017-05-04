@@ -6,9 +6,10 @@ using System.Collections.Generic;
 using JsonSerializer;
 public class RealClient
 {
-    //private string _host = "127.0.0.1";
-    private string _host = "172.25.11.120";
-    private uint _port = 12943;
+    private string _host = "127.0.0.1";
+    //private string _host = "192.168.84.124";
+    private uint _port = Server.IPv4Server.GetPort;
+
     public void SendObject(object ObjToSend, Type TypeOfObj)
     {
 
@@ -20,7 +21,7 @@ public class RealClient
         {
             IPAddress[] IPs = Dns.GetHostEntry(_host).AddressList;
             IPAddress ipAddress = IPHandler.GetIpV4(IPs);
-            IPEndPoint remoteEP = new IPEndPoint(ipAddress, 12);
+            IPEndPoint remoteEP = new IPEndPoint(ipAddress, (int)_port);
 
             Socket sender;
             sender = new Socket(IPHandler.IsIPV6(ipAddress) ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -48,7 +49,7 @@ public class RealClient
                 // Receive the response from the remote device.  
                 int bytesRec = sender.Receive(bytes);
                 output = Encoding.UTF8.GetString(bytes, 0, bytesRec);
-                // Print.PrintColorLine(output, ConsoleColor.Cyan);
+                Print.PrintColorLine(output, ConsoleColor.Cyan);
                 // Release the socket.  
                 sender.Shutdown(SocketShutdown.Both);
                 sender.Close();
@@ -77,7 +78,11 @@ public class RealClient
     public List<NetworkObject> RequestAllWhere(ObjectTypes ObjType, string WhereCondition)
     {
         //Stregen er : request,{OBJECT},{WHERE}
-        string RequestString = $"request,{ObjType.ToString()},{WhereCondition}";
+        if (WhereCondition == "")
+        {
+            WhereCondition = "None";
+        }
+        string RequestString = $"request,ALL,{ObjType.ToString()},{WhereCondition}";
         // Data buffer for incoming data.  
         byte[] bytes = new byte[] { };
         string ReturnString = "No response";
@@ -109,7 +114,14 @@ public class RealClient
                 // Receive the response from the remote device. 
                 long bytesRec = HandleConnection(sender, ref bytes, ref ReturnString);
                 //long bytesRec = sender.Receive(bytes);
-                ReturnList = Json.Deserialize(ReturnString);
+                if (ReturnString != "1<EOF>")
+                {
+                    ReturnList = Json.Deserialize(ReturnString);
+                } else
+                {
+                    System.Diagnostics.Debug.Print("Der er ikke noget at deseralisere");
+
+                }
                 //Print.PrintColorLine(ReturnString, ConsoleColor.Cyan);
 
                 // Release the socket.  

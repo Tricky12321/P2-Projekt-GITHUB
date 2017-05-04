@@ -52,6 +52,15 @@ public class Stoppested : MysqlObject
         stoppestedLok.yCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[3]);    // DOUBLE
     }
 
+    public void Update(Row Row)
+    {
+        ID = Convert.ToInt32(Row.Values[0]);                            // INT 32 ID
+        stoppestedID = Row.Values[1];                                   // VARHCAR 50 
+        stoppestedLok = new GPS();
+        stoppestedLok.xCoordinate = Convert.ToDouble(Row.Values[2]);    // DOUBLE
+        stoppestedLok.yCoordinate = Convert.ToDouble(Row.Values[3]);    // DOUBLE
+    }
+
     public override string[] GetValues()
     {
         List<string> Output = new List<string>();
@@ -73,14 +82,15 @@ public class Stoppested : MysqlObject
         return MysqlControls.SelectAllWhere(GetTableName(), WhereID());
     }
 
-    public override TableDecode GetThisFromDB(string WhereCondition)
-    {
-        throw new NotImplementedException();
-    }
-
     public override string WhereID()
     {
         return $"`{GetIDCollumName()}`={GetID()}";
+    }
+
+    public override TableDecode GetThisFromDB(string WhereCondition)
+    {
+        return MysqlControls.SelectAllWhere(GetTableName(), WhereCondition);
+
     }
 }
 

@@ -156,7 +156,9 @@ public class Server
     {
         // Retunere alt efter hvad der er valgt som object, så der kun er where condition tilbage
         //Stregen er : request,ALL,{OBJECT},{WHERE}
-        return input.Substring(input.IndexOf(',')+1);
+        string WhereCondition = input.Substring(input.IndexOf(',') + 1);
+
+        return WhereCondition;
     }
 
     public string GetRequestParams(string input)
@@ -165,25 +167,73 @@ public class Server
         return input.Substring(input.IndexOf(","));
     }
 
-    private string GenerateResponse(ObjectTypes ObjType, string WhereCondition)
+    private string GenerateResponse(ObjectTypes ObjType, string WhereCondition, bool All)
     {
         TableDecode OutputObject;
-        //Stregen er : request,ALL,{OBJECT},{WHERE}
-        switch (ObjType)
-        {
-            case ObjectTypes.Bus:
-                Bus BusObject = new Bus();
-                OutputObject = BusObject.GetThisFromDB(WhereCondition);
-                BusObject.Update(OutputObject);
-                string OutputString = Json.Serialize(BusObject);
-                return OutputString;
-            case ObjectTypes.BusStop:
+        string OutputString;
 
-                break;
-            default:
-                throw new UnknownObjectException("Dette er et ukendt object");
+        //Stregen er : request,ALL,{OBJECT},{WHERE}
+        if (All)
+        {
+            switch (ObjType)
+            {
+                case ObjectTypes.Bus:
+                    break;
+                case ObjectTypes.BusStop:
+                    Stoppested Stoppested = new Stoppested();
+                    TableDecode RowsFromDB;
+                    if (WhereCondition == "None")
+                    {
+                        RowsFromDB = MysqlControls.SelectAll(Stoppested.GetTableName());
+
+                    }
+                    else
+                    {
+                        RowsFromDB = MysqlControls.SelectAllWhere(Stoppested.GetTableName(), WhereCondition);
+                    }
+                    List<Stoppested> StoppeSteder = new List<Stoppested>();
+                    foreach (var SS in RowsFromDB.RowData)
+                    {
+                        Stoppested NewStop = new Stoppested();
+                        NewStop.Update(SS);
+                        StoppeSteder.Add(NewStop);
+                    }
+                    OutputString = Json.Serialize(StoppeSteder);
+                    return OutputString;
+                case ObjectTypes.Unknown:
+                    break;
+                default:
+                    break;
+            }
+
         }
-        
+        // Hvis der kun er
+        else
+        {
+            switch (ObjType)
+            {
+                case ObjectTypes.Bus:
+                    Bus BusObject = new Bus();
+                    OutputObject = BusObject.GetThisFromDB(WhereCondition);
+                    BusObject.Update(OutputObject);
+                    OutputString = Json.Serialize(BusObject);
+                    return OutputString;
+                case ObjectTypes.BusStop:
+                    Stoppested Stoppested = new Stoppested();
+                    TableDecode RowsFromDB = MysqlControls.SelectAllWhere(Stoppested.GetTableName(), WhereCondition);
+                    List<Stoppested> StoppeSteder = new List<Stoppested>();
+                    foreach (var SS in RowsFromDB.RowData)
+                    {
+                        Stoppested NewStop = new Stoppested();
+                        NewStop.Update(SS);
+                        StoppeSteder.Add(NewStop);
+                    }
+                    OutputString = Json.Serialize(StoppeSteder);
+                    return OutputString;
+                default:
+                    throw new UnknownObjectException("Dette er et ukendt object");
+            }
+        }
         return "1";
     }
 
@@ -195,12 +245,30 @@ public class Server
         }
         else if (IsRequest(ref data))
         {
+            data = data.Substring(data.IndexOf(',') + 1);
+            bool All = CheckAll(ref data);
+
             ObjectTypes ObjType = GetRequestType(ref data);
             string WhereCondition = GetWhereCondition(ref data);
-            string Response = GenerateResponse(ObjType, WhereCondition);
+            string Response = GenerateResponse(ObjType, WhereCondition, All);
             return Response;
         }
         return "1";
+    }
+
+    private bool CheckAll(ref string data)
+    {
+
+        if (data.Substring(0, data.IndexOf(',')) == "ALL")
+        {
+            data = data.Substring(data.IndexOf(',') + 1);
+            return true;
+        }
+        else
+        {
+            data = data.Substring(data.IndexOf(',') + 1);
+            return false;
+        }
     }
 
     private void SocketServer(IPEndPoint localEndPoint, Socket listener)
@@ -273,7 +341,7 @@ public class Server
 
     private void HandleObject(string Obj)
     {
-        
+
         Type type = Json.GetTypeFromString(Obj);
         List<NetworkObject> Objects = Json.Deserialize(Obj);
         Print.PrintCenterColor("Got: ", Objects.Count.ToString(), " Objects", ConsoleColor.Cyan);
@@ -302,7 +370,6 @@ public class Server
         if (Handler_pre == null)
         {
             Console.WriteLine("Der er ikke noget object?!");
-            return;
         }
         Socket handler = Handler_pre as Socket;
         string data;
@@ -364,7 +431,7 @@ public class Server
                 Thread NewThread = new Thread(new ParameterizedThreadStart(HandleSocketConnectionThread));
                 Socket handler = ConnectionWaiting[0];
                 NewThread.Start(handler);
-                lock(ConnectionWaiting)
+                lock (ConnectionWaiting)
                 {
                     ConnectionWaiting.Remove(ConnectionWaiting[0]);
                 }

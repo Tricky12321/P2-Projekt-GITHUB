@@ -48,7 +48,7 @@ public static class Program
         TestBus.rute.ruteID = 1;
         TestClient.SendObject(TestBus, typeof(Bus));
         */
-        List<NetworkObject> NwO = TestClient.RequestAllWhere(ObjectTypes.Bus, "`ID`=1");
+        List<NetworkObject> NwO = TestClient.RequestAllWhere(ObjectTypes.BusStop, "");
 
     }
 
