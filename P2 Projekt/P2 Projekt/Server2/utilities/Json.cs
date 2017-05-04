@@ -111,7 +111,10 @@ namespace JsonSerializer
             // Sørger for at andre tråde ikke kan tilgå listen, hvis den er i brug af en tråd. (Kø system)
             lock (NewObj.OutputList)
             {
-                NewObj.OutputList.Add(obj as NetworkObject);
+                if (obj != null)
+                {
+                    NewObj.OutputList.Add(obj as NetworkObject);
+                }
             }
         }
 

@@ -428,12 +428,15 @@ public class Server
         {
             if (ConnectionWaiting.Count > 0)
             {
-                Thread NewThread = new Thread(new ParameterizedThreadStart(HandleSocketConnectionThread));
-                Socket handler = ConnectionWaiting[0];
-                NewThread.Start(handler);
-                lock (ConnectionWaiting)
+                if (ConnectionWaiting[0] != null)
                 {
-                    ConnectionWaiting.Remove(ConnectionWaiting[0]);
+                    Thread NewThread = new Thread(new ParameterizedThreadStart(HandleSocketConnectionThread));
+                    Socket handler = ConnectionWaiting[0];
+                    NewThread.Start(handler);
+                    lock (ConnectionWaiting)
+                    {
+                        ConnectionWaiting.Remove(ConnectionWaiting[0]);
+                    }
                 }
             }
         }
