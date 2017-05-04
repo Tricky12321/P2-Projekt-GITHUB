@@ -2,6 +2,7 @@
 using System.Linq;
 using MySql.Data.MySqlClient;
 using System.Threading;
+using System.Diagnostics;
 
 public static class Mysql
 {
@@ -88,14 +89,16 @@ public static class Mysql
                 if (Query.Length > 50)
                 {
                     LogQuery = Query.Substring(0, 45);
+                    LogQuery = LogQuery.Replace("\"", "\\\"");
+                    LogQuery = LogQuery.Replace("'", "\\'");
                     LogQuery += "...";
-
+                    Debug.Print(LogQuery);
                 }
                 Log.LogData("RunQuery", $"{LogQuery} blev kørt");
             }
             catch (Exception)
             {
-
+                throw;
             }
 
 
@@ -103,7 +106,6 @@ public static class Mysql
         MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
         try
         {
-            
             MySqlCommand cmd = SqlConnection.CreateCommand();
             cmd.CommandText = Query;
             SqlConnection.Open();

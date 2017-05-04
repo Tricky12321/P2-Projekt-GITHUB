@@ -7,6 +7,7 @@ using System.Threading;
 using System.Net.NetworkInformation;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using JsonSerializer;
 
 public enum ServerType
 {
@@ -217,7 +218,10 @@ public class Server
         while (true)
         {
             Socket handler = listener.Accept();
-            ConnectionWaiting.Add(handler);
+            lock (ConnectionWaiting)
+            {
+                ConnectionWaiting.Add(handler);
+            }
         }
     }
 
@@ -269,6 +273,7 @@ public class Server
 
     private void HandleObject(string Obj)
     {
+        
         Type type = Json.GetTypeFromString(Obj);
         List<NetworkObject> Objects = Json.Deserialize(Obj);
         Print.PrintCenterColor("Got: ", Objects.Count.ToString(), " Objects", ConsoleColor.Cyan);
@@ -359,7 +364,10 @@ public class Server
                 Thread NewThread = new Thread(new ParameterizedThreadStart(HandleSocketConnectionThread));
                 Socket handler = ConnectionWaiting[0];
                 NewThread.Start(handler);
-                ConnectionWaiting.Remove(ConnectionWaiting[0]);
+                lock(ConnectionWaiting)
+                {
+                    ConnectionWaiting.Remove(ConnectionWaiting[0]);
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using System;
-
+[Serializable]
 public class NotValidQueryException : Exception
 {
     public NotValidQueryException()
@@ -18,6 +18,7 @@ public class NotValidQueryException : Exception
     }
 }
 
+[Serializable]
 public class NoObjectFoundException : Exception
 {
     public NoObjectFoundException()
@@ -36,6 +37,7 @@ public class NoObjectFoundException : Exception
     }
 }
 
+[Serializable]
 public class InvalidQueryException : Exception
 {
 
@@ -55,6 +57,7 @@ public class InvalidQueryException : Exception
     }
 }
 
+[Serializable]
 public class EmptyTableException : Exception
 {
 
@@ -74,6 +77,7 @@ public class EmptyTableException : Exception
     }
 }
 
+[Serializable]
 public class ConnectionFailedException : Exception
 {
     public ConnectionFailedException()
@@ -92,6 +96,7 @@ public class ConnectionFailedException : Exception
     }
 }
 
+[Serializable]
 public class NotConnectedException : Exception
 {
     public NotConnectedException()
@@ -110,6 +115,7 @@ public class NotConnectedException : Exception
     }
 }
 
+[Serializable]
 public class TooManyBytesException : Exception
 {
     public TooManyBytesException()
@@ -123,6 +129,44 @@ public class TooManyBytesException : Exception
     }
 
     public TooManyBytesException(string message, Exception inner) : base(message, inner)
+    {
+
+    }
+}
+
+[Serializable]
+public class UnknownObjectException : Exception
+{
+    public UnknownObjectException()
+    {
+
+    }
+
+    public UnknownObjectException(string message) : base(message)
+    {
+
+    }
+
+    public UnknownObjectException(string message, Exception inner) : base(message, inner)
+    {
+
+    }
+}
+
+[Serializable]
+public class NoEndOfFileFoundException : Exception
+{
+    public NoEndOfFileFoundException()
+    {
+
+    }
+
+    public NoEndOfFileFoundException(string message) : base(message)
+    {
+
+    }
+
+    public NoEndOfFileFoundException(string message, Exception inner) : base(message, inner)
     {
 
     }
