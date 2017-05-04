@@ -48,8 +48,11 @@ public static class Program
         TestBus.rute.ruteID = 1;
         TestClient.SendObject(TestBus, typeof(Bus));
         */
-        List<NetworkObject> NwO = TestClient.RequestAllWhere(ObjectTypes.BusStop, "");
-
+        List<NetworkObject> NwOs = TestClient.RequestAllWhere(ObjectTypes.BusStop, "");
+        foreach (NetworkObject NwO in NwOs)
+        {
+            System.Diagnostics.Debug.Print(NwO.ToString());
+        }
     }
 
     public static int Main(String[] args)
