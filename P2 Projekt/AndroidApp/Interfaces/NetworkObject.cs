@@ -5,5 +5,5 @@ using System.Text;
 
 public interface NetworkObject
 {
-
+    void Start();
 }

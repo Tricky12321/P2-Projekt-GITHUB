@@ -27,19 +27,8 @@ namespace AndroidApp
             
             KnapÆndrer.Click += (object sender, EventArgs e) =>
             {
-                Client Test = new Client();
-                string response = Test.SendTestObject();
-                KnapÆndrer.Text = Test.Host;
-                if (response == "1")
-                {
-                    FuckDigTekst.Text = $"SUCCESS: {response}";
-                    Console.WriteLine("Test");
-                }
-                else
-                {
-                    FuckDigTekst.Text = $"FAILED: {response}\n";
-                }
-
+                RealClient Test = new RealClient();
+                List<NetworkObject> ReturnObjs = Test.RequestAllWhere(ObjectTypes.BusStop, "None");
             };
 
             /* Gør rejsetidspunkt-knapperne klar */
@@ -77,6 +66,7 @@ namespace AndroidApp
             }
             return StoppeSteder.ToArray();
         }
+
         string StoppestedInputString;
         static string[] COUNTRIES = new string[] {
   "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra",

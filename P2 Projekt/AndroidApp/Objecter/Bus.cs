@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Bus
+public class Bus : NetworkObject
 {
     public List<StoppestedMTid> busPassagerDataListe = new List<StoppestedMTid>();
 
@@ -20,5 +20,10 @@ public class Bus
     public override string ToString()
     {
         return busName;
+    }
+
+    public void Start()
+    {
+
     }
 }

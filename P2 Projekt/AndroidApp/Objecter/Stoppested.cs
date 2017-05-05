@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Stoppested
+public class Stoppested : NetworkObject
 {
     /*public List<StoppestedDataAfPåstigning> AfPåstigningerList = new List<StoppestedDataAfPåstigning>();*/
 
@@ -16,6 +16,11 @@ public class Stoppested
     public override string ToString()
     {
         return stoppestedID;
+    }
+
+    public void Start()
+    {
+
     }
 }
 

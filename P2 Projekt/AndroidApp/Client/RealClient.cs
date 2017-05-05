@@ -3,11 +3,10 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Collections.Generic;
-using JsonSerializer;
 public class RealClient
 {
-    //private string _host = "172.25.11.120";
-    private string _host = "127.0.0.1";
+    private string _host = "172.25.11.120";
+    //private string _host = "127.0.0.1";
     private uint _port = 12943;
 
     public void SendObject(object ObjToSend, Type TypeOfObj)
