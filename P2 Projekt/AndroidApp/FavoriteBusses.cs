@@ -52,7 +52,7 @@ namespace AndroidApp
                 string[] arrayToSearch = ArrayToSearch(args);
                 var intent = new Intent(this, typeof(BusResults));
                 intent.PutStringArrayListExtra("stopOgTid", arrayToSearch);
-                Toast.MakeText(this, $"Søger på bus {favoritListe[args.Position].Stoppested}", ToastLength.Short).Show();
+                Toast.MakeText(this, $"Søger på stoppested {favoritListe[args.Position].Stoppested}", ToastLength.Short).Show();
                 StartActivity(intent);
             };
         }

@@ -49,7 +49,7 @@ namespace AndroidApp
 
             /* Gør stoppested-inputtet klar og sætter det over i en string */
             AutoCompleteTextView StoppestedInputTextView = FindViewById<AutoCompleteTextView>(Resource.Id.autocomplete_stoppested);
-            var adapter = new ArrayAdapter<String>(this, Resource.Layout.StoppestedLayout, COUNTRIES);
+            var adapter = new ArrayAdapter<String>(this, Resource.Layout.StoppestedLayout, GetStoppesteder());
             StoppestedInputTextView.Adapter = adapter;
 
             StoppestedInputTextView.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
@@ -65,9 +65,19 @@ namespace AndroidApp
             UpdateDisplay(hours, minutes);
         }
 
+        public string[] GetStoppesteder()
+        {
+            RealClient NewRealClient = new RealClient();
+            List<NetworkObject> StoppestederFraServer = NewRealClient.RequestAllWhere(ObjectTypes.BusStop,"");
+            List<string> StoppeSteder = new List<string>();
 
+            foreach (var obj in StoppestederFraServer)
+            {
+                StoppeSteder.Add((obj as Stoppested).ToString());
+            }
+            return StoppeSteder.ToArray();
+        }
         string StoppestedInputString;
-
         static string[] COUNTRIES = new string[] {
   "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra",
   "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina",
