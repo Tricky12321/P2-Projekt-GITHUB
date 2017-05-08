@@ -45,5 +45,10 @@ namespace ProgramTilBusselskab
                 treview_oprettedeObjekter.Nodes.Add(parent);
             }
         }
+
+        private void treview_oprettedeObjekter_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
     }
 }

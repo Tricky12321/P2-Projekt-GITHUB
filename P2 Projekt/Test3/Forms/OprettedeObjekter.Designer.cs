@@ -40,6 +40,7 @@
             this.treview_oprettedeObjekter.Name = "treview_oprettedeObjekter";
             this.treview_oprettedeObjekter.Size = new System.Drawing.Size(538, 486);
             this.treview_oprettedeObjekter.TabIndex = 11;
+            this.treview_oprettedeObjekter.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treview_oprettedeObjekter_AfterSelect);
             // 
             // OprettedeObjekter
             // 

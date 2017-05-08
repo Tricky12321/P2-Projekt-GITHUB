@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProgramTilBusselskab;
+using System.Linq;
 
 namespace ProgramTilBusselskab
 {
@@ -17,7 +18,6 @@ namespace ProgramTilBusselskab
         const int stopNameMaxLenght = 200;
         const int stopIDMaxLenght = 100000000;
         const int stopIDMinLenght = 0;
-
 
         List<AfPåTidCombi> listTimes = new List<AfPåTidCombi>();
         public OpretStoppested()
@@ -40,12 +40,14 @@ namespace ProgramTilBusselskab
 
                         string[] textCoordinate = txtbox_coordinate.Text.Split(',');
 
-                        if (double.TryParse(textCoordinate[0], out xCoordinate) && double.TryParse(textCoordinate[1], out yCoordinate))
+                        if (double.TryParse(textCoordinate[0], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out xCoordinate) && double.TryParse(textCoordinate[1], System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out yCoordinate))
                         {
-                            Stoppested StopSted = new Stoppested(txtbox_stopName.Text, int.Parse(txtbox_stoppestedID.Text), new GPS(xCoordinate, yCoordinate));
-                            Lists.listWithStops.Add(StopSted);
+                            Stoppested newStoppested = new Stoppested(txtbox_stopName.Text, int.Parse(txtbox_stoppestedID.Text), new GPS(xCoordinate, yCoordinate));
+                            Lists.listWithStops.Add(newStoppested);
+
                             RealClient TestClient = new RealClient();
-                            TestClient.SendObject(StopSted, typeof(Stoppested));
+                            TestClient.SendObject(newStoppested, typeof(Stoppested));
+
                             MessageBox.Show("Stoppested oprettet og oprettet til database.");
                             ActiveForm.Close();
                         }
