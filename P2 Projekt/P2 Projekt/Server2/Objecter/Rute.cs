@@ -7,13 +7,24 @@ using System.Threading.Tasks;
 public class Rute : MysqlObject
 {
     public List<Stoppested> AfPåRuteList = new List<Stoppested>();
+    public string RuteName;
+    public int RuteID;
 
-    public int ruteID;
-    public string ruteName;
+    public Rute(string ruteName, int ruteID, params Stoppested[] stoppested)
+    {
+        RuteName = ruteName;
+        RuteID = ruteID;
+        foreach (Stoppested stop in stoppested)
+        {
+            AfPåRuteList.Add(stop);
+        }
+    }
+
+    public Rute() { }
 
     public override string ToString()
     {
-        return ruteName;
+        return RuteName;
     }
 
     public override void Start()
@@ -23,7 +34,7 @@ public class Rute : MysqlObject
 
     public override int GetID()
     {
-        return ruteID;
+        return this.RuteID;
     }
 
     public override string GetIDCollumName()
@@ -43,15 +54,15 @@ public class Rute : MysqlObject
 
     public override void Update(TableDecode TableContent)
     {
-        ruteID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
-        ruteName = TableContent.RowData[0].Values[1];                                           // VARHCAR 50 
+        RuteID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
+        RuteName = TableContent.RowData[0].Values[1];                                           // VARHCAR 50 
     }
 
     public override string[] GetValues()
     {
         List<string> Output = new List<string>();
-        Output.Add(ruteID.ToString());
-        Output.Add(ruteName.ToString());
+        Output.Add(RuteID.ToString());
+        Output.Add(RuteName.ToString());
 
         return Output.ToArray();
     }

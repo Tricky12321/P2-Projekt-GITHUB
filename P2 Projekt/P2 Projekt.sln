@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "P2 Projekt\Server
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidApp", "AndroidApp\AndroidApp.csproj", "{A9E5E982-DEFA-4356-8571-E66C6DF38B88}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramTilBusselskab", "..\..\..\..\Dropbox\Uni\2. Semester\Simulering\Test3\Test3\ProgramTilBusselskab.csproj", "{77C03F7C-392D-4530-A366-C63DBE307D85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9E5E982-DEFA-4356-8571-E66C6DF38B88}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{77C03F7C-392D-4530-A366-C63DBE307D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C03F7C-392D-4530-A366-C63DBE307D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C03F7C-392D-4530-A366-C63DBE307D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C03F7C-392D-4530-A366-C63DBE307D85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

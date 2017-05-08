@@ -8,18 +8,52 @@ public class Bus : MysqlObject
 {
     public List<StoppestedMTid> busPassagerDataListe = new List<StoppestedMTid>();
 
-    public int busID;
     public string busName;
-    public GPS busLok;
-    public int passengersTotal;
+    public int BusID;
+    public GPS placering;
+    int _passengersTotal;
     public int CapacitySitting;
     public int CapacityStanding;
-    public Rute rute;
-    public int besøgteStop = 0;
+    public Rute Rute;
 
-    public override string ToString()
+    public Bus()
     {
-        return busName;
+
+    }
+
+    public Bus(string busName, int busID, int capacityStitting, int capacityStanding, Rute rute, params StoppestedMTid[] afPåTidCombi)
+    {
+        BusID = busID;
+        this.busName = busName;
+
+        CapacitySitting = capacityStitting;
+        CapacityStanding = capacityStanding;
+
+        Rute = rute;
+
+        foreach (StoppestedMTid combi in afPåTidCombi)
+        {
+            busPassagerDataListe.Add(combi);
+        }
+    }
+
+    public int PassengersTotal
+    {
+        get
+        {
+            return _passengersTotal;
+        }
+        set
+        {
+            if (_passengersTotal + value < 0)
+            {
+                throw new BusPassengersTotalUnderZeroException("Der kan ikke være færre end nul passagerer i bussen");
+            }
+            else
+            {
+                _passengersTotal = value;
+            }
+        }
     }
 
     public override void Start()
@@ -29,7 +63,7 @@ public class Bus : MysqlObject
 
     public override int GetID()
     {
-        return this.busID;
+        return this.BusID;
     }
 
     public override string GetIDCollumName()
@@ -53,17 +87,16 @@ public class Bus : MysqlObject
         {
             throw new NoObjectFoundException("Der blev ikke fundet noget object i databasen med de kriterier");
         }
-        busID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
-        busLok = new GPS();
+        BusID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
+        placering = new GPS();
         busName = Convert.ToString(TableContent.RowData[0].Values[1]);
-        busLok.xCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[2]);    // DOUBLE
-        busLok.yCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[3]);    // DOUBLE
-        passengersTotal = Convert.ToInt32(TableContent.RowData[0].Values[4]);
+        placering.xCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[2]);    // DOUBLE
+        placering.yCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[3]);    // DOUBLE
+        PassengersTotal = Convert.ToInt32(TableContent.RowData[0].Values[4]);
         CapacitySitting = Convert.ToInt32(TableContent.RowData[0].Values[5]);
         CapacityStanding = Convert.ToInt32(TableContent.RowData[0].Values[6]);
-        besøgteStop = Convert.ToInt32(TableContent.RowData[0].Values[7]);
-        rute = new Rute();
-        rute.ruteID = Convert.ToInt32(TableContent.RowData[0].Values[8]);            // Ruten her mangler at være korrekt
+        Rute = new Rute();
+        Rute.RuteID = Convert.ToInt32(TableContent.RowData[0].Values[8]);            // Ruten her mangler at være korrekt
         // rute = Convert.ToInt32(TableContent.RowData[0].Values[7]);                // Se også lige om den er korrekt i GetValues
 
     }
@@ -71,15 +104,15 @@ public class Bus : MysqlObject
     public override string[] GetValues()
     {
         List<string> Output = new List<string>();
-        Output.Add(busID.ToString());               // 1
+        Output.Add(BusID.ToString());               // 1
         Output.Add(busName.ToString());             // 2
-        Output.Add(busLok.xCoordinate.ToString());  // 3
-        Output.Add(busLok.yCoordinate.ToString());  // 4
-        Output.Add(passengersTotal.ToString());     // 5
+        Output.Add(placering.xCoordinate.ToString());  // 3
+        Output.Add(placering.yCoordinate.ToString());  // 4
+        Output.Add(PassengersTotal.ToString());     // 5
         Output.Add(CapacityStanding.ToString());    // 6
         Output.Add(CapacitySitting.ToString());     // 7
-        Output.Add(besøgteStop.ToString());         // 8
-        Output.Add(rute.ruteID.ToString());         // 9
+        //Output.Add(besøgteStop.ToString());         // 8
+        Output.Add(Rute.RuteID.ToString());         // 9
 
         return Output.ToArray();
     }
@@ -109,5 +142,52 @@ public class Bus : MysqlObject
     public override string WhereID()
     {
         return $"`{GetIDCollumName()}`={GetID()}";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public EventHandler PassengerUpdate;
+
+
+
+
+
+
+
+
+
+    public void TjekInd()
+    {
+        ++PassengersTotal;
+        OnPassengerUpdated();
+    }
+
+    public void TjekUd()
+    {
+        --PassengersTotal;
+        OnPassengerUpdated();
+    }
+
+    protected virtual void OnPassengerUpdated()
+    {
+        if (PassengerUpdate != null)
+        {
+            PassengerUpdate(this, EventArgs.Empty);
+        }
+    }
+
+    public override string ToString()
+    {
+        return busName;
     }
 }

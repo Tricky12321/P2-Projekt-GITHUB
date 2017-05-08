@@ -11,6 +11,13 @@ public class AfPåTidCombi : MysqlObject
     public int afstigninger;
     public int påstigninger;
 
+    public AfPåTidCombi(Tidspunkt tidspunkt)
+    {
+        Tidspunkt = tidspunkt;
+    }
+
+    public AfPåTidCombi() { }
+
     public override string ToString()
     {
         return Tidspunkt.ToString();
