@@ -25,7 +25,7 @@ namespace AndroidApp
             Tid = tid;
         }
     }
-    [Activity(Label = "FavoriteBusses")]
+    [Activity(Label = "SmartBus")]
     public class FavoriteBusses : Activity
     {
         public static List<Favorite> favoritListe = new List<Favorite>();
