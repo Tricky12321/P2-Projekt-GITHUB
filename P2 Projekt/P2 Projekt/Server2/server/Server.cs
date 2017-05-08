@@ -184,7 +184,25 @@ public class Server
             switch (ObjType)
             {
                 case ObjectTypes.Bus:
-                    break;
+                    Bus SingleBus = new Bus();
+                    if (WhereCondition == "None")
+                    {
+                        RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
+
+                    }
+                    else
+                    {
+                        RowsFromDB = MysqlControls.SelectAllWhere(SingleBus.GetTableName(), WhereCondition);
+                    }
+                    List<Bus> AlleBusser = new List<Bus>();
+                    foreach (var SS in RowsFromDB.RowData)
+                    {
+                        Bus NewBus = new Bus();
+                        NewBus.Update(SS);
+                        AlleBusser.Add(NewBus);
+                    }
+                    OutputString = Json.Serialize(AlleBusser);
+                    return OutputString;
                 case ObjectTypes.Rute:
                     Rute SingleRute = new Rute();
                     if (WhereCondition == "None")
@@ -423,7 +441,7 @@ public class Server
             response = "1";
             // An incoming connection needs to be processed.  
             double SizeOfMsg = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
-            PingClient = PingRemote(handler.RemoteEndPoint);
+            //PingClient = PingRemote(handler.RemoteEndPoint);
             Console.Write($"Incomming connection from ");
             int NonNullElements = ArrayHandler.CountNonZeroElementsInByteArray(bytes);
             Print.PrintColorLine(handler.RemoteEndPoint.ToString(), ConsoleColor.Yellow);

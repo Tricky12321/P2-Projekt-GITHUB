@@ -223,10 +223,21 @@ public static class Program
         Server.StartServer(true, true);
     }
 
+    public static void RunBusTest()
+    {
+        Bus NyBus = new Bus();
+        NyBus.BusID = 123;
+        NyBus.GetUpdate();
+        NyBus.BusID = 1;
+        RealClient NewClient = new RealClient();
+        NewClient.SendObject(NyBus, typeof(Bus));
+
+    }
+
     public static void RunTest()
     {
         Thread.Sleep(1000);
-        TestRealClient();
+        //RunBusTest();
         ServerCommands.WaitForCommand();
     }
 }
