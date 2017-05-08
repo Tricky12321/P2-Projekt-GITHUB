@@ -31,5 +31,10 @@ public class StoppestedMTid
         this.Stop = stop.Stop;
         AfPåTidComb = afPåTidComb.ToList();
     }
+
+    public StoppestedMTid()
+    {
+
+    }
 }
 
