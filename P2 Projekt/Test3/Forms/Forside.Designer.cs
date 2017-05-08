@@ -192,9 +192,9 @@
             this.chkbox_medRute.AutoSize = true;
             this.chkbox_medRute.Location = new System.Drawing.Point(12, 610);
             this.chkbox_medRute.Name = "chkbox_medRute";
-            this.chkbox_medRute.Size = new System.Drawing.Size(221, 24);
+            this.chkbox_medRute.Size = new System.Drawing.Size(219, 24);
             this.chkbox_medRute.TabIndex = 14;
-            this.chkbox_medRute.Text = "Vis rute sammen med rute";
+            this.chkbox_medRute.Text = "Vis rute sammen med bus";
             this.chkbox_medRute.UseVisualStyleBackColor = true;
             // 
             // Simulation
