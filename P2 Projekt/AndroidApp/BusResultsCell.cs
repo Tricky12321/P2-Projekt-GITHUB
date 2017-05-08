@@ -18,8 +18,9 @@ namespace AndroidApp
     {
         /* Skal tage imod et bus objekt + hvad den ellers har brug for, og omdanne det til strings,
          * som BusResultsAdapter kan vise */
-        public BusResultsCell (/*Bus bus*/ int Vælger)
+        public BusResultsCell (Bus bus/* int Vælger*/)
         {
+            /*
             BusID = "25A - Ferslev";
             Tidspunkt = "13:01";
             PasNu = "Pas. nu: 25/60";
@@ -46,22 +47,23 @@ namespace AndroidApp
                 BusID = "12 - Gug Øst";
                 Tidspunkt = "13:16";
             }
+            */
+            
+            BusID = bus.busID.ToString();
+            Tidspunkt = bus.busPassagerDataListe[0].AfPåTidComb[0].Tidspunkt.hour.ToString() + 
+                        ':' +
+                        bus.busPassagerDataListe[0].AfPåTidComb[0].Tidspunkt.minute.ToString();
+            PasNu = $"Pas. nu: {bus.passengersTotal}/{bus.CapacitySitting + bus.CapacityStanding}";
+            PasForv = $"Pas. Forv.: {"10"}/{bus.CapacitySitting + bus.CapacityStanding}";
 
-            /*
-             * BusID = bus.busID;
-            Tidspunkt = bus.AnkomstTid;
-            PasNu = $"Pas. nu: {bus.PassengersTotal}/{bus.CapacitySitting + bus.CapacityStanding}";
-            PasForv = $"Pas. Forv.: {bus.Forventet}/{bus.CapacitySitting + bus.CapacityStanding}";
-
-            if (bus.PassengersTotal < bus.CapacitySitting*0.8)
+            if (bus.passengersTotal < bus.CapacitySitting*0.8)
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
-            else if ((bus.PassengersTotal >= bus.CapacitySitting*0.8) && (bus.PassengersTotal < bus.CapacitySitting))
+            else if ((bus.passengersTotal >= bus.CapacitySitting*0.8) && (bus.passengersTotal < bus.CapacitySitting))
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusNaesteningensiddepladser;
-            else if ((bus.PassengerTotal >= bus.CapacitySitting) && (bus.PassengersTotal < bus.CapacitySitting + bus.CapacityStanding))
+            else if ((bus.passengersTotal >= bus.CapacitySitting) && (bus.passengersTotal < bus.CapacitySitting + bus.CapacityStanding))
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;
             else
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusOverfyldt;
-                */
         }
         public string BusID;
         public string Tidspunkt;
