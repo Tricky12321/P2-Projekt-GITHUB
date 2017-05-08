@@ -62,7 +62,8 @@ public class Stoppested : MysqlObject
 
     public override void Update(TableDecode TableContent)
     {
-        StoppestedID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
+        int.TryParse(TableContent.RowData[0].Values[0], out StoppestedID);
+        //StoppestedID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
         StoppestedName = TableContent.RowData[0].Values[1];                                   // VARHCAR 50 
         StoppestedLok = new GPS();
         StoppestedLok.xCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[2]);    // DOUBLE

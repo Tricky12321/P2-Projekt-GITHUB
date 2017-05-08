@@ -34,7 +34,7 @@ namespace AndroidApp
             else
                 FiltrerEfterBusNavn = false;
 
-            foreach (Bus bus in ServerBusListe.Where(bus => bus.busPassagerDataListe.Where(Stop => Stop.Stop.)
+            foreach (Bus bus in ServerBusListe.Where(bus => bus.busPassagerDataListe.Where(Stop => Stop.)
             {
                 if (FiltrerEfterBusNavn)
                 {
