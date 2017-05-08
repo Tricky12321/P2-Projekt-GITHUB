@@ -77,7 +77,7 @@ namespace ServerGPSSimulering
                     GPS placeringPlaceholder = new GPS(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng);
                     SimulatedBus.placering = placeringPlaceholder;
 
-                    SendGPSCoordinates();
+                    SendToServer();
                     
                     distanceBetweenPoints = DistanceBetweenPoints(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng, SimulatedRute.route.Points[i + 1].Lat, SimulatedRute.route.Points[i + 1].Lng);
                     distanceBetweenPoints *= 1000;
@@ -122,7 +122,7 @@ namespace ServerGPSSimulering
                 {
                     SimulatedBus.placering.xCoordinate = SimulatedRute.route.Points[i].Lat;
                     SimulatedBus.placering.yCoordinate = SimulatedRute.route.Points[i].Lng;
-                    SendGPSCoordinates();
+                    SendToServer();
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace ServerGPSSimulering
             return rand.Next(-5, 10);
         }
 
-        private Bus SendGPSCoordinates()
+        private Bus SendToServer()
         {
             Debug.WriteLine(SimulatedBus.busName + " : " + SimulatedBus.placering.xCoordinate + " : " + SimulatedBus.placering.yCoordinate + " : " + SimulatedBus.PassengersTotal);
             SimulatedBus.UploadToDatabase();
