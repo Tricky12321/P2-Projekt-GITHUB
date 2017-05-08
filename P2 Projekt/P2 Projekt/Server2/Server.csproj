@@ -70,6 +70,12 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GMap.NET.Core">
+      <HintPath>..\..\..\..\..\..\Dropbox\Uni\2. Semester\Simulering\Test3\GMap.NET.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="GMap.NET.WindowsForms">
+      <HintPath>..\..\..\..\..\..\Dropbox\Uni\2. Semester\Simulering\Test3\GMap.NET.WindowsForms.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
@@ -98,6 +104,10 @@
     <Compile Include="Objecter\StoppestedMTid.cs" />
     <Compile Include="Objecter\Test.cs" />
     <Compile Include="Objecter\Tidspunkt.cs" />
+    <Compile Include="Objecter\BusPassengersTotalUnderZeroException.cs" />
+    <Compile Include="Objecter\Lists.cs" />
+    <Compile Include="SImulering\SimBus.cs" />
+    <Compile Include="SImulering\SimRoute.cs" />
     <Compile Include="Utilities\ArrayHandler.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Utilities\IpAdresse.cs" />
@@ -124,7 +134,7 @@
     <None Include="packages.config" />
     <None Include="VS\packages.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="VS\app.config" />
+    <None Include="Virtual Client\app.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -146,6 +156,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

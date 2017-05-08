@@ -133,11 +133,12 @@ public static class MysqlControls
 
     public static void UpdateWhere(string table, string[] colums, string[] values, string whereCondition)
     {
+        
         // --------------------------------------------------
         List<string> val_n_col = new List<string>();
         for (int i = 0; i < colums.Count(); i++)
         {
-            val_n_col.Add($"{colums[i]}='{values[i]}', ");
+            val_n_col.Add($"{colums[i]}='{values[i].Replace(',','.')}', ");
         }
         StringBuilder FinalValAndColString = new StringBuilder();
         foreach (string item in val_n_col)
@@ -145,8 +146,8 @@ public static class MysqlControls
             FinalValAndColString.Append(item);
         }
         string finalString = FinalValAndColString.ToString().Substring(0, FinalValAndColString.ToString().Length - 2);
-
-        Mysql.RunQuery($"UPDATE `{table}` SET {finalString} WHERE {whereCondition}");
+        string query = $"UPDATE `{table}` SET {finalString} WHERE {whereCondition}";
+        Mysql.RunQuery(query);
     }
 
     public static void UpdateNetworkObject(NetworkObject NWO)

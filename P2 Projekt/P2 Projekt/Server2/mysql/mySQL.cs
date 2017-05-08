@@ -107,6 +107,7 @@ public static class Mysql
         try
         {
             MySqlCommand cmd = SqlConnection.CreateCommand();
+            Debug.Print($"SQL QUERY: {cmd.CommandText}");
             cmd.CommandText = Query;
             SqlConnection.Open();
             cmd.ExecuteNonQuery();

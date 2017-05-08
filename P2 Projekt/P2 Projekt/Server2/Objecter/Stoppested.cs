@@ -8,18 +8,29 @@ public class Stoppested : MysqlObject
 {
     /*public List<StoppestedDataAfPåstigning> AfPåstigningerList = new List<StoppestedDataAfPåstigning>();*/
 
-    //int antalBesøg;
-    public int ID;
-    public string stoppestedID;
-    public GPS stoppestedLok;
+    public string StoppestedName;
+    public int StoppestedID;
+    public GPS StoppestedLok;
+
+    public Stoppested(string name, int ID, GPS coor)
+    {
+        StoppestedID = ID;
+        StoppestedName = name;
+        StoppestedLok = coor;
+    }
+
+    public Stoppested()
+    {
+
+    }
 
     public override string ToString()
     {
-        return stoppestedID;
+        return StoppestedName;
     }
     public override int GetID()
     {
-        return this.ID;
+        return this.StoppestedID;
     }
 
     public override void Start()
@@ -45,29 +56,29 @@ public class Stoppested : MysqlObject
 
     public override void Update(TableDecode TableContent)
     {
-        ID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
-        stoppestedID = TableContent.RowData[0].Values[1];                                   // VARHCAR 50 
-        stoppestedLok = new GPS();                                                          
-        stoppestedLok.xCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[2]);    // DOUBLE
-        stoppestedLok.yCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[3]);    // DOUBLE
+        StoppestedID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
+        StoppestedName = TableContent.RowData[0].Values[1];                                   // VARHCAR 50 
+        StoppestedLok = new GPS();
+        StoppestedLok.xCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[2]);    // DOUBLE
+        StoppestedLok.yCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[3]);    // DOUBLE
     }
 
     public void Update(Row Row)
     {
-        ID = Convert.ToInt32(Row.Values[0]);                            // INT 32 ID
-        stoppestedID = Row.Values[1];                                   // VARHCAR 50 
-        stoppestedLok = new GPS();
-        stoppestedLok.xCoordinate = Convert.ToDouble(Row.Values[2]);    // DOUBLE
-        stoppestedLok.yCoordinate = Convert.ToDouble(Row.Values[3]);    // DOUBLE
+        StoppestedID = Convert.ToInt32(Row.Values[0]);                            // INT 32 ID
+        StoppestedName = Row.Values[1];                                   // VARHCAR 50 
+        StoppestedLok = new GPS();
+        StoppestedLok.xCoordinate = Convert.ToDouble(Row.Values[2]);    // DOUBLE
+        StoppestedLok.yCoordinate = Convert.ToDouble(Row.Values[3]);    // DOUBLE
     }
 
     public override string[] GetValues()
     {
         List<string> Output = new List<string>();
-        Output.Add(ID.ToString());
-        Output.Add(stoppestedID.ToString());
-        Output.Add(stoppestedLok.xCoordinate.ToString());
-        Output.Add(stoppestedLok.yCoordinate.ToString());
+        Output.Add(StoppestedID.ToString());
+        Output.Add(StoppestedName);
+        Output.Add(StoppestedLok.xCoordinate.ToString());
+        Output.Add(StoppestedLok.yCoordinate.ToString());
 
         return Output.ToArray();
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using ServerGPSSimulering;
 
 public static class ServerCommands
 {
@@ -56,6 +57,13 @@ public static class ServerCommands
                 TestClientThread.Start();
                 //Mysql.RunTest();
                 // Laver en ny tråd til at køre den virtuelle klient i, dette sikre at serveren køre som den skal og ikke bliver langsom. 
+                break;
+            case "testbus":
+                int busID = int.Parse(Console.ReadLine());
+                Program.TestBusSimulering();
+                new SimBus((Bus)Lists.listWithBusses.Where(x => x.BusID == busID).First());
+                Print.PrintColorLine("blaaa", ConsoleColor.Cyan);
+                Console.WriteLine("Test bus kørt!!");
                 break;
             case "realclient":
                 Program.TestRealClient();
