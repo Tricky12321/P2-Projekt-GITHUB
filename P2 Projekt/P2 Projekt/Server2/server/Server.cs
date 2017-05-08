@@ -348,7 +348,15 @@ public class Server
         foreach (NetworkObject SingleObject in Objects)
         {
             Thread SingleObjectThread = new Thread(new ThreadStart(SingleObject.Start));
-            SingleObjectThread.Start();
+            if (SingleObject is MysqlObject)
+            {
+                (SingleObject as MysqlObject).UploadToDatabase();
+            }
+            else
+            {
+                SingleObjectThread.Start();
+
+            }
         }
     }
 
