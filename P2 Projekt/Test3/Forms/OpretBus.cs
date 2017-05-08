@@ -44,10 +44,13 @@ namespace ProgramTilBusselskab
                         if (int.TryParse(txtbox_capacitySit.Text, out capacitySitPlaceholder) && int.TryParse(txtbox_capacityStå.Text, out capacityStaPlaceholder) 
                             && capacitySitPlaceholder >= capacityMin && capacityStaPlaceholder >= capacityMin && capacitySitPlaceholder <= capacityMax && capacityStaPlaceholder <= capacityMax)
                         {
-                            Bus busPlaceholder = new Bus(txtbox_busName.Text, busIDplaceholder, capacitySitPlaceholder, capacityStaPlaceholder, (Rute)combox_vælgRute.SelectedItem, stoppestederPlaceholder.ToArray());
-                            Lists.listWithBusses.Add(busPlaceholder);
+                            Bus newBus = new Bus(txtbox_busName.Text, busIDplaceholder, capacitySitPlaceholder, capacityStaPlaceholder, (Rute)combox_vælgRute.SelectedItem, stoppestederPlaceholder.ToArray());
+                            Lists.listWithBusses.Add(newBus);
 
-                            MessageBox.Show("Bus er oprettet.");
+                            RealClient TestClient = new RealClient();
+                            TestClient.SendObject(newBus, typeof(Rute));
+
+                            MessageBox.Show("Bus er oprettet og uploadet til database.");
                             ActiveForm.Close();
                         }
                         else { MessageBox.Show("Der er fejl i kapacitetsværdierne."); }
@@ -77,9 +80,9 @@ namespace ProgramTilBusselskab
             {
                 Rute placeholder = (Rute)combox_vælgRute.SelectedItem;
 
-                foreach (Stoppested stop in placeholder.AfPåRuteList)
+                foreach (StoppestedMTid stop in placeholder.AfPåRuteListMTid)
                 {
-                    combox_vælgStop.Items.Add(stop);
+                    combox_vælgStop.Items.Add(stop.Stop);
                     lbl_ruteSucces.Visible = true;
                 }
             }

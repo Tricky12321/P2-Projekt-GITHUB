@@ -97,6 +97,7 @@ public class Bus : MysqlObject
         CapacityStanding = Convert.ToInt32(TableContent.RowData[0].Values[6]);
         Rute = new Rute();
         Rute.RuteID = Convert.ToInt32(TableContent.RowData[0].Values[8]);            // Ruten her mangler at være korrekt
+        Rute.GetUpdate();
         // rute = Convert.ToInt32(TableContent.RowData[0].Values[7]);                // Se også lige om den er korrekt i GetValues
 
     }
@@ -144,27 +145,7 @@ public class Bus : MysqlObject
         return $"`{GetIDCollumName()}`={GetID()}";
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     public EventHandler PassengerUpdate;
-
-
-
-
-
-
-
-
 
     public void TjekInd()
     {

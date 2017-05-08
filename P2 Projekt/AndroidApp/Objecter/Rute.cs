@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 public class Rute
 {
-    public List<Stoppested> AfPåRuteList = new List<Stoppested>();
-
-    public int ruteID;
-    public string ruteName;
+    public string RuteName;
+    public int RuteID;
+    public List<StoppestedMTid> AfPåRuteListMTid = new List<StoppestedMTid>();
 
     public override string ToString()
     {
-        return ruteName;
+        return RuteName;
     }
 
 }
