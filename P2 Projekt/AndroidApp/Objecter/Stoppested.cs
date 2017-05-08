@@ -9,13 +9,13 @@ public class Stoppested : NetworkObject
     /*public List<StoppestedDataAfPåstigning> AfPåstigningerList = new List<StoppestedDataAfPåstigning>();*/
 
     //int antalBesøg;
-    public int ID;
-    public string stoppestedID;
-    public GPS stoppestedLok;
+    public string StoppestedName;
+    public int StoppestedID;
+    public GPS StoppestedLok;
 
     public override string ToString()
     {
-        return stoppestedID;
+        return StoppestedName;
     }
 
     public void Start()
