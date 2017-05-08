@@ -32,7 +32,6 @@ public abstract class MysqlObject : NetworkObject
 
     public void UploadToDatabase()
     {
-        
         if (MysqlControls.IsIDInDatabase(this))
         {
             MysqlControls.UpdateWhere(GetTableName(), GetCollumsDB(), GetValues(), WhereID());

@@ -9,6 +9,11 @@ public class StoppestedMTid
     public Stoppested Stop;
     public List<AfPåTidCombi> AfPåTidComb;
 
+    public StoppestedMTid(Stoppested stop)
+    {
+        Stop = stop;
+    }
+
     public StoppestedMTid(Stoppested stop, params AfPåTidCombi[] afPåTidComb)
     {
         Stop = stop;
@@ -19,6 +24,12 @@ public class StoppestedMTid
     {
         Stop = stop;
         AfPåTidComb = afPåTidList;
+    }
+
+    public StoppestedMTid(StoppestedMTid stop, params AfPåTidCombi[] afPåTidComb)
+    {
+        this.Stop = stop.Stop;
+        AfPåTidComb = afPåTidComb.ToList();
     }
 }
 
