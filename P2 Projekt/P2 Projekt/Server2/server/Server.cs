@@ -396,7 +396,7 @@ public class Server
             Console.Write($"Size: ");
             Print.PrintColor(SizeOfMsg.ToString(), ConsoleColor.Green);
             Console.WriteLine(" KB");
-            //Console.WriteLine(data);
+            Console.WriteLine(data);
             Ping.Stop();
             // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
             response = CheckMessage(data);

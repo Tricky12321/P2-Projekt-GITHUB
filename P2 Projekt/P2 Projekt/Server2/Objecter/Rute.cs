@@ -23,7 +23,7 @@ public class Rute : MysqlObject
 
     public override int GetID()
     {
-        return this.ruteID;
+        return ruteID;
     }
 
     public override string GetIDCollumName()
