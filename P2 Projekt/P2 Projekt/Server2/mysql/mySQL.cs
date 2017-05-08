@@ -100,8 +100,6 @@ public static class Mysql
             {
                 throw;
             }
-
-
         }
         MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
         try
