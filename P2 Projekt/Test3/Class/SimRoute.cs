@@ -17,15 +17,15 @@ public class SimRoute
         PointLatLng start = new PointLatLng();
         PointLatLng end = new PointLatLng();
 
-        int listLenght = rute.AfPåRuteList.Count() - 1;
+        int listLenght = rute.AfPåRuteListMTid.Count() - 1;
 
         for (int i = 0; i < listLenght; i++)
         {
-            start.Lat = rute.AfPåRuteList[i].StoppestedLok.xCoordinate;
-            start.Lng = rute.AfPåRuteList[i].StoppestedLok.yCoordinate;
+            start.Lat = rute.AfPåRuteListMTid[i].Stop.StoppestedLok.xCoordinate;
+            start.Lng = rute.AfPåRuteListMTid[i].Stop.StoppestedLok.yCoordinate;
 
-            end.Lat = rute.AfPåRuteList[i + 1].StoppestedLok.xCoordinate;
-            end.Lng = rute.AfPåRuteList[i + 1].StoppestedLok.yCoordinate;
+            end.Lat = rute.AfPåRuteListMTid[i + 1].Stop.StoppestedLok.xCoordinate;
+            end.Lng = rute.AfPåRuteListMTid[i + 1].Stop.StoppestedLok.yCoordinate;
 
             GMap.NET.MapProviders.GoogleMapProvider.Instance.GetDirections(out placeholder, start, end, false, true, true, false, true);
 
@@ -38,7 +38,7 @@ public class SimRoute
             }
             else
             {
-                throw new Exception("Ukendt punkt");
+                throw new InvalidCastException("Ukendt punkt");
             }
         }
         route = new GMapRoute(direction, $"{routeName}");

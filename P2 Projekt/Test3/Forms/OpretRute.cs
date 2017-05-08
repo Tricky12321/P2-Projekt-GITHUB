@@ -57,9 +57,14 @@ namespace ProgramTilBusselskab
                 {
                     if (!Lists.listWithRoutes.Any(x => x.RuteID == ruteIDPlaceholder))
                     {
-                        Lists.listWithRoutes.Add(new Rute(txtbox_ruteName.Text, int.Parse(txtbox_ruteID.Text), listStops.ToArray()));
+                        Rute newRute = new Rute(txtbox_ruteName.Text, int.Parse(txtbox_ruteID.Text), listStops.ToArray());
 
-                        MessageBox.Show("Rute oprettet.");
+                        Lists.listWithRoutes.Add(newRute);
+
+                        RealClient TestClient = new RealClient();
+                        TestClient.SendObject(newRute, typeof(Rute));
+
+                        MessageBox.Show("Rute oprettet og uploadet til database.");
                         ActiveForm.Close();
                     }
                     else { MessageBox.Show("Rute med dette ruteID er allerede oprettet."); }
