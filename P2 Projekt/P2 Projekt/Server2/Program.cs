@@ -6,6 +6,8 @@ using JsonSerializer;
 
 public static class Program
 {
+    public static bool ExitProgramBool = false;
+
     public static List<NetworkObject> ClassesToHandle = new List<NetworkObject>();
 
     public static void TestObject()
@@ -66,9 +68,14 @@ public static class Program
     {
         // Printer lige om det er linux eller ej
         Utilities.CheckOS();
-        StartAll();
-        RunTest();
-        Console.ReadKey(); // Readkey fordi programmet helst ikke bare skulle stoppe. 
+        Thread StartAllThread = new Thread(new ThreadStart(StartAll));
+        Thread TestThread = new Thread(new ThreadStart(RunTest));
+        StartAllThread.Start();
+        TestThread.Start();
+        while (!ExitProgramBool)
+        {
+
+        }
         return 0;
     }
 
@@ -219,6 +226,7 @@ public static class Program
         */
         // Start mySQL serveren først!
         Mysql.StartmySQL();
+        Utilities.WaitFor(ref Mysql.Connected);
         // Start så IPv4 og/eller IPv6
         Server.StartServer(true, true);
     }
@@ -236,7 +244,6 @@ public static class Program
 
     public static void RunTest()
     {
-        Thread.Sleep(1000);
         //RunBusTest();
         ServerCommands.WaitForCommand();
     }

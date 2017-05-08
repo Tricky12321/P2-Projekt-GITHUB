@@ -10,6 +10,7 @@ public static class ServerCommands
 {
     public static void WaitForCommand()
     {
+        Thread.Sleep(2000);
         Console.Write("> ");
         string command = Console.ReadLine();
         int k = 0;
@@ -69,8 +70,10 @@ public static class ServerCommands
             case "realclient":
                 Program.TestRealClient();
                 break;
+            case "exit":
             case "quit":
                 Environment.Exit(0);
+                Program.ExitProgramBool = true;
                 break;
             default:
                 break;

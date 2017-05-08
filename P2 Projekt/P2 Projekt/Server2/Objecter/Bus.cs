@@ -121,16 +121,20 @@ public class Bus : MysqlObject
 
     public override string[] GetValues()
     {
+        if (placering == null)
+        {
+            placering = Rute.AfPåRuteListMTid[0].Stop.StoppestedLok;
+        }
         List<string> Output = new List<string>();
-        Output.Add(BusID.ToString());                   // 1
-        Output.Add(busName.ToString());                 // 2
-        Output.Add(placering.xCoordinate.ToString());   // 3
-        Output.Add(placering.yCoordinate.ToString());   // 4
-        Output.Add(PassengersTotal.ToString());         // 5
-        Output.Add(CapacityStanding.ToString());        // 6
-        Output.Add(CapacitySitting.ToString());         // 7
-        //Output.Add(besøgteStop.ToString());           // 8
-        Output.Add(Rute.RuteID.ToString());             // 9
+        Output.Add(BusID.ToString());                                    // 1
+        Output.Add(busName.ToString());                                  // 2
+        Output.Add(placering.xCoordinate.ToString().Replace(",","."));   // 3
+        Output.Add(placering.yCoordinate.ToString().Replace(",", "."));  // 4
+        Output.Add(PassengersTotal.ToString());                          // 5
+        Output.Add(CapacityStanding.ToString());                         // 6
+        Output.Add(CapacitySitting.ToString());                          // 7
+        //Output.Add(besøgteStop.ToString());                            // 8
+        Output.Add(Rute.RuteID.ToString());                              // 9
 
         return Output.ToArray();
     }

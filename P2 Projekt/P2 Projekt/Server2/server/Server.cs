@@ -78,7 +78,7 @@ public class Server
     public void StartListening()
     {
         // Delay for at sikre sig at IPv4 og IPv6 ikke starter samtidig
-        Thread.Sleep(500);
+        //Thread.Sleep(500);
         // IP resolve, finder selv IpAdresse for serveren.
         // Hoster på 0.0.0.0:?????
         // PrintIps();
