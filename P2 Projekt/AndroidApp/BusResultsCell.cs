@@ -18,7 +18,7 @@ namespace AndroidApp
     {
         /* Skal tage imod et bus objekt + hvad den ellers har brug for, og omdanne det til strings,
          * som BusResultsAdapter kan vise */
-        public BusResultsCell (Bus bus/* int Vælger*/)
+        public BusResultsCell (Bus bus, int Tidspunkt/* int Vælger*/)
         {
             /*
             BusID = "25A - Ferslev";
@@ -50,9 +50,12 @@ namespace AndroidApp
             */
             
             BusID = bus.busID.ToString();
-            Tidspunkt = bus.busPassagerDataListe[0].AfPåTidComb[0].Tidspunkt.hour.ToString() + 
-                        ':' +
-                        bus.busPassagerDataListe[0].AfPåTidComb[0].Tidspunkt.minute.ToString();
+            Tidspunkt = bus.busPassagerDataListe.Select(StopMTid => StopMTid.AfPåTidComb.Select
+                (afpåtidcombi => (afpåtidcombi.Tidspunkt.hour * 60 * 60 + afpåtidcombi.Tidspunkt.minute * 60) == Tidspunkt));
+
+            /*bus.busPassagerDataListe[0].AfPåTidComb[0].Tidspunkt.hour.ToString() + 
+                    ':' +
+                    bus.busPassagerDataListe[0].AfPåTidComb[0].Tidspunkt.minute.ToString();*/
             PasNu = $"Pas. nu: {bus.passengersTotal}/{bus.CapacitySitting + bus.CapacityStanding}";
             PasForv = $"Pas. Forv.: {"10"}/{bus.CapacitySitting + bus.CapacityStanding}";
 
