@@ -21,5 +21,17 @@ public class Tidspunkt
     {
         return hour.ToString().PadLeft(2, '0') + " : " + minute.ToString().PadLeft(2, '0');
     }
+
+    public string SinpleString()
+    {
+        return hour.ToString().PadLeft(2, '0') + ":" + minute.ToString().PadLeft(2, '0');
+    }
+
+    public Tidspunkt(string Tid)
+    {
+        string[] tidarr = Tid.Split(':');
+        hour = Convert.ToInt32(tidarr[0]);
+        minute = Convert.ToInt32(tidarr[1]);
+    }
 }
 
