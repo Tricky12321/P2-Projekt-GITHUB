@@ -24,6 +24,12 @@ public class Stoppested : MysqlObject
 
     }
 
+    public Stoppested(int ID)
+    {
+        StoppestedID = ID;
+        this.GetUpdate();
+    }
+
     public override string ToString()
     {
         return StoppestedName;

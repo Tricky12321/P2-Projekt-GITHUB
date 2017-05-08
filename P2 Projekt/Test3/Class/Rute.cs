@@ -10,6 +10,7 @@ public class Rute
     public List<Stoppested> AfPåRuteList = new List<Stoppested>();
     public string RuteName;
     public int RuteID;
+    public List<StoppestedMTid> AfPåRuteListMTid = new List<StoppestedMTid>();
 
     public Rute(string ruteName, int ruteID, params Stoppested[] stoppested)
     {
