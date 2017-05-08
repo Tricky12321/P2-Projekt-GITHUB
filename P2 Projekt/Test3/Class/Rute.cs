@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Rute
+public class Rute : NetworkObject
 {
     //public List<Stoppested> AfPåRuteList = new List<Stoppested>();
     public List<StoppestedMTid> AfPåRuteListMTid = new List<StoppestedMTid>();
     public string RuteName;
     public int RuteID;
     //public List<StoppestedMTid> AfPåRuteListMTid = new List<StoppestedMTid>();
+    public Rute()
+    {
+
+    }
 
     public Rute(string ruteName, int ruteID, params StoppestedMTid[] stoppested)
     {
@@ -35,5 +39,10 @@ public class Rute
     public override string ToString()
     {
         return RuteName;
+    }
+
+    public void Start()
+    {
+        
     }
 }

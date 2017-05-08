@@ -154,8 +154,35 @@ namespace ProgramTilBusselskab
             //
             // Lists.listWithBusses.Add(bus2);
             // Lists.listWithBusses.Add(bus3);
+
+            int downloadedRoutes = 0;
             RealClient NewClient = new RealClient();
-            List<NetworkObject> AlleRuter = NewClient.RequestAllWhere(ObjectTypes.)
+            List<NetworkObject> AlleRuter = NewClient.RequestAllWhere(ObjectTypes.Rute, "None");
+            foreach (var item in AlleRuter)
+            {
+                Lists.listWithRoutes.Add((item as Rute));
+                downloadedRoutes++;
+            }
+
+            int downloadedStops = 0;
+            List<NetworkObject> Stoppesteder = NewClient.RequestAllWhere(ObjectTypes.BusStop, "None");
+            foreach (var item in Stoppesteder)
+            {
+                Lists.listWithStops.Add(item as Stoppested);
+                downloadedStops++;
+            }
+
+            int downloadedBusses = 0;
+            List<NetworkObject> DatabaseBus = NewClient.RequestAllWhere(ObjectTypes.Bus, "None");
+            foreach (var item in DatabaseBus)
+            {
+                Lists.listWithBusses.Add(item as Bus);
+                downloadedBusses++;
+            }
+
+            MessageBox.Show($"Der er blevet hentet: \nBus(ser): {downloadedBusses} \nRute(r): {downloadedRoutes} \nStoppested(er): {downloadedStops}. \nHentet fra databasen");
+
+
             /*
              SimRoute simRute2 = new SimRoute(rute2VædSto, "simRute2");
 
