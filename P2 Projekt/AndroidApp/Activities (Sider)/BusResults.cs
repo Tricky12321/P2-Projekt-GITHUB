@@ -11,7 +11,7 @@ using Android.Widget;
 
 namespace AndroidApp
 {
-    [Activity(Label = "BusResults")]
+    [Activity(Label = "SmartBus")]
     public class BusResults : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
