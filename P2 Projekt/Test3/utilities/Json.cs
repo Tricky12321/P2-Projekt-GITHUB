@@ -123,6 +123,9 @@ namespace JsonSerializer
             //Makes sure that there is nothing but the Json
             // Since all objects are transfered with added text (eks: Person [JSON.....])
             Type TypeOfObject = GetTypeFromString(Obj);
+            Obj = Obj.Replace(SplitterString+"<EOF>", "");
+            Obj = Obj.Replace("<EOF>", "");
+
             string[] Objs = Obj.Split(new string[] { SplitterString }, StringSplitOptions.None);
             Objs = TrimJsonList(Objs);
             List<NetworkObject> ListObjects = new List<NetworkObject> { };
@@ -132,7 +135,7 @@ namespace JsonSerializer
             // Laver tråde, samme som Serialize<T>(List<T> ObjList) |||SE DEN FOR KOMMENTERET KODE|||
             foreach (string SingleObj in Objs)
             {
-                if (SingleObj != "")
+                if (SingleObj != "" && SingleObj != "<EOF>")
                 {
                     Thread DeSerializeThread = new Thread(new ParameterizedThreadStart(DeSerializeThreaded));
                     DeSerializeThreadObject DeSerObj = new DeSerializeThreadObject(ref ListObjects, SingleObj, TypeOfObject);

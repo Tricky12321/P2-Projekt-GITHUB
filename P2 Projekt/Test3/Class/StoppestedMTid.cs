@@ -21,5 +21,10 @@ public class StoppestedMTid
         AfPåTidComb = afPåTidComb.ToList();
     }
 
+    public StoppestedMTid()
+    {
+
+    }
+
     
 }
