@@ -75,18 +75,4 @@
         android:layout_gravity="center"
         android:background="#E5B300"
         android:textColor="#000000" />
-    <TextView
-        android:text="Fuck dig igen"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/Fuckdigtekst"
-        android:textColor="@android:color/background_dark" />
-    <Button
-        android:text="Ændr 'Fuck dig' til ' Elsker dig'"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/KnapAendrer"
-        android:background="#E5B300"
-        android:textColor="#000000" />
 </LinearLayout>
