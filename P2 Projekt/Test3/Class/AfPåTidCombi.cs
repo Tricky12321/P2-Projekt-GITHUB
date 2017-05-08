@@ -4,22 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProgramTilBusselskab
+public class AfPåTidCombi
 {
-    public class AfPåTidCombi
+    public Tidspunkt Tidspunkt;
+    public int afstigninger;
+    public int påstigninger;
+
+    public AfPåTidCombi(Tidspunkt tidspunkt)
     {
-        public Tidspunkt Tidspunkt;
-        public int afstigninger;
-        public int påstigninger;
+        Tidspunkt = tidspunkt;
+    }
 
-        public AfPåTidCombi(Tidspunkt tidspunkt)
-        {
-            Tidspunkt = tidspunkt;
-        }
-
-        public override string ToString()
-        {
-            return Tidspunkt.ToString();
-        }
+    public override string ToString()
+    {
+        return Tidspunkt.ToString();
     }
 }

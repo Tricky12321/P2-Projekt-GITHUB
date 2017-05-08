@@ -6,44 +6,41 @@ using System.Threading.Tasks;
 using GMap.NET;
 using GMap.NET.WindowsForms;
 
-namespace ProgramTilBusselskab
+public class SimRoute
 {
-    public class SimRoute
+    public GMapRoute route;
+
+    public SimRoute(Rute rute, string routeName)
     {
-        public GMapRoute route;
+        GDirections placeholder;
+        List<PointLatLng> direction = new List<PointLatLng>();
+        PointLatLng start = new PointLatLng();
+        PointLatLng end = new PointLatLng();
 
-        public SimRoute(Rute rute, string routeName)
+        int listLenght = rute.AfPåRuteList.Count() - 1;
+
+        for (int i = 0; i < listLenght; i++)
         {
-            GDirections placeholder;
-            List<PointLatLng> direction = new List<PointLatLng>();
-            PointLatLng start = new PointLatLng();
-            PointLatLng end = new PointLatLng();
+            start.Lat = rute.AfPåRuteList[i].StoppestedLok.xCoordinate;
+            start.Lng = rute.AfPåRuteList[i].StoppestedLok.yCoordinate;
 
-            int listLenght = rute.AfPåRuteList.Count() - 1;
+            end.Lat = rute.AfPåRuteList[i + 1].StoppestedLok.xCoordinate;
+            end.Lng = rute.AfPåRuteList[i + 1].StoppestedLok.yCoordinate;
 
-            for (int i = 0; i < listLenght; i++)
+            GMap.NET.MapProviders.GoogleMapProvider.Instance.GetDirections(out placeholder, start, end, false, true, true, false, true);
+
+            if (placeholder != null)
             {
-                start.Lat = rute.AfPåRuteList[i].StoppestedLok.xCoordinate;
-                start.Lng = rute.AfPåRuteList[i].StoppestedLok.yCoordinate;
-
-                end.Lat = rute.AfPåRuteList[i + 1].StoppestedLok.xCoordinate;
-                end.Lng = rute.AfPåRuteList[i + 1].StoppestedLok.yCoordinate;
-
-                GMap.NET.MapProviders.GoogleMapProvider.Instance.GetDirections(out placeholder, start, end, false, true, true, false, true);
-
-                if (placeholder != null)
+                foreach (PointLatLng point in placeholder.Route)
                 {
-                    foreach (PointLatLng point in placeholder.Route)
-                    {
-                        direction.Add(point);
-                    }
-                }
-                else
-                {
-                    throw new Exception("Ukendt punkt");
+                    direction.Add(point);
                 }
             }
-            route = new GMapRoute(direction, $"{routeName}");
+            else
+            {
+                throw new Exception("Ukendt punkt");
+            }
         }
+        route = new GMapRoute(direction, $"{routeName}");
     }
 }

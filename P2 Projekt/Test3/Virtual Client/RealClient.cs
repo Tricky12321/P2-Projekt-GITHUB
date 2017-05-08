@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using JsonSerializer;
 public class RealClient
 {
-    private string _host = "172.25.11.120";
-    //private string _host = "127.0.0.1";
+    private const bool _localTest = true;
+    private string _host = _localTest ? "127.0.0.1" : "172.25.11.120";
     private uint _port = 12943;
 
     public void SendObject(object ObjToSend, Type TypeOfObj)

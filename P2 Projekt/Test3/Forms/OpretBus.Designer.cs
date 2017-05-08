@@ -201,7 +201,7 @@
             // 
             // ruteBindingSource
             // 
-            this.ruteBindingSource.DataSource = typeof(ProgramTilBusselskab.Rute);
+            this.ruteBindingSource.DataSource = typeof(Rute);
             // 
             // lbl_ruteSucces
             // 
