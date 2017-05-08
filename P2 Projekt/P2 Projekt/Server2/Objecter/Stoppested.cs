@@ -69,6 +69,8 @@ public class Stoppested : MysqlObject
         StoppestedLok.yCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[3]);    // DOUBLE
     }
 
+
+
     public void Update(Row Row)
     {
         StoppestedID = Convert.ToInt32(Row.Values[0]);                            // INT 32 ID

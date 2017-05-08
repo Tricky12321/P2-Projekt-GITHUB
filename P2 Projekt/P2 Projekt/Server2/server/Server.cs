@@ -146,6 +146,10 @@ public class Server
         {
             return ObjectTypes.BusStop;
         }
+        else if (checkString == "Rute")
+        {
+            return ObjectTypes.Rute;
+        }
         else
         {
             throw new UnknownObjectException("Ukendt object forventet");
@@ -170,6 +174,8 @@ public class Server
     private string GenerateResponse(ObjectTypes ObjType, string WhereCondition, bool All)
     {
         TableDecode OutputObject;
+        TableDecode RowsFromDB;
+
         string OutputString;
 
         //Stregen er : request,ALL,{OBJECT},{WHERE}
@@ -179,9 +185,29 @@ public class Server
             {
                 case ObjectTypes.Bus:
                     break;
+                case ObjectTypes.Rute:
+                    Rute SingleRute = new Rute();
+                    if (WhereCondition == "None")
+                    {
+                        RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
+
+                    }
+                    else
+                    {
+                        RowsFromDB = MysqlControls.SelectAllWhere(SingleRute.GetTableName(), WhereCondition);
+                    }
+                    List<Rute> AlleRuter = new List<Rute>();
+                    foreach (var SS in RowsFromDB.RowData)
+                    {
+                        Rute NewRute = new Rute();
+                        NewRute.Update(SS);
+                        AlleRuter.Add(NewRute);
+                    }
+                    OutputString = Json.Serialize(AlleRuter);
+                    return OutputString;
+                    
                 case ObjectTypes.BusStop:
                     Stoppested Stoppested = new Stoppested();
-                    TableDecode RowsFromDB;
                     if (WhereCondition == "None")
                     {
                         RowsFromDB = MysqlControls.SelectAll(Stoppested.GetTableName());
@@ -220,7 +246,7 @@ public class Server
                     return OutputString;
                 case ObjectTypes.BusStop:
                     Stoppested Stoppested = new Stoppested();
-                    TableDecode RowsFromDB = MysqlControls.SelectAllWhere(Stoppested.GetTableName(), WhereCondition);
+                    RowsFromDB = MysqlControls.SelectAllWhere(Stoppested.GetTableName(), WhereCondition);
                     List<Stoppested> StoppeSteder = new List<Stoppested>();
                     foreach (var SS in RowsFromDB.RowData)
                     {
