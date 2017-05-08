@@ -180,7 +180,7 @@ namespace ProgramTilBusselskab
                 downloadedBusses++;
             }
 
-            MessageBox.Show($"Der er blevet hentet: \nBus(ser): {downloadedBusses} \nRute(r): {downloadedRoutes} \nStoppested(er): {downloadedStops}. \nHentet fra databasen");
+            MessageBox.Show($"Der er blevet hentet: \nBus(ser): {downloadedBusses} \nRute(r): {downloadedRoutes} \nStoppested(er): {downloadedStops} \nHentet fra databasen");
 
 
             /*
@@ -314,7 +314,7 @@ namespace ProgramTilBusselskab
             {
                 ValgtBus = Client.RequestAllWhere(ObjectTypes.Bus, $"`ID`={ValgtBus.BusID}").First() as Bus;
             }
-            catch (InvalidOperationException)
+            catch (Exception)
             {
                 MessageBox.Show("Bussen kunne ikke hentes fra serveren");
             }
