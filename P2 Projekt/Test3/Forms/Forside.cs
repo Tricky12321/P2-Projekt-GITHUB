@@ -16,6 +16,8 @@ namespace ProgramTilBusselskab
 {
     public partial class Simulation : Form
     {
+        bool _running = true;
+
         public Simulation()
         {
             InitializeComponent();
@@ -290,6 +292,7 @@ namespace ProgramTilBusselskab
 
         private void btn_clearMap_Click(object sender, EventArgs e)
         {
+            _running = false;
             ClearMap();
         }
 
@@ -307,20 +310,23 @@ namespace ProgramTilBusselskab
 
         private void btn_visBusPåRute_Click(object sender, EventArgs e)
         {
-
-            Bus ValgtBus = (Bus)combox_vælgBus.SelectedItem;
-            RealClient Client = new RealClient();
-
-            try
+            while (_running)
             {
-                ValgtBus = Client.RequestAllWhere(ObjectTypes.Bus, $"`ID`={ValgtBus.BusID}").First() as Bus;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Bussen kunne ikke hentes fra serveren");
-            }
+                Bus ValgtBus = (Bus)combox_vælgBus.SelectedItem;
+                RealClient Client = new RealClient();
 
-            ShowBus(ValgtBus);
+                try
+                {
+                    ValgtBus = Client.RequestAllWhere(ObjectTypes.Bus, $"`ID`={ValgtBus.BusID}").First() as Bus;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Bussen kunne ikke hentes fra serveren");
+                }
+
+                ShowBus(ValgtBus);
+                Thread.Sleep(5000);
+            }
         }
 
         private Bus GetBusFromServer(int ID)
