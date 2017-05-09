@@ -11,7 +11,7 @@ public class Bus : NetworkObject
     public string busName;
     public int BusID;
     public GPS placering;
-    int _passengersTotal;
+    public int PassengersTotal;
     public int CapacitySitting;
     public int CapacityStanding;
     public Rute Rute;
@@ -39,25 +39,6 @@ public class Bus : NetworkObject
     public Bus()
     {
 
-    }
-
-    public int PassengersTotal
-    {
-        get
-        {
-            return _passengersTotal;
-        }
-        set
-        {
-            if (_passengersTotal + value < 0)
-            {
-                throw new BusPassengersTotalUnderZeroException("Der kan ikke være færre end nul passagerer i bussen");
-            }
-            else
-            {
-                _passengersTotal = value;
-            }
-        }
     }
 
     public void TjekInd()
