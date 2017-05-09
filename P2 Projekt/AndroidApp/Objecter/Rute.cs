@@ -8,7 +8,7 @@ public class Rute
 {
     public string RuteName;
     public int RuteID;
-    public List<StoppestedMTid> AfPåRuteListMTid = new List<StoppestedMTid>();
+    public List<Stoppested> StoppeSteder = new List<Stoppested>();
 
     public override string ToString()
     {

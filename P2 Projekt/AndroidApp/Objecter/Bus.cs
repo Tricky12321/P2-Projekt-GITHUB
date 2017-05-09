@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 public class Bus : NetworkObject
 {
-    public List<StoppestedMTid> busPassagerDataListe = new List<StoppestedMTid>();
+    public List<StoppestedMTid> StoppeStederMTid = new List<StoppestedMTid>();
 
-    public int busID;
     public string busName;
-    public GPS busLok;
-    public int passengersTotal;
+    public int BusID;
+    public GPS placering;
+    int _passengersTotal;
     public int CapacitySitting;
     public int CapacityStanding;
-    public Rute rute;
-    public int besøgteStop = 0;
+    public Rute Rute;
 
     public override string ToString()
     {

@@ -68,12 +68,8 @@ public class Rute : MysqlObject
         RuteID = Convert.ToInt32(Row.Values[0]);                            // INT 32 ID
         RuteName = Row.Values[1];                                           // VARHCAR 50 
         string[] stoppesteder = Row.Values[2].Split(',');                   // 1,2,3,4,5,6,7,8,9,10
-        string[] stoppestedertider = Row.Values[3].Split(',');
         // stoppesteds id'er:
         // 1,2,3,4,5,6,7,8,9,10
-        int i = 0;
-        bool SimpleCheck = stoppesteder.Count() == stoppestedertider.Count();
-        
         foreach (string stop in stoppesteder)
         {
             StoppeSteder.Add(new Stoppested(Convert.ToInt32(stop)));

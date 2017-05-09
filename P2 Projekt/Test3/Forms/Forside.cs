@@ -156,8 +156,8 @@ namespace ProgramTilBusselskab
             // Lists.listWithBusses.Add(bus3);
 
             int downloadedRoutes = 0;
-            RealClient RuteClient = new RealClient();
-            List<NetworkObject> AlleRuter = RuteClient.RequestAllWhere(ObjectTypes.Rute, "None");
+            RealClient NetClient = new RealClient();
+            List<NetworkObject> AlleRuter = NetClient.RequestAllWhere(ObjectTypes.Rute, "None");
             foreach (var item in AlleRuter)
             {
                 Lists.listWithRoutes.Add((item as Rute));
@@ -165,8 +165,7 @@ namespace ProgramTilBusselskab
             }
             
             int downloadedStops = 0;
-            RealClient StoppeStedsClient = new RealClient();
-            List<NetworkObject> Stoppesteder = StoppeStedsClient.RequestAllWhere(ObjectTypes.BusStop, "None");
+            List<NetworkObject> Stoppesteder = NetClient.RequestAllWhere(ObjectTypes.BusStop, "None");
             foreach (var item in Stoppesteder)
             {
                 Lists.listWithStops.Add(item as Stoppested);
@@ -174,8 +173,7 @@ namespace ProgramTilBusselskab
             }
 
             int downloadedBusses = 0;
-            RealClient BusClient = new RealClient();
-            List<NetworkObject> DatabaseBus = BusClient.RequestAllWhere(ObjectTypes.Bus, "None");
+            List<NetworkObject> DatabaseBus = NetClient.RequestAllWhere(ObjectTypes.Bus, "None");
             foreach (var item in DatabaseBus)
             {
                 Lists.listWithBusses.Add(item as Bus);
