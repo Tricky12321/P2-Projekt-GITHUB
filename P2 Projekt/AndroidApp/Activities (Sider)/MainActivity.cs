@@ -90,6 +90,8 @@ namespace AndroidApp
 
         public void OnTimeSet(Android.Widget.TimePicker view, int hourOfDay, int minute)
         {
+            hours = hourOfDay;
+            minutes = minute;
             UpdateDisplay(hourOfDay, minute);
         }
         
