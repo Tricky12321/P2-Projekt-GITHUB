@@ -12,7 +12,6 @@ public class RealClient
 
     public void SendObject(object ObjToSend, Type TypeOfObj)
     {
-
         // Data buffer for incoming data.  
         byte[] bytes = new byte[] { };
         string output = "No response";
