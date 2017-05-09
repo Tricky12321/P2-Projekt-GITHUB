@@ -37,7 +37,6 @@ public static class Mysql
         mySQLThread.Start();
         // Venter på at MYSQL har forbindelse.
         // Kør INGEN andre kommandoer før der er forbindelse til MYSQL
-        Utilities.WaitFor(ref Mysql.Connected);
     }
 
     public static bool Connect()
@@ -96,9 +95,9 @@ public static class Mysql
                 }
                 Log.LogData("RunQuery", $"{LogQuery} blev kørt");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw;
+                Console.WriteLine(e.ToString());
             }
         }
         MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
@@ -111,9 +110,9 @@ public static class Mysql
             cmd.ExecuteNonQuery();
             // Console.WriteLine($"{_sqlConnect.ConnectionString}");
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            Console.WriteLine(e.ToString());
         }
         finally
         {
@@ -125,7 +124,7 @@ public static class Mysql
     public static TableDecode RunQueryWithReturn(string Query)
     {
         Log.LogData("RunQueryWIthReturn", $"{Query} blev kørt");
-        TableDecode TableContent;
+        TableDecode TableContent = null;
         MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
 
         try
@@ -145,9 +144,9 @@ public static class Mysql
             Reader.Close();
 
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            Console.WriteLine(e.ToString());
         }
         finally
         {

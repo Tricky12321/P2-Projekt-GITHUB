@@ -96,7 +96,24 @@ public class Bus : MysqlObject
         CapacitySitting = Convert.ToInt32(TableContent.RowData[0].Values[5]);
         CapacityStanding = Convert.ToInt32(TableContent.RowData[0].Values[6]);
         Rute = new Rute();
-        Rute.RuteID = Convert.ToInt32(TableContent.RowData[0].Values[8]);            // Ruten her mangler at være korrekt
+        Rute.RuteID = Convert.ToInt32(TableContent.RowData[0].Values[7]);            // Ruten her mangler at være korrekt
+        Rute.GetUpdate();
+        // rute = Convert.ToInt32(TableContent.RowData[0].Values[7]);                // Se også lige om den er korrekt i GetValues
+
+    }
+
+    public void Update(Row Row)
+    {
+        BusID = Convert.ToInt32(Row.Values[0]);                            // INT 32 ID
+        placering = new GPS();
+        busName = Convert.ToString(Row.Values[1]);
+        placering.xCoordinate = Convert.ToDouble(Row.Values[2]);    // DOUBLE
+        placering.yCoordinate = Convert.ToDouble(Row.Values[3]);    // DOUBLE
+        PassengersTotal = Convert.ToInt32(Row.Values[4]);
+        CapacitySitting = Convert.ToInt32(Row.Values[5]);
+        CapacityStanding = Convert.ToInt32(Row.Values[6]);
+        Rute = new Rute();
+        Rute.RuteID = Convert.ToInt32(Row.Values[7]);            // Ruten her mangler at være korrekt
         Rute.GetUpdate();
         // rute = Convert.ToInt32(TableContent.RowData[0].Values[7]);                // Se også lige om den er korrekt i GetValues
 
@@ -104,16 +121,20 @@ public class Bus : MysqlObject
 
     public override string[] GetValues()
     {
+        if (placering == null)
+        {
+            placering = Rute.AfPåRuteListMTid[0].Stop.StoppestedLok;
+        }
         List<string> Output = new List<string>();
-        Output.Add(BusID.ToString());               // 1
-        Output.Add(busName.ToString());             // 2
-        Output.Add(placering.xCoordinate.ToString());  // 3
-        Output.Add(placering.yCoordinate.ToString());  // 4
-        Output.Add(PassengersTotal.ToString());     // 5
-        Output.Add(CapacityStanding.ToString());    // 6
-        Output.Add(CapacitySitting.ToString());     // 7
-        //Output.Add(besøgteStop.ToString());         // 8
-        Output.Add(Rute.RuteID.ToString());         // 9
+        Output.Add(BusID.ToString());                                    // 1
+        Output.Add(busName.ToString());                                  // 2
+        Output.Add(placering.xCoordinate.ToString().Replace(",","."));   // 3
+        Output.Add(placering.yCoordinate.ToString().Replace(",", "."));  // 4
+        Output.Add(PassengersTotal.ToString());                          // 5
+        Output.Add(CapacityStanding.ToString());                         // 6
+        Output.Add(CapacitySitting.ToString());                          // 7
+        //Output.Add(besøgteStop.ToString());                            // 8
+        Output.Add(Rute.RuteID.ToString());                              // 9
 
         return Output.ToArray();
     }

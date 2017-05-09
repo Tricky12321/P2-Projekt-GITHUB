@@ -90,15 +90,17 @@ public class Rute : MysqlObject
         StringBuilder StoppeStederTID = new StringBuilder();
         foreach (StoppestedMTid SingleStoppeSted in AfPåRuteListMTid)
         {
-            List<string> StoppeStederTIDLOC = new List<string>();
+            StoppeStederTID.Append("{");
             foreach (var item in SingleStoppeSted.AfPåTidComb)
             {
-                StoppeStederTID.Append("{" + item.Tidspunkt.SinpleString() + "},");
+                StoppeStederTID.Append(item.Tidspunkt.SinpleString() + ";");
             }
+            StoppeStederTID.Append("},");
+
             StoppeStederID.Append(SingleStoppeSted.Stop.StoppestedID.ToString() + ",");
         }
-        Output.Add(StoppeStederID.ToString());
-        Output.Add(StoppeStederTID.ToString());
+        Output.Add(StoppeStederID.ToString().Substring(0,StoppeStederID.Length - 1));
+        Output.Add(StoppeStederTID.ToString().Substring(0, StoppeStederTID.Length - 1).Replace(",}","}"));
         return Output.ToArray();
     }
 
@@ -111,23 +113,34 @@ public class Rute : MysqlObject
         // stoppesteds id'er:
         // 1,2,3,4,5,6,7,8,9,10
         int i = 0;
+        bool SimpleCheck = stoppesteder.Count() == stoppestedertider.Count();
         foreach (string stop in stoppesteder)
         {
-            Stoppested NewStop = new Stoppested(Convert.ToInt32(stop));
-            // stoppesteds tider:
-            // {11:30;12:30;13:30},{11:30;12:30;13:30},{11:30;12:30;13:30}
-            List<AfPåTidCombi> AfTidList = new List<AfPåTidCombi>();
-            // {11:30;12:30;13:30}
-            string times = stoppestedertider[i].Replace("}", "").Replace("{", "");
-            // 11:30;12:30;13:30
-            string[] tider = times.Split(';');
-            foreach (var singleTid in tider)
+            if (stop != "")
             {
-                // 11:30
-                AfTidList.Add(new AfPåTidCombi(new Tidspunkt(singleTid)));
+                int result;
+                int.TryParse(stop, out result);
+                Stoppested NewStop = new Stoppested(result);
+                List<AfPåTidCombi> AfTidList = new List<AfPåTidCombi>();
+
+                if (SimpleCheck)
+                {
+                    // stoppesteds tider:
+                    // {11:30;12:30;13:30},{11:30;12:30;13:30},{11:30;12:30;13:30}
+                    // {11:30;12:30;13:30}
+                    string times = stoppestedertider[i].Replace("}", "").Replace("{", "");
+                    // 11:30;12:30;13:30
+                    string[] tider = times.Split(';');
+                    foreach (var singleTid in tider)
+                    {
+                        // 11:30
+                        AfTidList.Add(new AfPåTidCombi(new Tidspunkt(singleTid)));
+                    }
+                }
+                AfPåRuteListMTid.Add(new StoppestedMTid(NewStop, AfTidList));
+
+                i++;
             }
-            AfPåRuteListMTid.Add(new StoppestedMTid(NewStop, AfTidList));
-            i++;
         }
     }
 

@@ -162,6 +162,7 @@ public class RealClient
             Bytes.Add(bytes[0]);
         } while (handler.Available > 0);
         data = Encoding.UTF8.GetString(Bytes.ToArray(), 0, Bytes.Count);
+        // Tjekker om alt data er modtaget
         if (data.IndexOf("<EOF>") == -1)
         {
             throw new NoEndOfFileFoundException();

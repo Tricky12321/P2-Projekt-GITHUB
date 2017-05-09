@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading;
 using ServerGPSSimulering;
 
+
 public static class ServerCommands
 {
     public static void WaitForCommand()
     {
+        Thread.Sleep(2000);
         Console.Write("> ");
         string command = Console.ReadLine();
         int k = 0;
@@ -61,12 +63,17 @@ public static class ServerCommands
             case "testbus":
                 int busID = int.Parse(Console.ReadLine());
                 Program.TestBusSimulering();
-                new SimBus((Bus)Lists.listWithBusses.Where(x => x.BusID == busID).First());
+                new SimBus(Lists.listWithBusses.Where(x => x.BusID == busID).First());
                 Print.PrintColorLine("blaaa", ConsoleColor.Cyan);
                 Console.WriteLine("Test bus kørt!!");
                 break;
             case "realclient":
                 Program.TestRealClient();
+                break;
+            case "exit":
+            case "quit":
+                Environment.Exit(0);
+                Program.ExitProgramBool = true;
                 break;
             default:
                 break;
