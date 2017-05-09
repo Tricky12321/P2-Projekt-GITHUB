@@ -49,21 +49,21 @@ namespace AndroidApp
             }
             */
             
-            BusID = bus.busID.ToString();
+            BusNavn = bus.busName;
             Tidspunkt = tidspunkt.hour.ToString() + ':' + tidspunkt.minute.ToString();
-            PasNu = $"Pas. nu: {bus.passengersTotal}/{bus.CapacitySitting + bus.CapacityStanding}";
-            PasForv = $"Pas. Forv.: {"10"}/{bus.CapacitySitting + bus.CapacityStanding}";
+            PasNu = $"Nuværende passagerer: {bus.PassengersTotal} af {bus.CapacitySitting + bus.CapacityStanding}";
+            PasForv = $"Forventede passagerer: {"10"} af {bus.CapacitySitting + bus.CapacityStanding}";
 
-            if (bus.passengersTotal < bus.CapacitySitting*0.8)
+            if (bus.PassengersTotal < bus.CapacitySitting*0.8)
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
-            else if ((bus.passengersTotal >= bus.CapacitySitting*0.8) && (bus.passengersTotal < bus.CapacitySitting))
+            else if ((bus.PassengersTotal >= bus.CapacitySitting*0.8) && (bus.PassengersTotal < bus.CapacitySitting))
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusNaesteningensiddepladser;
-            else if ((bus.passengersTotal >= bus.CapacitySitting) && (bus.passengersTotal < bus.CapacitySitting + bus.CapacityStanding))
+            else if ((bus.PassengersTotal >= bus.CapacitySitting) && (bus.PassengersTotal < bus.CapacitySitting + bus.CapacityStanding))
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;
             else
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusOverfyldt;
         }
-        public string BusID;
+        public string BusNavn;
         public string Tidspunkt;
         public string PasNu;
         public string PasForv;
@@ -72,7 +72,7 @@ namespace AndroidApp
 
         public override string ToString()
         {
-            return BusID + Tidspunkt + "\n" + PasNu + "\n" + PasForv;
+            return BusNavn + " " + Tidspunkt + "\n" + PasNu + "\n" + PasForv;
         }
     }
 }

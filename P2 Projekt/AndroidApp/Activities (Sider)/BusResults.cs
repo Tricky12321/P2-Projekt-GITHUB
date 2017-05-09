@@ -46,14 +46,14 @@ namespace AndroidApp
             /* Først sorterer vi de busser fra, som ikke indeholder det stoppested vi søger efter.
              * Derefter sorterer vi de busser fra, som ikke holder ved stoppestedet inden for en halv time af det indtastede tidspunkt */
             sorteretBusListe = ServerBusListe.
-                Where(bus => bus.busPassagerDataListe.
+                Where(bus => bus.StoppeStederMTid.
                 Any(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0] && StopMTid.AfPåTidComb.
                 Any(afpåtidcombi => AnkomstInterval(afpåtidcombi.Tidspunkt, IntervalStart, IntervalSlut)))).ToList();
 
 
             foreach (Bus bus in sorteretBusListe)
             {
-                foreach (var StopMTid in bus.busPassagerDataListe.Where(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0]))
+                foreach (var StopMTid in bus.StoppeStederMTid.Where(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0]))
                 {
                     foreach (var TidCombi in StopMTid.AfPåTidComb)
                     {
@@ -70,16 +70,9 @@ namespace AndroidApp
                             {
                                 busCelleListe.Add(new BusResultsCell(bus, TidCombi.Tidspunkt));
                             }
-                            Console.WriteLine("Vi prøver at tilføje en bus - inderst!");
                         }
-                        Console.WriteLine("Vi prøver at tilføje en bus! - næstinderst");
-
                     }
-                    Console.WriteLine("Vi prøver at tilføje en bus! - næstyderst");
-
                 }
-                Console.WriteLine("Vi prøver at tilføje en bus! - banan");
-
             }
 
 
@@ -98,8 +91,8 @@ namespace AndroidApp
 
         private bool AnkomstInterval(Tidspunkt tidspunkt, int IntervalStart, int IntervalSlut)
         {
-            int Tidspunkt = (tidspunkt.hour * 60 * 60 + tidspunkt.minute * 60) - (30 * 60);
-            if (Tidspunkt > IntervalSlut && Tidspunkt < IntervalSlut)
+            int Tidspunkt = (tidspunkt.hour * 60 * 60 + tidspunkt.minute * 60);
+            if (Tidspunkt > IntervalStart && Tidspunkt < IntervalSlut)
             {
                 return true;
             }
