@@ -131,7 +131,6 @@
     <Compile Include="Objecter\Bus.cs" />
     <Compile Include="Objecter\BusPassengersTotalUnderZeroException.cs" />
     <Compile Include="Objecter\GPS.cs" />
-    <Compile Include="Objecter\Lists.cs" />
     <Compile Include="Objecter\Rute.cs" />
     <Compile Include="Objecter\Stoppested.cs" />
     <Compile Include="Objecter\StoppestedMTid.cs" />

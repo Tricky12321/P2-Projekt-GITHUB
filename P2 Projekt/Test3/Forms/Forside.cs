@@ -260,32 +260,36 @@ namespace ProgramTilBusselskab
         private void btn_visPåKort_Click(object sender, EventArgs e)
         {
             GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
-            SimRoute placeholderRute = new SimRoute((Rute)combox_ruterTilVisning.SelectedItem, "Placeholder Rute");
+            if (combox_ruterTilVisning.Items.Count != 0)
+            {
+                SimRoute placeholderRute = new SimRoute((Rute)combox_ruterTilVisning.SelectedItem, "Placeholder Rute");
             routesOverlay.Routes.Add(placeholderRute.route);
             gMapsMap.Overlays.Add(routesOverlay);
 
-            if (chkbox_toggleStoppesteder.Checked == true)
-            {
-                GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
 
-                foreach (StoppestedMTid stop in ((Rute)combox_ruterTilVisning.SelectedItem).AfPåRuteListMTid)
+                if (chkbox_toggleStoppesteder.Checked == true)
                 {
-                    GMapMarker stoppested =
-                    new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
-                    new PointLatLng(stop.Stop.StoppestedLok.xCoordinate, stop.Stop.StoppestedLok.yCoordinate),
-                    Test3.Properties.Resources.busSkilt);
-                    stopLayer.Markers.Add(stoppested);
+                    GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
 
-                    //Indsætter tekst med antal passagerer
-                    stoppested.ToolTipText = stop.Stop.StoppestedName;
+                    foreach (StoppestedMTid stop in ((Rute)combox_ruterTilVisning.SelectedItem).AfPåRuteListMTid)
+                    {
+                        GMapMarker stoppested =
+                        new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                        new PointLatLng(stop.Stop.StoppestedLok.xCoordinate, stop.Stop.StoppestedLok.yCoordinate),
+                        Test3.Properties.Resources.busSkilt);
+                        stopLayer.Markers.Add(stoppested);
 
-                    //Bestemmer farverne på tekstbobble
-                    stoppested.ToolTip.Fill = Brushes.White;
-                    stoppested.ToolTip.Foreground = Brushes.Black;
+                        //Indsætter tekst med antal passagerer
+                        stoppested.ToolTipText = stop.Stop.StoppestedName;
+
+                        //Bestemmer farverne på tekstbobble
+                        stoppested.ToolTip.Fill = Brushes.White;
+                        stoppested.ToolTip.Foreground = Brushes.Black;
+                    }
+                    gMapsMap.Overlays.Add(stopLayer);
                 }
-                gMapsMap.Overlays.Add(stopLayer);
+                gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
             }
-            gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
         }
 
         private void btn_clearMap_Click(object sender, EventArgs e)
