@@ -79,7 +79,7 @@
             this.txtbox_capacitySit.Location = new System.Drawing.Point(269, 40);
             this.txtbox_capacitySit.Name = "txtbox_capacitySit";
             this.txtbox_capacitySit.Size = new System.Drawing.Size(47, 26);
-            this.txtbox_capacitySit.TabIndex = 5;
+            this.txtbox_capacitySit.TabIndex = 3;
             // 
             // label1
             // 
@@ -107,7 +107,7 @@
             this.combox_vælgRute.Location = new System.Drawing.Point(159, 72);
             this.combox_vælgRute.Name = "combox_vælgRute";
             this.combox_vælgRute.Size = new System.Drawing.Size(304, 28);
-            this.combox_vælgRute.TabIndex = 11;
+            this.combox_vælgRute.TabIndex = 5;
             // 
             // btn_refreshStoppesteder
             // 
@@ -132,7 +132,7 @@
             this.txtbox_capacityStå.Location = new System.Drawing.Point(416, 40);
             this.txtbox_capacityStå.Name = "txtbox_capacityStå";
             this.txtbox_capacityStå.Size = new System.Drawing.Size(47, 26);
-            this.txtbox_capacityStå.TabIndex = 8;
+            this.txtbox_capacityStå.TabIndex = 4;
             // 
             // label2
             // 
@@ -160,14 +160,14 @@
             this.combox_vælgStop.Location = new System.Drawing.Point(159, 169);
             this.combox_vælgStop.Name = "combox_vælgStop";
             this.combox_vælgStop.Size = new System.Drawing.Size(304, 28);
-            this.combox_vælgStop.TabIndex = 32;
+            this.combox_vælgStop.TabIndex = 6;
             // 
             // txtbox_tidspunkt
             // 
             this.txtbox_tidspunkt.Location = new System.Drawing.Point(159, 203);
             this.txtbox_tidspunkt.Name = "txtbox_tidspunkt";
             this.txtbox_tidspunkt.Size = new System.Drawing.Size(304, 26);
-            this.txtbox_tidspunkt.TabIndex = 33;
+            this.txtbox_tidspunkt.TabIndex = 7;
             // 
             // lstbox_tidspunkter
             // 

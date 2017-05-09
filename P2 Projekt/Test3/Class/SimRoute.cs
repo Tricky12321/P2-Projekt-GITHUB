@@ -17,15 +17,15 @@ public class SimRoute
         PointLatLng start = new PointLatLng();
         PointLatLng end = new PointLatLng();
 
-        int listLenght = rute.AfPåRuteListMTid.Count() - 1;
+        int listLenght = rute.StoppeSteder.Count() - 1;
 
         for (int i = 0; i < listLenght; i++)
         {
-            start.Lat = rute.AfPåRuteListMTid[i].Stop.StoppestedLok.xCoordinate;
-            start.Lng = rute.AfPåRuteListMTid[i].Stop.StoppestedLok.yCoordinate;
+            start.Lat = rute.StoppeSteder[i].StoppestedLok.xCoordinate;
+            start.Lng = rute.StoppeSteder[i].StoppestedLok.yCoordinate;
 
-            end.Lat = rute.AfPåRuteListMTid[i + 1].Stop.StoppestedLok.xCoordinate;
-            end.Lng = rute.AfPåRuteListMTid[i + 1].Stop.StoppestedLok.yCoordinate;
+            end.Lat = rute.StoppeSteder[i + 1].StoppestedLok.xCoordinate;
+            end.Lng = rute.StoppeSteder[i + 1].StoppestedLok.yCoordinate;
 
             GMap.NET.MapProviders.GoogleMapProvider.Instance.GetDirections(out placeholder, start, end, false, true, true, false, true);
 

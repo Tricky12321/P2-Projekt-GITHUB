@@ -80,9 +80,9 @@ namespace ProgramTilBusselskab
             {
                 Rute placeholder = (Rute)combox_vælgRute.SelectedItem;
 
-                foreach (StoppestedMTid stop in placeholder.AfPåRuteListMTid)
+                foreach (Stoppested stop in placeholder.StoppeSteder)
                 {
-                    combox_vælgStop.Items.Add(stop.Stop);
+                    combox_vælgStop.Items.Add(stop);
                     lbl_ruteSucces.Visible = true;
                 }
             }

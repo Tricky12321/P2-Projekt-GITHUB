@@ -43,11 +43,11 @@ namespace ServerGPSSimulering
                 }
             }
 
-            StartHour = SimulatedBus.busPassagerDataListe.First().AfPåTidComb.First().Tidspunkt.hour;
-            StartMinut = SimulatedBus.busPassagerDataListe.First().AfPåTidComb.First().Tidspunkt.minute;
+            StartHour = SimulatedBus.StoppeStederMTid.First().AfPåTidComb.First().Tidspunkt.hour;
+            StartMinut = SimulatedBus.StoppeStederMTid.First().AfPåTidComb.First().Tidspunkt.minute;
 
-            SlutHour = SimulatedBus.busPassagerDataListe.Last().AfPåTidComb.First().Tidspunkt.hour;
-            SlutMinut = SimulatedBus.busPassagerDataListe.Last().AfPåTidComb.First().Tidspunkt.minute;
+            SlutHour = SimulatedBus.StoppeStederMTid.Last().AfPåTidComb.First().Tidspunkt.hour;
+            SlutMinut = SimulatedBus.StoppeStederMTid.Last().AfPåTidComb.First().Tidspunkt.minute;
 
             DrivetimeInSeconds = ((SlutHour - StartHour) * 60 + SlutMinut - StartMinut) * 60;
 
@@ -92,12 +92,12 @@ namespace ServerGPSSimulering
                         Thread.Sleep(Sleeptimer);
                     }
 
-                    if (SimulatedBus.busPassagerDataListe.Count > j)
+                    if (SimulatedBus.StoppeStederMTid.Count > j)
                     {
-                        if (SimulatedBus.busPassagerDataListe[j].Stop.StoppestedLok.xCoordinate < SimulatedRute.route.Points[i].Lat + 0.001 &&
-                            SimulatedBus.busPassagerDataListe[j].Stop.StoppestedLok.xCoordinate > SimulatedRute.route.Points[i].Lat - 0.001 &&
-                            SimulatedBus.busPassagerDataListe[j].Stop.StoppestedLok.yCoordinate < SimulatedRute.route.Points[i].Lng + 0.001 &&
-                            SimulatedBus.busPassagerDataListe[j].Stop.StoppestedLok.yCoordinate > SimulatedRute.route.Points[i].Lng - 0.001)
+                        if (SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate < SimulatedRute.route.Points[i].Lat + 0.001 &&
+                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate > SimulatedRute.route.Points[i].Lat - 0.001 &&
+                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate < SimulatedRute.route.Points[i].Lng + 0.001 &&
+                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate > SimulatedRute.route.Points[i].Lng - 0.001)
                         {
                             j++;
 
