@@ -34,15 +34,12 @@ namespace AndroidApp
             var sorteretBusListe = new List<Bus>();
 
             
-            // ServerBusListe = magi;
-
             if (_stopOgTid.Count == 4)
                 FiltrerEfterBusNavn = true;
             else
                 FiltrerEfterBusNavn = false;
 
             
-
             /* Først sorterer vi de busser fra, som ikke indeholder det stoppested vi søger efter.
              * Derefter sorterer vi de busser fra, som ikke holder ved stoppestedet inden for en halv time af det indtastede tidspunkt */
             sorteretBusListe = ServerBusListe.
@@ -63,12 +60,12 @@ namespace AndroidApp
                             {
                                 if (bus.busName == _stopOgTid[3])
                                 {
-                                    busCelleListe.Add(new BusResultsCell(bus, TidCombi.Tidspunkt));
+                                    busCelleListe.Add(new BusResultsCell(bus, TidCombi.Tidspunkt, _stopOgTid[0]));
                                 }
                             }
                             else
                             {
-                                busCelleListe.Add(new BusResultsCell(bus, TidCombi.Tidspunkt));
+                                busCelleListe.Add(new BusResultsCell(bus, TidCombi.Tidspunkt, _stopOgTid[0]));
                             }
                         }
                     }

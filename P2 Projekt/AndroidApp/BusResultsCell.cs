@@ -18,7 +18,7 @@ namespace AndroidApp
     {
         /* Skal tage imod et bus objekt + hvad den ellers har brug for, og omdanne det til strings,
          * som BusResultsAdapter kan vise */
-        public BusResultsCell (Bus bus, Tidspunkt tidspunkt/* int Vælger*/)
+        public BusResultsCell (Bus bus, Tidspunkt tidspunkt, string stoppested/* int Vælger*/)
         {
             /*
             BusID = "25A - Ferslev";
@@ -53,6 +53,7 @@ namespace AndroidApp
             Tidspunkt = tidspunkt.hour.ToString() + ':' + tidspunkt.minute.ToString();
             PasNu = $"Nuværende passagerer: {bus.PassengersTotal} af {bus.CapacitySitting + bus.CapacityStanding}";
             PasForv = $"Forventede passagerer: {"10"} af {bus.CapacitySitting + bus.CapacityStanding}";
+            Stoppested = stoppested;
 
             if (bus.PassengersTotal < bus.CapacitySitting*0.8)
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
