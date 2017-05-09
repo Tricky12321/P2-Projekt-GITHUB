@@ -7,7 +7,7 @@ using JsonSerializer;
 using System.Diagnostics;
 public class RealClient
 {
-    private const bool _localTest = true;
+    private const bool _localTest = false;
     private string _host = _localTest ? "127.0.0.1" : "172.25.11.120";
     private uint _port = 12943;
 
