@@ -319,7 +319,7 @@ namespace ProgramTilBusselskab
                 MessageBox.Show("Bussen kunne ikke hentes fra serveren");
             }
 
-            ShowBus((Bus)combox_vælgBus.SelectedItem);
+            ShowBus(ValgtBus);
         }
 
         private Bus GetBusFromServer(int ID)
