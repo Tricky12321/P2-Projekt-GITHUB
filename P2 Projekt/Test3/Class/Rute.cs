@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 public class Rute : NetworkObject
 {
-    //public List<Stoppested> AfPåRuteList = new List<Stoppested>();
-    public List<StoppestedMTid> AfPåRuteListMTid = new List<StoppestedMTid>();
     public string RuteName;
     public int RuteID;
-    //public List<StoppestedMTid> AfPåRuteListMTid = new List<StoppestedMTid>();
+    public List<Stoppested> StoppeSteder = new List<Stoppested>();
     public Rute()
     {
 
@@ -22,7 +20,7 @@ public class Rute : NetworkObject
         RuteID = ruteID;
         foreach (StoppestedMTid stop in stoppested)
         {
-            AfPåRuteListMTid.Add(stop);
+            //AfPåRuteListMTid.Add(stop);
         }
     }
 
@@ -32,7 +30,7 @@ public class Rute : NetworkObject
         RuteID = ruteID;
         foreach (Stoppested stop in stoppested)
         {
-            AfPåRuteListMTid.Add(new StoppestedMTid(stop));
+            StoppeSteder.Add(stop);
         }
     }
 

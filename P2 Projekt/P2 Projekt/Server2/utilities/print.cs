@@ -13,6 +13,22 @@ public static class Print
         PrintColor(Text + "\n", ForegroundColor, ConsoleColor.Black);
     }
         
+    public static void WriteLine(string StuffToWrite)
+    {
+        lock (ConsoleWriterLock)
+        {
+            Console.WriteLine(StuffToWrite);
+        }
+    }
+
+    public static void Write(string StuffToWrite)
+    {
+        lock (ConsoleWriterLock)
+        {
+            Console.Write(StuffToWrite);
+        }
+    }
+
     public static void PrintColor(string Text, ConsoleColor ForegroundColor)
     {
         PrintColor(Text, ForegroundColor, ConsoleColor.Black);

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ProgramTilBusselskab;
 using System.Diagnostics;
-
+using System.Threading;
 namespace ProgramTilBusselskab
 {
     public partial class Simulation : Form
@@ -156,16 +156,17 @@ namespace ProgramTilBusselskab
             // Lists.listWithBusses.Add(bus3);
 
             int downloadedRoutes = 0;
-            RealClient NewClient = new RealClient();
-            List<NetworkObject> AlleRuter = NewClient.RequestAllWhere(ObjectTypes.Rute, "None");
+            RealClient RuteClient = new RealClient();
+            List<NetworkObject> AlleRuter = RuteClient.RequestAllWhere(ObjectTypes.Rute, "None");
             foreach (var item in AlleRuter)
             {
                 Lists.listWithRoutes.Add((item as Rute));
                 downloadedRoutes++;
             }
-
+            
             int downloadedStops = 0;
-            List<NetworkObject> Stoppesteder = NewClient.RequestAllWhere(ObjectTypes.BusStop, "None");
+            RealClient StoppeStedsClient = new RealClient();
+            List<NetworkObject> Stoppesteder = StoppeStedsClient.RequestAllWhere(ObjectTypes.BusStop, "None");
             foreach (var item in Stoppesteder)
             {
                 Lists.listWithStops.Add(item as Stoppested);
@@ -173,7 +174,8 @@ namespace ProgramTilBusselskab
             }
 
             int downloadedBusses = 0;
-            List<NetworkObject> DatabaseBus = NewClient.RequestAllWhere(ObjectTypes.Bus, "None");
+            RealClient BusClient = new RealClient();
+            List<NetworkObject> DatabaseBus = BusClient.RequestAllWhere(ObjectTypes.Bus, "None");
             foreach (var item in DatabaseBus)
             {
                 Lists.listWithBusses.Add(item as Bus);
@@ -260,36 +262,32 @@ namespace ProgramTilBusselskab
         private void btn_visPåKort_Click(object sender, EventArgs e)
         {
             GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
-            if (combox_ruterTilVisning.Items.Count != 0)
-            {
-                SimRoute placeholderRute = new SimRoute((Rute)combox_ruterTilVisning.SelectedItem, "Placeholder Rute");
+            SimRoute placeholderRute = new SimRoute((Rute)combox_ruterTilVisning.SelectedItem, "Placeholder Rute");
             routesOverlay.Routes.Add(placeholderRute.route);
             gMapsMap.Overlays.Add(routesOverlay);
 
+            if (chkbox_toggleStoppesteder.Checked == true)
+            {
+                GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
 
-                if (chkbox_toggleStoppesteder.Checked == true)
+                foreach (Stoppested stop in ((Rute)combox_ruterTilVisning.SelectedItem).StoppeSteder)
                 {
-                    GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
+                    GMapMarker stoppested =
+                    new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                    new PointLatLng(stop.StoppestedLok.xCoordinate, stop.StoppestedLok.yCoordinate),
+                    Test3.Properties.Resources.busSkilt);
+                    stopLayer.Markers.Add(stoppested);
 
-                    foreach (StoppestedMTid stop in ((Rute)combox_ruterTilVisning.SelectedItem).AfPåRuteListMTid)
-                    {
-                        GMapMarker stoppested =
-                        new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
-                        new PointLatLng(stop.Stop.StoppestedLok.xCoordinate, stop.Stop.StoppestedLok.yCoordinate),
-                        Test3.Properties.Resources.busSkilt);
-                        stopLayer.Markers.Add(stoppested);
+                    //Indsætter tekst med antal passagerer
+                    stoppested.ToolTipText = stop.StoppestedName;
 
-                        //Indsætter tekst med antal passagerer
-                        stoppested.ToolTipText = stop.Stop.StoppestedName;
-
-                        //Bestemmer farverne på tekstbobble
-                        stoppested.ToolTip.Fill = Brushes.White;
-                        stoppested.ToolTip.Foreground = Brushes.Black;
-                    }
-                    gMapsMap.Overlays.Add(stopLayer);
+                    //Bestemmer farverne på tekstbobble
+                    stoppested.ToolTip.Fill = Brushes.White;
+                    stoppested.ToolTip.Foreground = Brushes.Black;
                 }
-                gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
+                gMapsMap.Overlays.Add(stopLayer);
             }
+            gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
         }
 
         private void btn_clearMap_Click(object sender, EventArgs e)

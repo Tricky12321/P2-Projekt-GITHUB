@@ -17,7 +17,7 @@ public static class Mysql
     // ---------------------------------------------------------------------------------------------------
     private static string _ip => OS.IsLinux ? _localIP : _publicIP; // Hvis OS er linux, skal den bruge lokal IP (127.0.0.1)
     private static string _connectionString => $"SERVER={_ip};uid={_username};PASSWORD={_password};DATABASE={_database};"; // Den streng, som indeholder alt 
-    private static MySqlConnection _sqlConnect = new MySqlConnection(_connectionString); // Definere den forbindelse til databasen
+    private static MySqlConnection _sqlConnect = new MySqlConnection(_connectionString); // Definere forbindelsen til databasen
     public static bool Connected;                           // True hvis der er forbindelse til databasen, da serveren startede
     private static bool _firstConnect;                      // Bliver sat til true, hvis det er første gang. 
     // ---------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ public static class Mysql
 
     public static void StartmySQL()
     {
-        Thread mySQLThread = new Thread(new ThreadStart(Mysql.Start));
+        Thread mySQLThread = new Thread(new ThreadStart(Start));
         mySQLThread.Start();
         // Venter på at MYSQL har forbindelse.
         // Kør INGEN andre kommandoer før der er forbindelse til MYSQL
@@ -62,6 +62,7 @@ public static class Mysql
         }
         finally
         {
+            // Sørger at selvom forbindelsen fejler, bliver forbindelsen lukker.
             _sqlConnect.Close();
         }
     }
@@ -116,6 +117,7 @@ public static class Mysql
         }
         finally
         {
+            // Sørger at selvom forbindelsen fejler, bliver forbindelsen lukker.
             SqlConnection.Close();
         }
         return true;

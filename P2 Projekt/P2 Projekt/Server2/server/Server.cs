@@ -188,7 +188,6 @@ public class Server
                     if (WhereCondition == "None")
                     {
                         RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
-
                     }
                     else
                     {
@@ -442,13 +441,9 @@ public class Server
             // An incoming connection needs to be processed.  
             double SizeOfMsg = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
             //PingClient = PingRemote(handler.RemoteEndPoint);
-            Console.Write($"Incomming connection from ");
-            int NonNullElements = ArrayHandler.CountNonZeroElementsInByteArray(bytes);
-            Print.PrintColorLine(handler.RemoteEndPoint.ToString(), ConsoleColor.Yellow);
-            Console.Write($"Size: ");
-            Print.PrintColor(SizeOfMsg.ToString(), ConsoleColor.Green);
-            Console.WriteLine(" KB");
-            Console.WriteLine(data);
+            Print.PrintCenterColor("Incomming connection from ", handler.RemoteEndPoint.ToString(), "", ConsoleColor.Yellow);
+            Print.PrintCenterColor("Rechived: ", SizeOfMsg.ToString(), " KB", ConsoleColor.Green);
+            Print.WriteLine(data);
             Ping.Stop();
             // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
             response = CheckMessage(data);
@@ -457,9 +452,11 @@ public class Server
             // Tester om objectet der skal retuneres kan deserailiseres...
             // Laver Response om fra en string til bytes baseret på UTF8
             byte[] msg = Encoding.UTF8.GetBytes(response);
+            double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response)/1024,2);
+            Print.PrintCenterColor("Sent: ", SizeOfMsgSent.ToString(), " KB", ConsoleColor.Green);
+            Print.WriteLine(response);
             // Sender beskeden. 
             handler.Send(msg);
-
         }
         catch (Exception e)
         {

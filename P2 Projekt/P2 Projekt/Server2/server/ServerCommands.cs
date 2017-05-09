@@ -60,13 +60,6 @@ public static class ServerCommands
                 //Mysql.RunTest();
                 // Laver en ny tråd til at køre den virtuelle klient i, dette sikre at serveren køre som den skal og ikke bliver langsom. 
                 break;
-            case "testbus":
-                int busID = int.Parse(Console.ReadLine());
-                Program.TestBusSimulering();
-                new SimBus(Lists.listWithBusses.Where(x => x.BusID == busID).First());
-                Print.PrintColorLine("blaaa", ConsoleColor.Cyan);
-                Console.WriteLine("Test bus kørt!!");
-                break;
             case "realclient":
                 Program.TestRealClient();
                 break;
@@ -76,9 +69,10 @@ public static class ServerCommands
                 Program.ExitProgramBool = true;
                 break;
             default:
+                Print.PrintColorLine("Unknown Command!",ConsoleColor.Red);
                 break;
         }
-        Thread.Sleep(2000);
+        Thread.Sleep(1000);
         WaitForCommand();
     }
 }

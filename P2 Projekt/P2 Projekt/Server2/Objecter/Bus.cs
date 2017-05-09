@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public class Bus : MysqlObject
 {
-    public List<StoppestedMTid> busPassagerDataListe = new List<StoppestedMTid>();
+    public List<StoppestedMTid> StoppeStederMTid = new List<StoppestedMTid>();
 
     public string busName;
     public int BusID;
@@ -33,7 +33,7 @@ public class Bus : MysqlObject
 
         foreach (StoppestedMTid combi in afPåTidCombi)
         {
-            busPassagerDataListe.Add(combi);
+            StoppeStederMTid.Add(combi);
         }
     }
 
@@ -83,23 +83,7 @@ public class Bus : MysqlObject
 
     public override void Update(TableDecode TableContent)
     {
-        if (TableContent.Count == 0)
-        {
-            throw new NoObjectFoundException("Der blev ikke fundet noget object i databasen med de kriterier");
-        }
-        BusID = Convert.ToInt32(TableContent.RowData[0].Values[0]);                            // INT 32 ID
-        placering = new GPS();
-        busName = Convert.ToString(TableContent.RowData[0].Values[1]);
-        placering.xCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[2]);    // DOUBLE
-        placering.yCoordinate = Convert.ToDouble(TableContent.RowData[0].Values[3]);    // DOUBLE
-        PassengersTotal = Convert.ToInt32(TableContent.RowData[0].Values[4]);
-        CapacitySitting = Convert.ToInt32(TableContent.RowData[0].Values[5]);
-        CapacityStanding = Convert.ToInt32(TableContent.RowData[0].Values[6]);
-        Rute = new Rute();
-        Rute.RuteID = Convert.ToInt32(TableContent.RowData[0].Values[7]);            // Ruten her mangler at være korrekt
-        Rute.GetUpdate();
-        // rute = Convert.ToInt32(TableContent.RowData[0].Values[7]);                // Se også lige om den er korrekt i GetValues
-
+        Update(TableContent.RowData[0]);
     }
 
     public void Update(Row Row)
@@ -115,7 +99,27 @@ public class Bus : MysqlObject
         Rute = new Rute();
         Rute.RuteID = Convert.ToInt32(Row.Values[7]);            // Ruten her mangler at være korrekt
         Rute.GetUpdate();
-        // rute = Convert.ToInt32(TableContent.RowData[0].Values[7]);                // Se også lige om den er korrekt i GetValues
+        string[] StoppeSteder = Row.Values[8].Split(',');
+        int i = 0;
+        foreach (var stop in Rute.StoppeSteder)
+        {
+            List<AfPåTidCombi> AfTidList = new List<AfPåTidCombi>();
+            // {11:30;12:30;13:30}
+            string times = StoppeSteder[i].Replace("}", "").Replace("{", "");
+            // 11:30;12:30;13:30
+            string[] tider = times.Split(';');
+            foreach (var singleTid in tider)
+            {
+                // 11:30
+                if (singleTid != "")
+                {
+                    AfTidList.Add(new AfPåTidCombi(new Tidspunkt(singleTid)));
+
+                }
+            }
+            StoppeStederMTid.Add(new StoppestedMTid(stop, AfTidList));
+            i++;
+        }
 
     }
 
@@ -123,7 +127,7 @@ public class Bus : MysqlObject
     {
         if (placering == null)
         {
-            placering = Rute.AfPåRuteListMTid[0].Stop.StoppestedLok;
+            placering = StoppeStederMTid[0].Stop.StoppestedLok;
         }
         List<string> Output = new List<string>();
         Output.Add(BusID.ToString());                                    // 1
@@ -135,7 +139,23 @@ public class Bus : MysqlObject
         Output.Add(CapacitySitting.ToString());                          // 7
         //Output.Add(besøgteStop.ToString());                            // 8
         Output.Add(Rute.RuteID.ToString());                              // 9
+        StringBuilder StoppeStederTID = new StringBuilder();
 
+        int i = 0;
+        foreach (var stop in Rute.StoppeSteder)
+        {
+            StoppeStederTID.Append("{");
+
+            foreach (var stopmtid in StoppeStederMTid[i].AfPåTidComb)
+            {
+                    StoppeStederTID.Append(stopmtid.Tidspunkt.SinpleString() + ";");
+            }
+            StoppeStederTID.Append("},");
+            i++;
+        }
+        string strtoadd = StoppeStederTID.ToString();
+        strtoadd = StoppeStederTID.ToString().Substring(0, StoppeStederTID.Length - 1).Replace(";}", "}");
+        Output.Add(strtoadd);
         return Output.ToArray();
     }
 

@@ -30,7 +30,7 @@ namespace ProgramTilBusselskab
 
                 child = new TreeNode(bus.Rute.ToString());
 
-                foreach (StoppestedMTid combo in bus.busPassagerDataListe)
+                foreach (StoppestedMTid combo in bus.StoppeStederMTid)
                 {
                     subChild = new TreeNode(combo.Stop.ToString());
 

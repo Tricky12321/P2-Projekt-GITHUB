@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public class Bus : NetworkObject
 {
-    public List<StoppestedMTid> busPassagerDataListe = new List<StoppestedMTid>();
+    public List<StoppestedMTid> StoppeStederMTid = new List<StoppestedMTid>();
 
     public string busName;
     public int BusID;
@@ -22,15 +22,12 @@ public class Bus : NetworkObject
     {
         BusID = busID;
         this.busName = busName;
-
         CapacitySitting = capacityStitting;
         CapacityStanding = capacityStanding;
-
         Rute = rute;
-
         foreach (StoppestedMTid combi in afPåTidCombi)
         {
-            busPassagerDataListe.Add(combi);
+            StoppeStederMTid.Add(combi);
         }
     }
 
