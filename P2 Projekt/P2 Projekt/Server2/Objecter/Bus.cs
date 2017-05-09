@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Text.RegularExpressions;
 public class Bus : MysqlObject
 {
     public List<StoppestedMTid> StoppeStederMTid = new List<StoppestedMTid>();
@@ -99,7 +99,7 @@ public class Bus : MysqlObject
         Rute = new Rute();
         Rute.RuteID = Convert.ToInt32(Row.Values[7]);            // Ruten her mangler at være korrekt
         Rute.GetUpdate();
-        string[] StoppeSteder = Row.Values[8].Split(',');
+        string[] StoppeSteder = Row.Values[8].Replace(".",",").Split(',');
         int i = 0;
         foreach (var stop in Rute.StoppeSteder)
         {
@@ -110,8 +110,10 @@ public class Bus : MysqlObject
             string[] tider = times.Split(';');
             foreach (var singleTid in tider)
             {
+
                 // 11:30
-                if (singleTid != "")
+                Regex TidRegex = new Regex("^[0-9]{2}:[0-9]{2}$");
+                if (TidRegex.IsMatch(singleTid))
                 {
                     AfTidList.Add(new AfPåTidCombi(new Tidspunkt(singleTid)));
 

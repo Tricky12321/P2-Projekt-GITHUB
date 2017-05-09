@@ -60,6 +60,12 @@ public static class ServerCommands
                 //Mysql.RunTest();
                 // Laver en ny tråd til at køre den virtuelle klient i, dette sikre at serveren køre som den skal og ikke bliver langsom. 
                 break;
+            case "testbus":
+                Bus Testbus = new Bus();
+                Testbus.BusID = 1;
+                Testbus.GetUpdate();
+                SimBus TestBusSim = new SimBus(Testbus);
+                break;
             case "realclient":
                 Program.TestRealClient();
                 break;
