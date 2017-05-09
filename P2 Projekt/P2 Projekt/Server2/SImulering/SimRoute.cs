@@ -40,7 +40,7 @@ namespace ProgramTilBusselskab
                 }
                 else
                 {
-                    throw new Exception("Ukendt punkt");
+                    // throw new Exception("Ukendt punkt");
                 }
             }
             route = new GMapRoute(direction, $"{routeName}");

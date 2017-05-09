@@ -11,7 +11,7 @@ public class Bus : NetworkObject
     public string busName;
     public int BusID;
     public GPS placering;
-    int _passengersTotal;
+    public int PassengersTotal;
     public int CapacitySitting;
     public int CapacityStanding;
     public Rute Rute;
