@@ -14,6 +14,8 @@ namespace AndroidApp
     [Activity(Label = "SmartBus")]
     public class BusResults : Activity
     {
+        public static List<Bus> listWithBusses = new List<Bus>();
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,13 +30,11 @@ namespace AndroidApp
 
             bool FiltrerEfterBusNavn;
             var busCelleListe = new List<BusResultsCell>();
-            var ServerBusListe = new List<Bus>();
+            var ServerBusListe = HentBusser();
             var sorteretBusListe = new List<Bus>();
 
-
-            // noget magi fra serveren med _stopOgTid
+            
             // ServerBusListe = magi;
-
 
             if (_stopOgTid.Count == 4)
                 FiltrerEfterBusNavn = true;
@@ -47,30 +47,44 @@ namespace AndroidApp
              * Derefter sorterer vi de busser fra, som ikke holder ved stoppestedet inden for en halv time af det indtastede tidspunkt */
             sorteretBusListe = ServerBusListe.
                 Where(bus => bus.busPassagerDataListe.
-                Any(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0])).ToList();
-            sorteretBusListe = sorteretBusListe.
-                Where(bus => bus.busPassagerDataListe.
-                Any(StopMTid => StopMTid.AfPåTidComb.
+                Any(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0] && StopMTid.AfPåTidComb.
                 Any(afpåtidcombi => AnkomstInterval(afpåtidcombi.Tidspunkt, IntervalStart, IntervalSlut)))).ToList();
+
 
             foreach (Bus bus in sorteretBusListe)
             {
-                if (FiltrerEfterBusNavn)
+                foreach (var StopMTid in bus.busPassagerDataListe.Where(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0]))
                 {
-                    if (bus.busName == _stopOgTid[3])
+                    foreach (var TidCombi in StopMTid.AfPåTidComb)
                     {
-                        busCelleListe.Add(new BusResultsCell(bus, Tidspunkt));
+                        if(AnkomstInterval(TidCombi.Tidspunkt, IntervalStart, IntervalSlut))
+                        {
+                            if (FiltrerEfterBusNavn)
+                            {
+                                if (bus.busName == _stopOgTid[3])
+                                {
+                                    busCelleListe.Add(new BusResultsCell(bus, TidCombi.Tidspunkt));
+                                }
+                            }
+                            else
+                            {
+                                busCelleListe.Add(new BusResultsCell(bus, TidCombi.Tidspunkt));
+                            }
+                            Console.WriteLine("Vi prøver at tilføje en bus - inderst!");
+                        }
+                        Console.WriteLine("Vi prøver at tilføje en bus! - næstinderst");
+
                     }
+                    Console.WriteLine("Vi prøver at tilføje en bus! - næstyderst");
+
                 }
-                else
-                {
-                    busCelleListe.Add(new BusResultsCell(bus, Tidspunkt));
-                }
+                Console.WriteLine("Vi prøver at tilføje en bus! - banan");
+
             }
 
 
             //BusResultsCell[]busliste = new BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
-            
+
             Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
             HomeButton.Click += (object sender, EventArgs e) =>
             {
@@ -99,6 +113,19 @@ namespace AndroidApp
             Tidspunkt = (timer * 60 * 60 + minutter * 60);
             IntervalStart = Tidspunkt - (30 * 60);
             IntervalSlut = Tidspunkt + (30 * 60);
+        }
+
+        public List<Bus> HentBusser()
+        {
+            RealClient NewRealClient = new RealClient();
+            List<NetworkObject> BusserFraServer = NewRealClient.RequestAllWhere(ObjectTypes.Bus, "None");
+            List<Bus> Busser = new List<Bus>();
+
+            foreach (var obj in BusserFraServer)
+            {
+                Busser.Add(obj as Bus);
+            }
+            return Busser;
         }
     }
 }
