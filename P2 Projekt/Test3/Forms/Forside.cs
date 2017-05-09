@@ -307,6 +307,7 @@ namespace ProgramTilBusselskab
 
         private void btn_visBusPåRute_Click(object sender, EventArgs e)
         {
+
             Bus ValgtBus = (Bus)combox_vælgBus.SelectedItem;
             RealClient Client = new RealClient();
 
