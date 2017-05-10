@@ -36,9 +36,9 @@ public static class Program
 
     public static void TestRealClient()
     {
-        Rute BusRute = new Rute();
-        BusRute.RuteID = 1;
-        BusRute.GetUpdate();
+        //Rute BusRute = new Rute();
+        //BusRute.RuteID = 1;
+        //BusRute.GetUpdate();
         /*
         RealClient TestClient = new RealClient();
         Bus TestBus = new Bus();
@@ -94,36 +94,11 @@ public static class Program
         Server.StartServer(true, true);
     }
 
-    public static void RunBusTest()
-    {
-        Bus NyBus = new Bus();
-        NyBus.BusID = 123;
-        NyBus.GetUpdate();
-        NyBus.BusID = 1;
-        RealClient NewClient = new RealClient();
-        NewClient.SendObject(NyBus, typeof(Bus));
-
-    }
-
     public static void RunTest()
     {
         //RunBusTest();
         Utilities.WaitFor(ref Mysql.Connected);
-        JsonTester();
         ServerCommands.WaitForCommand();
     }
 
-    public static void BusTestTing()
-    {
-        Bus TestBus = (Json.Deserialize("")[0] as Bus);
-    }
-
-    public static void JsonTester()
-    {
-        Bus BusObj = new Bus();
-        BusObj.BusID = 9999;
-        BusObj.GetUpdate();
-        string JsonString = Json.Serialize(BusObj);
-
-    }
 }

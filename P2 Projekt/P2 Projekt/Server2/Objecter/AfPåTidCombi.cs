@@ -78,8 +78,8 @@ public class AfPåTidCombi : MysqlObject
         ID = Convert.ToInt32(row.Values[0]);                          
         Afstigninger = Convert.ToInt32(row.Values[1]);                  
         Påstigninger = Convert.ToInt32(row.Values[2]);
-        Påstigninger = Convert.ToInt32(row.Values[3]);
-        Påstigninger = Convert.ToInt32(row.Values[4]);
+        TotalPassagere = Convert.ToInt32(row.Values[3]);
+        MaxCapa = Convert.ToInt32(row.Values[4]);
         Tidspunkt = new Tidspunkt();
         Tidspunkt.hour = Convert.ToInt32(row.Values[5]);
         Tidspunkt.minute = Convert.ToInt32(row.Values[6]);

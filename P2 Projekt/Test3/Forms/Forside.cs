@@ -51,9 +51,21 @@ namespace ProgramTilBusselskab
 
         private void Simulation_Load(object sender, EventArgs e)
         {
+            RealClient BusClient = new RealClient();
+            int downloadedBusses = 0;
+            List<NetworkObject> DatabaseBus;
+            DatabaseBus = BusClient.RequestAllWhere(ObjectTypes.Bus, "None");
+            foreach (var item in DatabaseBus)
+            {
+                Lists.listWithBusses.Add(item as Bus);
+                downloadedBusses++;
+            }
+
+
             int downloadedRoutes = 0;
             RealClient RuteClient = new RealClient();
             List<NetworkObject> AlleRuter = RuteClient.RequestAllWhere(ObjectTypes.Rute, "None");
+
             foreach (var item in AlleRuter)
             {
                 Lists.listWithRoutes.Add((item as Rute));
@@ -63,21 +75,12 @@ namespace ProgramTilBusselskab
             RealClient StoppestederClient = new RealClient();
             int downloadedStops = 0;
             List<NetworkObject> Stoppesteder = StoppestederClient.RequestAllWhere(ObjectTypes.BusStop, "None");
+
             foreach (var item in Stoppesteder)
             {
                 Lists.listWithStops.Add(item as Stoppested);
                 downloadedStops++;
             }
-
-            RealClient BusClient = new RealClient();
-            int downloadedBusses = 0;
-            List<NetworkObject> DatabaseBus = BusClient.RequestAllWhere(ObjectTypes.Bus, "None");
-            foreach (var item in DatabaseBus)
-            {
-                Lists.listWithBusses.Add(item as Bus);
-                downloadedBusses++;
-            }
-
             MessageBox.Show($"Der er blevet hentet: \nBus(ser): {downloadedBusses} \nRute(r): {downloadedRoutes} \nStoppested(er): {downloadedStops} \nHentet fra databasen");
 
             btn_refresh.PerformClick();

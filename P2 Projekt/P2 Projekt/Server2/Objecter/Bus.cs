@@ -16,6 +16,7 @@ public class Bus : MysqlObject
     public int CapacityStanding;
     public Rute Rute;
 
+    public int TotalCapacity => CapacitySitting + CapacityStanding;
     public Bus()
     {
 
