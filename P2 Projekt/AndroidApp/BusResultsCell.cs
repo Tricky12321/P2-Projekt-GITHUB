@@ -21,7 +21,7 @@ namespace AndroidApp
         public BusResultsCell (Bus bus, Tidspunkt tidspunkt, string stoppested)
         {
             BusNavn = bus.busName;
-            Tidspunkt = tidspunkt.hour.ToString() + ':' + tidspunkt.minute.ToString();
+            Tidspunkt = tidspunkt.ToString();
             PasNu = $"Nuværende passagerer: {bus.PassengersTotal} af {bus.CapacitySitting + bus.CapacityStanding}";
             PasForv = $"Forventede passagerer: {"10"} af {bus.CapacitySitting + bus.CapacityStanding}";
             Stoppested = stoppested;

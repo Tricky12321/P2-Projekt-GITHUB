@@ -11,7 +11,7 @@ public class Tidspunkt
 
     public override string ToString()
     {
-        return hour.ToString().PadLeft(2, '0') + " : " + minute.ToString().PadLeft(2, '0');
+        return hour.ToString().PadLeft(2, '0') + ":" + minute.ToString().PadLeft(2, '0');
     }
 }
 
