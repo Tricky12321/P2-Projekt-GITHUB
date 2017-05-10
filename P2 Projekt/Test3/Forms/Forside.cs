@@ -199,8 +199,6 @@ namespace ProgramTilBusselskab
 
                 busOverlay.Markers.Add(busMark);
 
-
-
                 if (chkbox_medRute.Checked)
                 {
                     GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
