@@ -199,7 +199,7 @@ namespace ProgramTilBusselskab
 
                 busOverlay.Markers.Add(busMark);
 
-                gMapsMap.ZoomAndCenterMarkers("busLayer");
+
 
                 if (chkbox_medRute.Checked)
                 {
@@ -226,17 +226,20 @@ namespace ProgramTilBusselskab
                         stoppested.ToolTip.Foreground = Brushes.Black;
                     }
                     gMapsMap.Overlays.Add(stopLayer);
-
+                    gMapsMap.Overlays.Add(busOverlay);
                     gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
                 }
-                gMapsMap.Overlays.Add(busOverlay);
+                else
+                {
+                    gMapsMap.Overlays.Add(busOverlay);
+                    gMapsMap.ZoomAndCenterMarkers("busLayer");
+                }
             }
             catch (NullReferenceException)
             {
                 MessageBox.Show("Bussen har endnu ikke modtaget koordinater.");
             }
         }
-
     }
 }
 

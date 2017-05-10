@@ -39,7 +39,7 @@ public class SimRoute
             }
             else
             {
-                throw new InvalidCastException("Ukendt punkt");
+                //throw new InvalidCastException("Ukendt punkt");
             }
         }
         route = new GMapRoute(direction, $"{routeName}");
