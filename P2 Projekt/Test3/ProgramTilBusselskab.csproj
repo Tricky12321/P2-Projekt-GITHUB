@@ -75,7 +75,6 @@
   <ItemGroup>
     <Compile Include="Class\AfPåTidCombi.cs" />
     <Compile Include="Class\Bus.cs" />
-    <Compile Include="Class\BusPassengersTotalUnderZeroException.cs" />
     <Compile Include="Class\GPS.cs" />
     <Compile Include="Class\Lists.cs" />
     <Compile Include="Forms\OpretBus.cs">

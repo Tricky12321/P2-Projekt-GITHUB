@@ -160,8 +160,6 @@ public class RealClient
     {
         data = "";
         List<byte> Bytes = new List<byte>(1024 * 4);
-        handler.ReceiveTimeout = 5000;
-        handler.SendTimeout = 5000;
         do
         {
             bytes = new byte[1];
