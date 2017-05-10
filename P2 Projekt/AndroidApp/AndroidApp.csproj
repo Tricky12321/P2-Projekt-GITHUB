@@ -124,7 +124,7 @@
     <Compile Include="BusResultsAdapter.cs" />
     <Compile Include="BusResultsCell.cs" />
     <Compile Include="Activities %28Sider%29\BusResults.cs" />
-    <Compile Include="FavoriteBusses.cs" />
+    <Compile Include="Activities %28Sider%29\FavoriteBusses.cs" />
     <Compile Include="Client\RealClient.cs" />
     <Compile Include="Interfaces\NetworkObject.cs" />
     <Compile Include="Objecter\AfPåTidCombi.cs" />

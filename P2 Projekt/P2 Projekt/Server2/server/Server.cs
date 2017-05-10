@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Net.NetworkInformation;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using JsonSerializer;
 
 public enum ServerType
@@ -443,12 +442,7 @@ public class Server
             // An incoming connection needs to be processed.  
             double SizeOfMsg = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
             //PingClient = PingRemote(handler.RemoteEndPoint);
-            Print.PrintCenterColorSingle("Incoming connection from ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
-            Print.PrintCenterColorSingle("R: ", SizeOfMsg.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
-            if (_printData)
-            {
-                Print.WriteLine(data);
-            }
+
             Ping.Stop();
             // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
             response = CheckMessage(data);
@@ -458,11 +452,9 @@ public class Server
             // Laver Response om fra en string til bytes baseret på UTF8
             byte[] msg = Encoding.UTF8.GetBytes(response);
             double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response) / 1024, 2);
-            Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8), ConsoleColor.Green);
-            if (_printData)
-            {
-                Print.WriteLine(response);
-            }
+            Print.PrintCenterColorSingle("Incoming connection from ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
+            Print.PrintCenterColorSingle("R: ", SizeOfMsg.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
+            Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8)+"\n", ConsoleColor.Green);
             // Sender beskeden. 
             handler.Send(msg);
         }
@@ -472,10 +464,10 @@ public class Server
         }
         finally
         {
-            PingTotal.Stop();
+            //PingTotal.Stop();
             // handler.Shutdown(SocketShutdown.Both); //--Skaber problemer på Linux
             handler.Close();
-            Print.PrintColorLine($"Ping: {PingClient} ms | {Ping.ElapsedMilliseconds} ms | {PingObject.ElapsedMilliseconds} ms | {PingTotal.ElapsedMilliseconds} ms", ConsoleColor.Yellow);
+            //Print.PrintColorLine($"Ping: {PingClient} ms | {Ping.ElapsedMilliseconds} ms | {PingObject.ElapsedMilliseconds} ms | {PingTotal.ElapsedMilliseconds} ms", ConsoleColor.Yellow);
         }
     }
 

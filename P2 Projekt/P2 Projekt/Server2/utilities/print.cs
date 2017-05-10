@@ -7,7 +7,7 @@ public static class Print
     {
         PrintColorLine("------------------------------", ConsoleColor.Green);
     }
-    private static readonly object ConsoleWriterLock = new object();
+    public static readonly object ConsoleWriterLock = new object();
     public static void PrintColorLine(string Text, ConsoleColor ForegroundColor)
     {
         PrintColor(Text + "\n", ForegroundColor, ConsoleColor.Black);

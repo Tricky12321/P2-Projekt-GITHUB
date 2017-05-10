@@ -137,8 +137,8 @@ public class Bus : MysqlObject
         Output.Add(placering.xCoordinate.ToString().Replace(",","."));   // 3
         Output.Add(placering.yCoordinate.ToString().Replace(",", "."));  // 4
         Output.Add(PassengersTotal.ToString());                          // 5
-        Output.Add(CapacityStanding.ToString());                         // 6
-        Output.Add(CapacitySitting.ToString());                          // 7
+        Output.Add(CapacitySitting.ToString());                         // 6
+        Output.Add(CapacityStanding.ToString());                          // 7
         //Output.Add(besøgteStop.ToString());                            // 8
         Output.Add(Rute.RuteID.ToString());                              // 9
         StringBuilder StoppeStederTID = new StringBuilder();
@@ -152,7 +152,7 @@ public class Bus : MysqlObject
             {
                     StoppeStederTID.Append(stopmtid.Tidspunkt.SinpleString() + ";");
             }
-            StoppeStederTID.Append("},");
+            StoppeStederTID.Append("}.");
             i++;
         }
         string strtoadd = StoppeStederTID.ToString();

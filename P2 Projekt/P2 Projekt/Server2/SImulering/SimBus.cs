@@ -24,17 +24,18 @@ namespace ServerGPSSimulering
         public int SlutMinut;
 
         public int DrivetimeInSeconds;
-
+        public bool NoDelay = false;
         public double busAvgSpeedMprSec;
 
-        public SimBus(Bus simulatedBus)
+        public day UgeDag;
+
+        public SimBus(Bus simulatedBus, day WeekDay)
         {
+            UgeDag = WeekDay;
+            simulatedBus.GetUpdate();
             SimulatedBus = simulatedBus;
-
             SimulatedRute = new SimRoute(SimulatedBus.Rute, "Simuleringsrute");
-
             int elementerIRute = SimulatedRute.route.Points.Count();
-
             for (int i = 0; i < elementerIRute; ++i)
             {
                 if (i + 1 < elementerIRute)
@@ -54,17 +55,25 @@ namespace ServerGPSSimulering
             busAvgSpeedMprSec = RuteDistance * 1000 / DrivetimeInSeconds;
             Thread BusMovementThread = new Thread(new ThreadStart(BedreBusMovement));
             BusMovementThread.Start();
+            Console.WriteLine("Simlering startet");
         }
 
         private void MoveToStart()
         {
             GPS Start = new GPS();
-            Start.xCoordinate = SimulatedRute.route.Points.First().Lat;
-            Start.yCoordinate = SimulatedRute.route.Points.First().Lng;
-            GPS End = new GPS();
-            End.xCoordinate = SimulatedRute.route.Points.Last().Lat;
-            End.yCoordinate = SimulatedRute.route.Points.Last().Lng;
-            SimulatedBus.placering = Start;
+            int points = SimulatedRute.route.Points.Count();
+            Console.WriteLine($"Points: {points}");
+            if (points > 0)
+            {
+                Start.xCoordinate = SimulatedRute.route.Points.First().Lat;
+                Start.yCoordinate = SimulatedRute.route.Points.First().Lng;
+                SimulatedBus.placering = Start;
+                SimulatedBus.PassengersTotal = new Random().Next(2, 10);
+                Stoppested Stop = SimulatedBus.StoppeStederMTid.First().Stop;
+                Tidspunkt Time = SimulatedBus.StoppeStederMTid.First().AfPåTidComb.First().Tidspunkt;
+                AfPåTidCombi NewAfPåTidComb = new AfPåTidCombi(0, SimulatedBus.PassengersTotal, Stop, SimulatedBus, UgeDag, Time, SimulatedBus.PassengersTotal, SimulatedBus.CapacitySitting+SimulatedBus.CapacityStanding);
+                NewAfPåTidComb.UploadToDatabase();
+            }
             SimulatedBus.UploadToDatabase();
         }
 
@@ -106,7 +115,7 @@ namespace ServerGPSSimulering
                         SimulatedBus.UploadToDatabase();
                         if (timeBetweenPointsMilSec / steps > 0f)
                         {
-                            Thread.Sleep(timeBetweenPointsMilSec / steps);
+                            if (!NoDelay) { Thread.Sleep(timeBetweenPointsMilSec / steps); }
                         }
                     }
                     if (SimulatedBus.StoppeStederMTid.Count > j)
@@ -120,14 +129,28 @@ namespace ServerGPSSimulering
                         {
                             j++;
 
-                            int RngPass = RandomPassagerer();
-                            if (SimulatedBus.PassengersTotal + RngPass < 0)
+                            int RngPassPÅ = new Random().Next(2, 10);
+                            int RngPassAF = new Random().Next(0, 5);
+                            
+                            if (SimulatedBus.PassengersTotal + (RngPassPÅ-RngPassAF) >= 0)
                             {
-                                SimulatedBus.PassengersTotal = 0;
+                                Stoppested Stop = SimulatedBus.StoppeStederMTid[j].Stop;
+                                Tidspunkt Time = SimulatedBus.StoppeStederMTid[j].AfPåTidComb.First().Tidspunkt;
+                                SimulatedBus.PassengersTotal += RngPassPÅ;
+                                SimulatedBus.PassengersTotal -= RngPassAF;
+                                AfPåTidCombi NewAfPåTidComb = new AfPåTidCombi(0, SimulatedBus.PassengersTotal, Stop, SimulatedBus, UgeDag, Time, SimulatedBus.PassengersTotal, SimulatedBus.CapacitySitting + SimulatedBus.CapacityStanding);
+                                NewAfPåTidComb.UploadToDatabase();
+                                SimulatedBus.UploadToDatabase();
                             }
                             else
                             {
-                                SimulatedBus.PassengersTotal += RngPass;
+                                Stoppested Stop = SimulatedBus.StoppeStederMTid[j].Stop;
+                                Tidspunkt Time = SimulatedBus.StoppeStederMTid[j].AfPåTidComb.First().Tidspunkt;
+                                SimulatedBus.PassengersTotal += RngPassPÅ;
+                                SimulatedBus.PassengersTotal -= (RngPassAF-RngPassPÅ);
+                                AfPåTidCombi NewAfPåTidComb = new AfPåTidCombi(0, SimulatedBus.PassengersTotal, Stop, SimulatedBus, UgeDag, Time, SimulatedBus.PassengersTotal, SimulatedBus.CapacitySitting + SimulatedBus.CapacityStanding);
+                                NewAfPåTidComb.UploadToDatabase();
+                                SimulatedBus.UploadToDatabase();
                             }
                             Debug.WriteLine("Stop:" + j);
                         }
@@ -138,6 +161,7 @@ namespace ServerGPSSimulering
                     SimulatedBus.placering.xCoordinate = SimulatedRute.route.Points[i].Lat;
                     SimulatedBus.placering.yCoordinate = SimulatedRute.route.Points[i].Lng;
                     SimulatedBus.UploadToDatabase();
+
                 }
 
             }
