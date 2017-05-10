@@ -52,8 +52,95 @@ namespace ServerGPSSimulering
             DrivetimeInSeconds = ((SlutHour - StartHour) * 60 + SlutMinut - StartMinut) * 60;
 
             busAvgSpeedMprSec = RuteDistance * 1000 / DrivetimeInSeconds;
-            Thread BusMovementThread = new Thread(new ThreadStart(BusMovement));
+            Thread BusMovementThread = new Thread(new ThreadStart(BedreBusMovement));
             BusMovementThread.Start();
+        }
+
+        private void MoveToStart()
+        {
+            GPS Start = new GPS();
+            Start.xCoordinate = SimulatedRute.route.Points.First().Lat;
+            Start.yCoordinate = SimulatedRute.route.Points.First().Lng;
+            GPS End = new GPS();
+            End.xCoordinate = SimulatedRute.route.Points.Last().Lat;
+            End.yCoordinate = SimulatedRute.route.Points.Last().Lng;
+            SimulatedBus.placering = Start;
+            SimulatedBus.UploadToDatabase();
+        }
+
+        public void BedreBusMovement()
+        {
+            int ElementerIRute = SimulatedRute.route.Points.Count();
+            int steps = 10;
+            double distanceBetweenPoints;
+            double timeBetweenPoints;
+            int timeBetweenPointsMilSec;
+            int j = 0;
+            // Starter med at sætte bussen til at være ved det første punkt.
+            MoveToStart();
+            for (int i = 0; i < ElementerIRute; i++)
+            {
+                if (i + 1 < ElementerIRute)
+                {
+                    distanceBetweenPoints = DistanceBetweenPoints(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng, SimulatedRute.route.Points[i + 1].Lat, SimulatedRute.route.Points[i + 1].Lng) * 1000;
+
+                    timeBetweenPoints = distanceBetweenPoints / busAvgSpeedMprSec;
+                    timeBetweenPointsMilSec = (int)(timeBetweenPoints * 1000);
+
+                    GPS FirstPoint = new GPS();
+                    FirstPoint.xCoordinate = SimulatedRute.route.Points[i].Lat;
+                    FirstPoint.yCoordinate = SimulatedRute.route.Points[i].Lng;
+                    GPS NextPoint = new GPS();
+                    NextPoint.xCoordinate = SimulatedRute.route.Points[i + 1].Lat;
+                    NextPoint.yCoordinate = SimulatedRute.route.Points[i + 1].Lng;
+                    // for steps = 10, vil kordinaterne for single point, være 1/10 af afstanden mellem 2 punkter
+                    GPS SinglePoint = new GPS();
+                    SinglePoint.xCoordinate = (FirstPoint.xCoordinate - NextPoint.xCoordinate) / steps;
+                    SinglePoint.yCoordinate = (FirstPoint.yCoordinate - NextPoint.yCoordinate) / steps;
+                    for (int k = 0; k < steps; k++)
+                    {
+                        GPS NyBusLok = SimulatedBus.placering;
+                        NyBusLok.xCoordinate -= SinglePoint.xCoordinate;
+                        NyBusLok.yCoordinate -= SinglePoint.yCoordinate;
+                        SimulatedBus.placering = NyBusLok;
+                        SimulatedBus.UploadToDatabase();
+                        if (timeBetweenPointsMilSec / steps > 0f)
+                        {
+                            Thread.Sleep(timeBetweenPointsMilSec / steps);
+                        }
+                    }
+                    if (SimulatedBus.StoppeStederMTid.Count > j)
+                    {
+                        bool AtStop = SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate < SimulatedRute.route.Points[i].Lat + 0.001 &&
+                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate > SimulatedRute.route.Points[i].Lat - 0.001 &&
+                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate < SimulatedRute.route.Points[i].Lng + 0.001 &&
+                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate > SimulatedRute.route.Points[i].Lng - 0.001;
+
+                        if (AtStop)
+                        {
+                            j++;
+
+                            int RngPass = RandomPassagerer();
+                            if (SimulatedBus.PassengersTotal + RngPass < 0)
+                            {
+                                SimulatedBus.PassengersTotal = 0;
+                            }
+                            else
+                            {
+                                SimulatedBus.PassengersTotal += RngPass;
+                            }
+                            Debug.WriteLine("Stop:" + j);
+                        }
+                    }
+                }
+                else
+                {
+                    SimulatedBus.placering.xCoordinate = SimulatedRute.route.Points[i].Lat;
+                    SimulatedBus.placering.yCoordinate = SimulatedRute.route.Points[i].Lng;
+                    SimulatedBus.UploadToDatabase();
+                }
+
+            }
         }
 
         public void BusMovement()
@@ -78,7 +165,7 @@ namespace ServerGPSSimulering
                     SimulatedBus.placering = placeringPlaceholder;
 
                     SendToServer();
-                    
+
                     distanceBetweenPoints = DistanceBetweenPoints(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng, SimulatedRute.route.Points[i + 1].Lat, SimulatedRute.route.Points[i + 1].Lng);
                     distanceBetweenPoints *= 1000;
 

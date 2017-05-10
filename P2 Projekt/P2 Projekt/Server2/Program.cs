@@ -109,11 +109,21 @@ public static class Program
     {
         //RunBusTest();
         Utilities.WaitFor(ref Mysql.Connected);
+        JsonTester();
         ServerCommands.WaitForCommand();
     }
 
     public static void BusTestTing()
     {
         Bus TestBus = (Json.Deserialize("")[0] as Bus);
+    }
+
+    public static void JsonTester()
+    {
+        Bus BusObj = new Bus();
+        BusObj.BusID = 9999;
+        BusObj.GetUpdate();
+        string JsonString = Json.Serialize(BusObj);
+
     }
 }

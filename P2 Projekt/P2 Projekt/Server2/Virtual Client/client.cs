@@ -26,7 +26,7 @@ public class Client
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, (int)_port);
 
             Socket sender;
-            sender = new Socket(IPHandler.IsIPV6(ipAddress) ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            sender = new Socket(IPHandler.IsIPV6(ipAddress.ToString()) ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Create a TCP/IP  socket.  
             // Connect the socket to the remote endpoint. Catch any errors.
 
