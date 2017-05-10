@@ -195,7 +195,20 @@ namespace ProgramTilBusselskab
                     new PointLatLng(bus.placering.xCoordinate, bus.placering.yCoordinate),
                     Test3.Properties.Resources.bus);
 
-                busMark.ToolTipText = bus.PassengersTotal.ToString();
+                busMark.ToolTipText = bus.PassengersTotal.ToString() + " af " + (bus.CapacitySitting + bus.CapacityStanding) + "\nStåpladser: " + bus.CapacityStanding + " og siddeplader " + bus.CapacitySitting;
+
+                if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.PassengersTotal)
+                {
+                    busMark.ToolTip.Fill = Brushes.Red;
+                }
+                else if ((bus.CapacitySitting + bus.CapacityStanding) * 0.6 < bus.PassengersTotal)
+                {
+                    busMark.ToolTip.Fill = Brushes.Yellow;
+                }
+                else
+                {
+                    busMark.ToolTip.Fill = Brushes.Green;
+                }
 
                 busOverlay.Markers.Add(busMark);
 
@@ -217,7 +230,7 @@ namespace ProgramTilBusselskab
                         stopLayer.Markers.Add(stoppested);
 
                         //Indsætter tekst med antal passagerer
-                        stoppested.ToolTipText = stop.StoppestedName;
+                        stoppested.ToolTipText = stop.StoppestedName + " " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().Tidspunkt.ToString() + "\nForventede antal påstigninger: ";
 
                         //Bestemmer farverne på tekstbobble
                         stoppested.ToolTip.Fill = Brushes.White;

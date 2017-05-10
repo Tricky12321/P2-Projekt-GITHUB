@@ -201,7 +201,7 @@ namespace ServerGPSSimulering
                     }
                     else
                     {
-                        //Debug.WriteLine("Alle stoppesteder er besøgt");
+                        Debug.WriteLine("Alle stoppesteder er besøgt");
                     }
                 }
 
