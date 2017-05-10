@@ -217,7 +217,35 @@ namespace ServerGPSSimulering
         private int RandomPassagerer()
         {
             Random rand = new Random();
-            return rand.Next(-5, 10);
+            Random rand2 = new Random();
+            int negPosPas = rand.Next(1, 10);
+
+            switch (negPosPas)
+            {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    {
+                        return rand2.Next(-3, 3);
+                    }
+                case 5:
+                case 6:
+                case 7:
+                    {
+                        return rand2.Next(-7, 7);
+                    }
+                case 8:
+                case 9:
+                    {
+                        return rand2.Next(-10, 10);
+                    }
+                case 10:
+                    {
+                        return rand2.Next(-15, 15);
+                    }
+            }
+            return 0;
         }
 
         private Bus SendToServer()
