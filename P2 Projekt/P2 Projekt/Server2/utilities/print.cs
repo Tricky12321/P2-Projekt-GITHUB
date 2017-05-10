@@ -43,7 +43,6 @@ public static class Print
             Console.Write(Text);
             Console.ResetColor();
         }
-        
     }
 
     public static void PrintSuccessFailed(bool Value)
@@ -75,6 +74,16 @@ public static class Print
             Console.Write($"{First}");
             PrintColor(ColorText, Color);
             Console.WriteLine($"{Second}");
+        }
+    }
+
+    public static void PrintCenterColorSingle(string First, string ColorText, string Second, ConsoleColor Color)
+    {
+        lock (ConsoleWriterLock)
+        {
+            Console.Write($"{First}");
+            PrintColor(ColorText, Color);
+            Console.Write($"{Second}");
         }
     }
 }

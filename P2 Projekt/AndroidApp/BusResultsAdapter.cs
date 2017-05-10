@@ -38,10 +38,12 @@ namespace AndroidApp
         {
             Android.Views.View view = convertView; // re-use an existing view, if one is available
             if (view == null) // otherwise create a new one
+            {
                 view = context.LayoutInflater.Inflate(Resource.Layout.BusResultCellLayout, null);
+            }
             view.FindViewById<TextView>(Resource.Id.text1).Text = Busser[position].ToString();
             view.FindViewById<ImageView>(Resource.Id.KapacitetIkon).SetImageResource(Busser[position].KapacitetStatusBillede);
-
+            // Lav en funktion til det her \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
             view.FindViewById<Android.Widget.Button>(Resource.Id.FavoritKnap).Click += (object sender, EventArgs e) => 
             {
                 Favorite tempbus = new Favorite(Busser[position].BusNavn, Busser[position].Stoppested, Busser[position].Tidspunkt);
