@@ -137,11 +137,9 @@
     <Compile Include="Objecter\Test.cs" />
     <Compile Include="Objecter\Tidspunkt.cs" />
     <Compile Include="TimePicker.cs" />
-    <Compile Include="Client\client.cs" />
     <Compile Include="Activities %28Sider%29\MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Client\TestObject.cs" />
     <Compile Include="Utilities\ArrayHandler.cs" />
     <Compile Include="Utilities\DeSerializeThreadClass.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
