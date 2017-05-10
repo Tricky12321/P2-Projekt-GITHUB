@@ -100,33 +100,40 @@ namespace ProgramTilBusselskab
 
         private void btn_visPåKort_Click(object sender, EventArgs e)
         {
-            GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
-            SimRoute placeholderRute = new SimRoute((Rute)combox_ruterTilVisning.SelectedItem, "Placeholder Rute");
-            routesOverlay.Routes.Add(placeholderRute.route);
-            gMapsMap.Overlays.Add(routesOverlay);
-
-            if (chkbox_toggleStoppesteder.Checked == true)
+            if (combox_ruterTilVisning.SelectedItem != null)
             {
-                GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
+                GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
+                SimRoute placeholderRute = new SimRoute((Rute)combox_ruterTilVisning.SelectedItem, "Placeholder Rute");
+                routesOverlay.Routes.Add(placeholderRute.route);
+                gMapsMap.Overlays.Add(routesOverlay);
 
-                foreach (Stoppested stop in ((Rute)combox_ruterTilVisning.SelectedItem).StoppeSteder)
+                if (chkbox_toggleStoppesteder.Checked == true)
                 {
-                    GMapMarker stoppested =
-                    new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
-                    new PointLatLng(stop.StoppestedLok.xCoordinate, stop.StoppestedLok.yCoordinate),
-                    Test3.Properties.Resources.busSkilt);
-                    stopLayer.Markers.Add(stoppested);
+                    GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
 
-                    //Indsætter tekst med antal passagerer
-                    stoppested.ToolTipText = stop.StoppestedName;
+                    foreach (Stoppested stop in ((Rute)combox_ruterTilVisning.SelectedItem).StoppeSteder)
+                    {
+                        GMapMarker stoppested =
+                        new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                        new PointLatLng(stop.StoppestedLok.xCoordinate, stop.StoppestedLok.yCoordinate),
+                        Test3.Properties.Resources.busSkilt);
+                        stopLayer.Markers.Add(stoppested);
 
-                    //Bestemmer farverne på tekstbobble
-                    stoppested.ToolTip.Fill = Brushes.White;
-                    stoppested.ToolTip.Foreground = Brushes.Black;
+                        //Indsætter tekst med antal passagerer
+                        stoppested.ToolTipText = stop.StoppestedName;
+
+                        //Bestemmer farverne på tekstbobble
+                        stoppested.ToolTip.Fill = Brushes.White;
+                        stoppested.ToolTip.Foreground = Brushes.Black;
+                    }
+                    gMapsMap.Overlays.Add(stopLayer);
                 }
-                gMapsMap.Overlays.Add(stopLayer);
+                gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
             }
-            gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
+            else
+            {
+                MessageBox.Show("Rute ikke valgt.");
+            }
         }
 
         private void btn_clearMap_Click(object sender, EventArgs e)
@@ -191,25 +198,45 @@ namespace ProgramTilBusselskab
                 busMark.ToolTipText = bus.PassengersTotal.ToString();
 
                 busOverlay.Markers.Add(busMark);
-                gMapsMap.Overlays.Add(busOverlay);
 
                 gMapsMap.ZoomAndCenterMarkers("busLayer");
+
+                if (chkbox_medRute.Checked)
+                {
+                    GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
+                    SimRoute placeholderRute = new SimRoute(bus.Rute, "Placeholder Rute");
+                    routesOverlay.Routes.Add(placeholderRute.route);
+                    gMapsMap.Overlays.Add(routesOverlay);
+
+                    GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
+
+                    foreach (Stoppested stop in bus.Rute.StoppeSteder)
+                    {
+                        GMapMarker stoppested =
+                        new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                        new PointLatLng(stop.StoppestedLok.xCoordinate, stop.StoppestedLok.yCoordinate),
+                        Test3.Properties.Resources.busSkilt);
+                        stopLayer.Markers.Add(stoppested);
+
+                        //Indsætter tekst med antal passagerer
+                        stoppested.ToolTipText = stop.StoppestedName;
+
+                        //Bestemmer farverne på tekstbobble
+                        stoppested.ToolTip.Fill = Brushes.White;
+                        stoppested.ToolTip.Foreground = Brushes.Black;
+                    }
+                    gMapsMap.Overlays.Add(stopLayer);
+
+                    gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
+                }
+                gMapsMap.Overlays.Add(busOverlay);
             }
             catch (NullReferenceException)
             {
                 MessageBox.Show("Bussen har endnu ikke modtaget koordinater.");
             }
-
-            if (chkbox_medRute.Checked)
-            {
-                GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
-                SimRoute placeholderRute = new SimRoute(bus.Rute, "Placeholder Rute");
-                routesOverlay.Routes.Add(placeholderRute.route);
-                gMapsMap.Overlays.Add(routesOverlay);
-
-                gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
-            }
         }
+
     }
 }
 
