@@ -16,8 +16,6 @@ public enum ServerType
 
 public class Server
 {
-    private bool oneliner = true;
-
     private bool _printData = false;
 
     private uint _port;
@@ -62,7 +60,7 @@ public class Server
     {
         foreach (IPAddress IP in IPs)
         {
-            if (IPHandler.IsIPV4(IP))
+            if (IPHandler.IsIPV4(IP.ToString()))
             {
                 return IP;
             }
@@ -445,8 +443,8 @@ public class Server
             // An incoming connection needs to be processed.  
             double SizeOfMsg = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
             //PingClient = PingRemote(handler.RemoteEndPoint);
-            Print.PrintCenterColorSingle("Incomming connection from ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
-            Print.PrintCenterColorSingle("Received: ", SizeOfMsg.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
+            Print.PrintCenterColorSingle("Incoming connection from ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
+            Print.PrintCenterColorSingle("R: ", SizeOfMsg.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
             if (_printData)
             {
                 Print.WriteLine(data);
@@ -460,7 +458,7 @@ public class Server
             // Laver Response om fra en string til bytes baseret på UTF8
             byte[] msg = Encoding.UTF8.GetBytes(response);
             double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response) / 1024, 2);
-            Print.PrintCenterColorSingle("Sent: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8), ConsoleColor.Green);
+            Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8), ConsoleColor.Green);
             if (_printData)
             {
                 Print.WriteLine(response);

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidApp", "AndroidApp\An
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgramTilBusselskab", "Test3\ProgramTilBusselskab.csproj", "{77C03F7C-392D-4530-A366-C63DBE307D85}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTests", "P2 Projekt\ServerTests\ServerTests.csproj", "{FD748D11-7949-4633-AA71-75308A542945}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{77C03F7C-392D-4530-A366-C63DBE307D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77C03F7C-392D-4530-A366-C63DBE307D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77C03F7C-392D-4530-A366-C63DBE307D85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD748D11-7949-4633-AA71-75308A542945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD748D11-7949-4633-AA71-75308A542945}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD748D11-7949-4633-AA71-75308A542945}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD748D11-7949-4633-AA71-75308A542945}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

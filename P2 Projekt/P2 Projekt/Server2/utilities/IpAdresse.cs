@@ -3,12 +3,12 @@ using System;
 
 public static class IPHandler
 {
-    public static bool IsIPV4(IPAddress IP)
+    public static bool IsIPV4(string IP)
     {
         return (IP.ToString().Contains(".") && !IP.ToString().Contains(":"));
     }
 
-    public static bool IsIPV6(IPAddress IP)
+    public static bool IsIPV6(string IP)
     {
         return (IP.ToString().Contains(":") && !IP.ToString().Contains("."));
     }
@@ -17,7 +17,7 @@ public static class IPHandler
     {
         foreach (IPAddress IP in IPs)
         {
-            if (IsIPV4(IP))
+            if (IsIPV4(IP.ToString()))
             {
                 return IP;
             }
@@ -29,7 +29,7 @@ public static class IPHandler
     {
         foreach (IPAddress IP in IPs)
         {
-            if (IsIPV6(IP))
+            if (IsIPV6(IP.ToString()))
             {
                 return IP;
             }
