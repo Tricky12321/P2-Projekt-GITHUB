@@ -4,30 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+public enum day { mandag = 1, tirsdag = 2, onsdag = 3, torsdag = 4, fredag = 5, lørdag = 6, søndag = 7 }
+
+
 public class AfPåTidCombi : MysqlObject
 {
     public Tidspunkt Tidspunkt;
-
     public int ID;
-    public int afstigninger;
-    public int påstigninger;
-    public DateTime datetime;
-    public enum day { mandag = 1, tirsdag, onsdag, torsdag, fredag, lørdag, søndag}
-    public Stoppested stop;
-    public Bus bus;
-
+    public int Afstigninger;
+    public int Påstigninger;
+    public day UgeDag;
+    public Stoppested Stop;
+    public Bus Bus;
+    public int TotalPassagere;
+    public int MaxCapa;
     public AfPåTidCombi(Tidspunkt tidspunkt)
     {
         Tidspunkt = tidspunkt;
     }
 
-    public AfPåTidCombi(int afstig, int påstig, Stoppested stoppested, Bus bussen, string dayOfWeek)
+    public AfPåTidCombi(int afstig, int påstig, Stoppested stoppested, Bus bussen, day dayOfWeek, Tidspunkt tidspunkt, int Total, int Max)
     {
-        afstigninger = afstig;
-        påstigninger = påstig;
-        stop = stoppested;
-        bus = bussen;
-        
+        Afstigninger = afstig;
+        Påstigninger = påstig;
+        Stop = stoppested;
+        Bus = bussen;
+        Tidspunkt = tidspunkt;
+        UgeDag = dayOfWeek;
+        TotalPassagere = Total;
+        MaxCapa = Max;
+
     }
 
     public AfPåTidCombi() { }
@@ -70,32 +76,35 @@ public class AfPåTidCombi : MysqlObject
     public void Update(Row row)
     {
         ID = Convert.ToInt32(row.Values[0]);                          
-        afstigninger = Convert.ToInt32(row.Values[1]);                  
-        påstigninger = Convert.ToInt32(row.Values[2]);
-        datetime = DateTime.Now;
-        datetime = Convert.ToDateTime(row.Values[3]);
-        stop = new Stoppested();
-        stop.StoppestedID = Convert.ToInt32(row.Values[4]);
-        stop.GetUpdate();
-        bus = new Bus();
-        bus.BusID = Convert.ToInt32(row.Values[5]);
-        bus.GetUpdate();
-
-        /*
+        Afstigninger = Convert.ToInt32(row.Values[1]);                  
+        Påstigninger = Convert.ToInt32(row.Values[2]);
+        Påstigninger = Convert.ToInt32(row.Values[3]);
+        Påstigninger = Convert.ToInt32(row.Values[4]);
         Tidspunkt = new Tidspunkt();
-        Tidspunkt.hour = Convert.ToInt32(TableContent.RowData[0].Values[3]);
-        Tidspunkt.minute = Convert.ToInt32(TableContent.RowData[0].Values[4])*/
+        Tidspunkt.hour = Convert.ToInt32(row.Values[5]);
+        Tidspunkt.minute = Convert.ToInt32(row.Values[6]);
+        UgeDag = (day)Convert.ToInt32(row.Values[7]);
+        Stop = new Stoppested();
+        Stop.StoppestedID = Convert.ToInt32(row.Values[8]);
+        Stop.GetUpdate();
+        Bus = new Bus();
+        Bus.BusID = Convert.ToInt32(row.Values[9]);
+        Bus.GetUpdate();
     }
 
     public override string[] GetValues()
     {
         List<string> Output = new List<string>();
-        Output.Add(ID.ToString());
-        Output.Add(afstigninger.ToString());
-        Output.Add(påstigninger.ToString());
-        Output.Add(datetime.ToString());
-        Output.Add(stop.ToString());
-        Output.Add(bus.ToString());
+        Output.Add("NULL");
+        Output.Add(Afstigninger.ToString());
+        Output.Add(Påstigninger.ToString());
+        Output.Add(TotalPassagere.ToString());
+        Output.Add(MaxCapa.ToString());
+        Output.Add(Tidspunkt.hour.ToString());
+        Output.Add(Tidspunkt.minute.ToString());
+        Output.Add(Convert.ToInt32(UgeDag).ToString());
+        Output.Add(Stop.StoppestedID.ToString());
+        Output.Add(Bus.BusID.ToString());
 
         return Output.ToArray();
     }
