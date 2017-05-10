@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.gMapsMap = new GMap.NET.WindowsForms.GMapControl();
             this.btn_opretBus = new System.Windows.Forms.Button();
             this.btn_opretStoppested = new System.Windows.Forms.Button();
@@ -41,6 +42,7 @@
             this.btn_visBusPåRute = new System.Windows.Forms.Button();
             this.combox_vælgBus = new System.Windows.Forms.ComboBox();
             this.chkbox_medRute = new System.Windows.Forms.CheckBox();
+            this.timer_UpdateMap = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // gMapsMap
@@ -197,6 +199,11 @@
             this.chkbox_medRute.Text = "Vis rute sammen med bus";
             this.chkbox_medRute.UseVisualStyleBackColor = true;
             // 
+            // timer_UpdateMap
+            // 
+            this.timer_UpdateMap.Interval = 5000;
+            this.timer_UpdateMap.Tick += new System.EventHandler(this.timer_UpdateMap_Tick);
+            // 
             // Simulation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -240,6 +247,7 @@
         private System.Windows.Forms.Button btn_visBusPåRute;
         private System.Windows.Forms.ComboBox combox_vælgBus;
         private System.Windows.Forms.CheckBox chkbox_medRute;
+        private System.Windows.Forms.Timer timer_UpdateMap;
     }
 }
 
