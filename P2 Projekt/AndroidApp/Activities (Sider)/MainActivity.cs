@@ -46,7 +46,7 @@ namespace AndroidApp
             UpdateDisplay(hours, minutes);
         }
 
-        public string[] GetStoppesteder()
+        private string[] GetStoppesteder()
         {
             RealClient NewRealClient = new RealClient();
             List<NetworkObject> StoppestederFraServer = NewRealClient.RequestAllWhere(ObjectTypes.BusStop,"");
@@ -68,13 +68,13 @@ namespace AndroidApp
         DateTime CurrentTime;
         
         /* Rejsetidspunkt-metoder */
-        void ShowTimePickerDialog()
+        private void ShowTimePickerDialog()
         {
             var dialog = new TimePicker(this, hours, minutes, this);
             dialog.Show(FragmentManager, null);
         }
 
-        void ShowResultsActivity()
+        private void ShowResultsActivity()
         {
             List<string> stopOgTid = new List<string>() { StoppestedInputString, hours.ToString(), minutes.ToString() };
             var intent = new Intent(this, typeof(BusResults));
@@ -82,7 +82,7 @@ namespace AndroidApp
             StartActivity(intent);
         }
 
-        void ShowFavoritesActivity()
+        private void ShowFavoritesActivity()
         {
             var intent = new Intent(this, typeof(FavoriteBusses));
             StartActivity(intent);
@@ -94,8 +94,8 @@ namespace AndroidApp
             minutes = minute;
             UpdateDisplay(hourOfDay, minute);
         }
-        
-        void UpdateDisplay(int selectedHours, int selectedMinutes)
+
+        private void UpdateDisplay(int selectedHours, int selectedMinutes)
         {
             if (selectedHours < 10 || selectedMinutes < 10)
             {

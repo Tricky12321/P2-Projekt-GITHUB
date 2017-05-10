@@ -14,16 +14,12 @@ namespace AndroidApp
     [Activity(Label = "SmartBus")]
     public class BusResults : Activity
     {
-        public static List<Bus> listWithBusses = new List<Bus>();
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Results);
             
-
             IList<string> _stopOgTid = Intent.Extras.GetStringArrayList("stopOgTid") ?? new string[0];
-
 
             int IntervalStart, IntervalSlut, Tidspunkt;
             Interval(_stopOgTid[1], _stopOgTid[2], out IntervalStart, out IntervalSlut, out Tidspunkt);
@@ -72,9 +68,6 @@ namespace AndroidApp
                 }
             }
 
-
-            //BusResultsCell[]busliste = new BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
-
             Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
             HomeButton.Click += (object sender, EventArgs e) =>
             {
@@ -89,7 +82,7 @@ namespace AndroidApp
         private bool AnkomstInterval(Tidspunkt tidspunkt, int IntervalStart, int IntervalSlut)
         {
             int Tidspunkt = (tidspunkt.hour * 60 * 60 + tidspunkt.minute * 60);
-            if (Tidspunkt > IntervalStart && Tidspunkt < IntervalSlut)
+            if (Tidspunkt >= IntervalStart && Tidspunkt <= IntervalSlut)
             {
                 return true;
             }
@@ -105,7 +98,7 @@ namespace AndroidApp
             IntervalSlut = Tidspunkt + (30 * 60);
         }
 
-        public List<Bus> HentBusser()
+        private List<Bus> HentBusser()
         {
             RealClient NewRealClient = new RealClient();
             List<NetworkObject> BusserFraServer = NewRealClient.RequestAllWhere(ObjectTypes.Bus, "None");
