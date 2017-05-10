@@ -18,7 +18,7 @@
             android:id="@+id/button1"
             android:background="@drawable/hamburgericonny" />
         <Button
-            android:text="Favoritter"
+            android:text="Se Favoritter"
             android:id="@+id/FavButton"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -72,9 +72,6 @@ namespace AndroidApp
                 }
             }
 
-
-            //BusResultsCell[]busliste = new BusResultsCell[] { new BusResultsCell(0), new BusResultsCell(1), new BusResultsCell(2), new BusResultsCell(4) };
-
             Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
             HomeButton.Click += (object sender, EventArgs e) =>
             {
@@ -89,7 +86,7 @@ namespace AndroidApp
         private bool AnkomstInterval(Tidspunkt tidspunkt, int IntervalStart, int IntervalSlut)
         {
             int Tidspunkt = (tidspunkt.hour * 60 * 60 + tidspunkt.minute * 60);
-            if (Tidspunkt > IntervalStart && Tidspunkt < IntervalSlut)
+            if (Tidspunkt >= IntervalStart && Tidspunkt <= IntervalSlut)
             {
                 return true;
             }
