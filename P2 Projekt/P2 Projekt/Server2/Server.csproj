@@ -108,6 +108,7 @@
     <Compile Include="Objecter\Tidspunkt.cs" />
     <Compile Include="Objecter\BusPassengersTotalUnderZeroException.cs" />
     <Compile Include="Objecter\Lists.cs" />
+    <Compile Include="Server\ServerType.cs" />
     <Compile Include="SImulering\SimBus.cs" />
     <Compile Include="SImulering\SimRoute.cs" />
     <Compile Include="Utilities\ArrayHandler.cs" />

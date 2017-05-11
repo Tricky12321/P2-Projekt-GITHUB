@@ -11,14 +11,14 @@ namespace Tests
     public class IPHandlerTests
     {
         [Test()]
-        [TestCase("127.0.0.1",ExpectedResult = true)]
-        [TestCase("192.168.0.1",ExpectedResult = true)]
-        [TestCase("999.999.999.999",ExpectedResult = true)]
-        [TestCase("172.25.11.120",ExpectedResult = true)]
-        [TestCase("asdf",ExpectedResult = false)]
-        [TestCase("fisk",ExpectedResult = false)]
-        [TestCase("a:b:c:d:e",ExpectedResult = false)]
-        [TestCase("1234:1234:1234:1234",ExpectedResult = false)]
+        [TestCase("127.0.0.1", ExpectedResult = true)]
+        [TestCase("192.168.0.1", ExpectedResult = true)]
+        [TestCase("999.999.999.999", ExpectedResult = true)]
+        [TestCase("172.25.11.120", ExpectedResult = true)]
+        [TestCase("asdf", ExpectedResult = false)]
+        [TestCase("fisk", ExpectedResult = false)]
+        [TestCase("a:b:c:d:e", ExpectedResult = false)]
+        [TestCase("1234:1234:1234:1234", ExpectedResult = false)]
         public bool IsIPV4Test(string IP)
         {
             return IPHandler.IsIPV4(IP);
@@ -36,6 +36,20 @@ namespace Tests
         public bool IsIPV6Test(string IP)
         {
             return IPHandler.IsIPV6(IP);
+        }
+
+
+
+        //Test IsLinux og IsWindows
+        [Test()]
+        public void TestIsWindows()
+        {
+            Assert.AreNotEqual(OS.IsLinux, OS.IsWindows);
+        }
+        [Test()]
+        public void TestIsLinux()
+        {
+            Assert.AreNotEqual(OS.IsWindows, OS.IsLinux);
         }
     }
 }

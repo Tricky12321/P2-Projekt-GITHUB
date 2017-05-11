@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class OS
+public static class OS
 {
     public static bool IsLinux
     {
