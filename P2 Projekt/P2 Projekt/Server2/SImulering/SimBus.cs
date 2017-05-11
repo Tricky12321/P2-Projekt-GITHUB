@@ -31,13 +31,13 @@ namespace ServerGPSSimulering
 
         public day UgeDag;
         public const int Week = 5;
-        public SimBus(Bus simulatedBus, day WeekDay, bool delay = true)
+        public SimBus(Bus simulatedBus /*, day WeekDay, bool delay = true*/)
         {
-            UgeDag = WeekDay;
+            //UgeDag = WeekDay;
             simulatedBus.GetUpdate();
             SimulatedBus = simulatedBus;
             SimulatedRute = new SimRoute(SimulatedBus.Rute, "Simuleringsrute");
-            NoDelay = !delay;
+            //NoDelay = !delay;
             int elementerIRute = SimulatedRute.route.Points.Count();
             for (int i = 0; i < elementerIRute; ++i)
             {
@@ -56,8 +56,8 @@ namespace ServerGPSSimulering
             DrivetimeInSeconds = ((SlutHour - StartHour) * 60 + SlutMinut - StartMinut) * 60;
 
             busAvgSpeedMprSec = RuteDistance * 1000 / DrivetimeInSeconds;
-            MoveToStart();
-            Thread BusMovementThread = new Thread(new ThreadStart(BedreBusMovement));
+            //MoveToStart();
+            Thread BusMovementThread = new Thread(new ThreadStart(BusMovement));
             BusMovementThread.Start();
             Console.WriteLine("Simlering startet");
         }
@@ -93,6 +93,9 @@ namespace ServerGPSSimulering
             double timeBetweenPoints;
             int timeBetweenPointsMilSec;
             int j = 1;
+
+
+            Algoritme algoritme = new Algoritme();
             // Starter med at sætte bussen til at være ved det første punkt.
             for (int i = 0; i < ElementerIRute; i++)
             {
@@ -155,6 +158,7 @@ namespace ServerGPSSimulering
                             Debug.WriteLine("Stop:" + j);
                             j++;
 
+                            algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
                         }
 
                     }
@@ -215,15 +219,8 @@ namespace ServerGPSSimulering
                         {
                             j++;
 
-                            try
-                            {
                                 SimulatedBus.PassengersTotal += RandomPassagerer();
                                 algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
-                            }
-                            catch (Exception)
-                            {
-
-                            }
                             Debug.WriteLine("Stop:" + j);
                         }
                     }

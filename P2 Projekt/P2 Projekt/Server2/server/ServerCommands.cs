@@ -96,10 +96,11 @@ public static class ServerCommands
                 lock (Print.ConsoleWriterLock)
                 {
                     Bus Testbus = new Bus();
-                    Testbus.BusID = Convert.ToInt32(Console.ReadLine());
-                    day Ugedag = (day)Convert.ToInt32(Console.ReadLine());
+                    Testbus.BusID = 30;
+                        //Convert.ToInt32(Console.ReadLine());
+                    //day Ugedag = (day)Convert.ToInt32(Console.ReadLine());
                     Testbus.GetUpdate();
-                    SimBus TestBusSim = new SimBus(Testbus, Ugedag);
+                    SimBus TestBusSim = new SimBus(Testbus/*, Ugedag*/);
                 }
                 break;
               
@@ -121,7 +122,7 @@ public static class ServerCommands
                 OrigBus.UploadToDatabase();
                 break;
 
-            case "simulateweek":
+            /*case "simulateweek":
                 lock (Print.ConsoleWriterLock)
                 {
                     Bus Testbus1 = new Bus();
@@ -153,7 +154,7 @@ public static class ServerCommands
                     Testbus7.GetUpdate();
                     SimBus Søndag = new SimBus(Testbus7, (day)7, false);
                 }
-                break;
+                break;*/
             case "realclient":
                 Program.TestRealClient();
                 break;

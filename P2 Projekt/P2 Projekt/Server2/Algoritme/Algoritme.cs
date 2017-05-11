@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 public class Algoritme
 {
-    int travlhedsFaktor = 1;
-    int forventedePassagerer;
     int forventedeAfvigelse;
     List<int> travlSidsteStops = new List<int>();
     List<AfPåTidCombi> DataAlgorithm = new List<AfPåTidCombi>();
