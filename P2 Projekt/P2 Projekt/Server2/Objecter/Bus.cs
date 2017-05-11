@@ -11,7 +11,7 @@ public class Bus : MysqlObject
     public string busName;
     public int BusID;
     public GPS placering;
-    int _passengersTotal;
+    public int PassengersTotal;
     public int CapacitySitting;
     public int CapacityStanding;
     public Rute Rute;
@@ -35,25 +35,6 @@ public class Bus : MysqlObject
         foreach (StoppestedMTid combi in afPåTidCombi)
         {
             StoppeStederMTid.Add(combi);
-        }
-    }
-
-    public int PassengersTotal
-    {
-        get
-        {
-            return _passengersTotal;
-        }
-        set
-        {
-            if (_passengersTotal + value < 0)
-            {
-                throw new BusPassengersTotalUnderZeroException("Der kan ikke være færre end nul passagerer i bussen");
-            }
-            else
-            {
-                _passengersTotal = value;
-            }
         }
     }
 

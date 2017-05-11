@@ -48,7 +48,7 @@ namespace ProgramTilBusselskab
                             Lists.listWithBusses.Add(newBus);
 
                             RealClient TestClient = new RealClient();
-                            TestClient.SendObject(newBus, typeof(Rute));
+                            TestClient.SendObject(newBus, typeof(Bus));
 
                             MessageBox.Show("Bus er oprettet og uploadet til database.");
                             ActiveForm.Close();
