@@ -219,7 +219,7 @@ namespace ServerGPSSimulering
                             {
                                 SimulatedBus.PassengersTotal += RandomPassagerer();
                             }
-                            catch (BusPassengersTotalUnderZeroException)
+                            catch (Exception)
                             {
 
                             }

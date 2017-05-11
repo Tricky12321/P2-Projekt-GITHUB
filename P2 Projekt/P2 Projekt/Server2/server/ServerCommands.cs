@@ -103,7 +103,7 @@ public static class ServerCommands
                 }
                 break;
             case "algoritme":
-                new Algoritme();
+                new Algoritme("day >= 1 AND day <= 5 AND busID = 30");
                 break;
               
             case "oprettestbusser":

@@ -233,9 +233,8 @@ namespace ProgramTilBusselskab
                         stopLayer.Markers.Add(stoppested);
 
                         //Indsætter tekst med antal passagerer
-                        stoppested.ToolTipText = stop.StoppestedName + " " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().Tidspunkt.ToString() + "\nForventede afvigelse " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().ForventetAfvigelse;
+                        stoppested.ToolTipText = stop.StoppestedName + " " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().Tidspunkt.ToString() + "\nForventede afvigelse " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetAfvigelse;
 
-                        Debug.WriteLine(bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().ForventetAfvigelse);
                         //Bestemmer farverne på tekstbobble
                         stoppested.ToolTip.Fill = Brushes.White;
                         stoppested.ToolTip.Foreground = Brushes.Black;

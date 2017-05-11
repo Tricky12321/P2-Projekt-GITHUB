@@ -108,7 +108,6 @@ public class Bus : MysqlObject
             StoppeStederMTid.Add(new StoppestedMTid(stop, AfTidList));
             i++;
         }
-
     }
 
     public override string[] GetValues()
