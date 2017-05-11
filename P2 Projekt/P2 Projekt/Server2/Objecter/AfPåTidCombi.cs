@@ -19,6 +19,8 @@ public class AfPåTidCombi : MysqlObject
     public int TotalPassagere;
     public int MaxCapa;
     public int Week;
+
+    public int ForventetAfvigelse;
     public AfPåTidCombi(Tidspunkt tidspunkt)
     {
         Tidspunkt = tidspunkt;

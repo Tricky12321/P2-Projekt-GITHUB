@@ -8,7 +8,7 @@ public class StoppestedMTid
 {
     public Stoppested Stop;
     public List<AfPåTidCombi> AfPåTidComb;
-
+    public int ForventetAfvigelse;
     public StoppestedMTid(Stoppested stop, params AfPåTidCombi[] afPåTidComb)
     {
         Stop = stop;

@@ -50,7 +50,7 @@ namespace JsonSerializer.Tests
             string JsonCompare = "object,Bus|{\"StoppeStederMTid\":[{\"Stop\":{\"StoppestedName\":\"Skydebanevej v/ Væddeløbsbanen\",\"StoppestedID\":1,\"StoppestedLok\":{\"xCoordinate\":57.054779,\"yCoordinate\":9.882309}},\"AfPåTidComb\":[{\"ID\":0,\"Tidspunkt\":{\"hour\":13,\"minute\":0},\"afstigninger\":0,\"påstigninger\":0},{\"ID\":0,\"Tidspunkt\":{\"hour\":14,\"minute\":0},\"afstigninger\":0,\"påstigninger\":0}]}],\"busName\":\"TestBus\",\"BusID\":9999,\"placering\":{\"xCoordinate\":57.054779,\"yCoordinate\":9.882309},\"CapacitySitting\":22,\"CapacityStanding\":222,\"Rute\":{\"RuteName\":\"TestRute\",\"RuteID\":999,\"StoppeSteder\":[{\"StoppestedName\":\"Skydebanevej v/ Væddeløbsbanen\",\"StoppestedID\":1,\"StoppestedLok\":{\"xCoordinate\":57.054779,\"yCoordinate\":9.882309}}]},\"PassengerUpdate\":null,\"PassengersTotal\":0}";
             Assert.AreEqual(TestObj1.BusID, (Json.Deserialize(JsonCompare).First() as Bus).BusID);
         }
-
+        [Test()]
         public void TestDeserializer1()
         {
             Rute TestObj1 = new Rute();
@@ -59,7 +59,7 @@ namespace JsonSerializer.Tests
             string JsonCompare = Json.Serialize(TestObj1);
             Assert.AreEqual(TestObj1.RuteID, (Json.Deserialize(JsonCompare).First() as Rute).RuteID);
         }
-
+        [Test()]
         public void TestDeserializer2()
         {
             Stoppested TestObj1 = new Stoppested();
