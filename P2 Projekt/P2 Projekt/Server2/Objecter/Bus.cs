@@ -101,23 +101,27 @@ public class Bus : MysqlObject
         Rute.RuteID = Convert.ToInt32(Row.Values[7]);            // Ruten her mangler at være korrekt
         Rute.GetUpdate();
         string[] StoppeSteder = Row.Values[8].Replace(".",",").Split(',');
+        string[] Afvigelser = Row.Values[9].Replace(".",",").Split(',');
         int i = 0;
         foreach (var stop in Rute.StoppeSteder)
         {
             List<AfPåTidCombi> AfTidList = new List<AfPåTidCombi>();
             // {11:30;12:30;13:30}
             string times = StoppeSteder[i].Replace("}", "").Replace("{", "");
+            string AfvigelseStpå = Afvigelser[i].Replace("}", "").Replace("{", "");
             // 11:30;12:30;13:30
             string[] tider = times.Split(';');
+            string[] Afvigelse = AfvigelseStpå.Split(';');
+            int k = 0;
             foreach (var singleTid in tider)
             {
-
                 // 11:30
                 Regex TidRegex = new Regex("^[0-9]{2}:[0-9]{2}$");
                 if (TidRegex.IsMatch(singleTid))
                 {
-                    AfTidList.Add(new AfPåTidCombi(new Tidspunkt(singleTid)));
-
+                    AfPåTidCombi AfPåObj = new AfPåTidCombi(new Tidspunkt(singleTid));
+                    AfPåObj.ForventetAfvigelse = Convert.ToInt32(Afvigelse[k]);
+                    AfTidList.Add(AfPåObj);
                 }
             }
             StoppeStederMTid.Add(new StoppestedMTid(stop, AfTidList));
@@ -143,22 +147,28 @@ public class Bus : MysqlObject
         //Output.Add(besøgteStop.ToString());                            // 8
         Output.Add(Rute.RuteID.ToString());                              // 9
         StringBuilder StoppeStederTID = new StringBuilder();
-
+        StringBuilder AfvigelseSTB = new StringBuilder();
         int i = 0;
         foreach (var stop in Rute.StoppeSteder)
         {
             StoppeStederTID.Append("{");
-
+            AfvigelseSTB.Append("{");
             foreach (var stopmtid in StoppeStederMTid[i].AfPåTidComb)
             {
                     StoppeStederTID.Append(stopmtid.Tidspunkt.SinpleString() + ";");
+                    AfvigelseSTB.Append(stopmtid.ForventetAfvigelse.ToString() + ";");
             }
+            AfvigelseSTB.Append("}.");
             StoppeStederTID.Append("}.");
             i++;
         }
         string strtoadd = StoppeStederTID.ToString();
+        string strtoadd2 = AfvigelseSTB.ToString();
         strtoadd = StoppeStederTID.ToString().Substring(0, StoppeStederTID.Length - 1).Replace(";}", "}");
+        strtoadd2 = AfvigelseSTB.ToString().Substring(0, AfvigelseSTB.Length - 1).Replace(";}", "}");
         Output.Add(strtoadd);
+        Output.Add(strtoadd2);
+
         return Output.ToArray();
     }
 

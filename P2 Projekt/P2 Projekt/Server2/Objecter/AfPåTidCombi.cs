@@ -18,12 +18,15 @@ public class AfPåTidCombi : MysqlObject
     public Bus Bus;
     public int TotalPassagere;
     public int MaxCapa;
+    public int Week;
+
+    public int ForventetAfvigelse;
     public AfPåTidCombi(Tidspunkt tidspunkt)
     {
         Tidspunkt = tidspunkt;
     }
 
-    public AfPåTidCombi(int afstig, int påstig, Stoppested stoppested, Bus bussen, day dayOfWeek, Tidspunkt tidspunkt, int Total, int Max)
+    public AfPåTidCombi(int afstig, int påstig, Stoppested stoppested, Bus bussen, day dayOfWeek, int Week, Tidspunkt tidspunkt, int Total, int Max)
     {
         Afstigninger = afstig;
         Påstigninger = påstig;
@@ -33,6 +36,7 @@ public class AfPåTidCombi : MysqlObject
         UgeDag = dayOfWeek;
         TotalPassagere = Total;
         MaxCapa = Max;
+        this.Week = Week;
 
     }
 
@@ -84,18 +88,27 @@ public class AfPåTidCombi : MysqlObject
         Tidspunkt.hour = Convert.ToInt32(row.Values[5]);
         Tidspunkt.minute = Convert.ToInt32(row.Values[6]);
         UgeDag = (day)Convert.ToInt32(row.Values[7]);
+        Week = Convert.ToInt32(row.Values[8]);
         Stop = new Stoppested();
-        Stop.StoppestedID = Convert.ToInt32(row.Values[8]);
+        Stop.StoppestedID = Convert.ToInt32(row.Values[9]);
         Stop.GetUpdate();
         Bus = new Bus();
-        Bus.BusID = Convert.ToInt32(row.Values[9]);
+        Bus.BusID = Convert.ToInt32(row.Values[10]);
         Bus.GetUpdate();
     }
 
     public override string[] GetValues()
     {
         List<string> Output = new List<string>();
-        Output.Add("NULL");
+        if (ID != 0)
+        {
+            Output.Add(ID.ToString());
+
+        } else
+        {
+            Output.Add("NULL");
+
+        }
         Output.Add(Afstigninger.ToString());
         Output.Add(Påstigninger.ToString());
         Output.Add(TotalPassagere.ToString());
@@ -103,6 +116,7 @@ public class AfPåTidCombi : MysqlObject
         Output.Add(Tidspunkt.hour.ToString());
         Output.Add(Tidspunkt.minute.ToString());
         Output.Add(Convert.ToInt32(UgeDag).ToString());
+        Output.Add(Week.ToString());
         Output.Add(Stop.StoppestedID.ToString());
         Output.Add(Bus.BusID.ToString());
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using JsonSerializer;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Forms;
 public class RealClient
 {
     private const bool _localTest = false;
@@ -150,7 +151,7 @@ public class RealClient
         }
         catch (Exception e)
         {
-            throw;
+            MessageBox.Show($"Der er ikke forbindelse til serveren. \n{e.ToString()}");
         }
         return ReturnList;
         // return output;

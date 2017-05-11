@@ -109,12 +109,14 @@
     <Compile Include="Objecter\Tidspunkt.cs" />
     <Compile Include="Objecter\BusPassengersTotalUnderZeroException.cs" />
     <Compile Include="Objecter\Lists.cs" />
+    <Compile Include="Server\ServerType.cs" />
     <Compile Include="SImulering\SimBus.cs" />
     <Compile Include="SImulering\SimRoute.cs" />
     <Compile Include="Utilities\ArrayHandler.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Utilities\IpAdresse.cs" />
     <Compile Include="Utilities\Json.cs" />
+    <Compile Include="Utilities\JsonCache.cs" />
     <Compile Include="Utilities\Log.cs" />
     <Compile Include="Utilities\objectTypes.cs" />
     <Compile Include="Utilities\OS.cs" />

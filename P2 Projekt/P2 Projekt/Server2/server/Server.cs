@@ -8,14 +8,9 @@ using System.Net.NetworkInformation;
 using System.Collections.Generic;
 using JsonSerializer;
 
-public enum ServerType
-{
-    Ipv6, Ipv4
-}
 
 public class Server
 {
-    private bool _printData = false;
 
     private uint _port;
 
@@ -192,6 +187,10 @@ public class Server
                     Bus SingleBus = new Bus();
                     if (WhereCondition == "None")
                     {
+                        if (JsonCache.AlleBusserCache != null)
+                        {
+                            return JsonCache.AlleBusserCache;
+                        }
                         RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
                     }
                     else
@@ -211,6 +210,10 @@ public class Server
                     Rute SingleRute = new Rute();
                     if (WhereCondition == "None")
                     {
+                        if (JsonCache.AlleRuterCache != null)
+                        {
+                            return JsonCache.AlleRuterCache;
+                        }
                         RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
 
                     }
@@ -232,6 +235,10 @@ public class Server
                     Stoppested Stoppested = new Stoppested();
                     if (WhereCondition == "None")
                     {
+                        if (JsonCache.AlleStoppeStederCache != null)
+                        {
+                            return JsonCache.AlleStoppeStederCache;
+                        }
                         RowsFromDB = MysqlControls.SelectAll(Stoppested.GetTableName());
 
                     }
@@ -453,15 +460,8 @@ public class Server
         string data;
         string response;
         byte[] bytes = new byte[] { };
-        long PingClient = 0;
-        Stopwatch Ping = new Stopwatch();
-        Stopwatch PingObject = new Stopwatch();
-        Stopwatch PingTotal = new Stopwatch();
         try
         {
-            Ping.Restart();
-            PingObject.Restart();
-            PingTotal.Restart();
             // Program is suspended while waiting for an incoming connection.  
             data = null;
             response = "1";
@@ -469,11 +469,9 @@ public class Server
             double SizeOfMsg = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
             //PingClient = PingRemote(handler.RemoteEndPoint);
 
-            Ping.Stop();
             // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
             response = CheckMessage(data);
             response += "<EOF>";
-            PingObject.Stop();
             // Tester om objectet der skal retuneres kan deserailiseres...
             // Laver Response om fra en string til bytes baseret på UTF8
             byte[] msg = Encoding.UTF8.GetBytes(response);
