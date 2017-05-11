@@ -2,5 +2,5 @@
 
 public enum ObjectTypes
 {
-    Bus, BusStop, Rute ,Unknown
+    Bus, BusStop, Rute, AfPaaTidCombi ,Unknown
 }

@@ -151,6 +151,10 @@ public class Server
         {
             return ObjectTypes.Rute;
         }
+        else if (checkString == "AfPaaTidCombi")
+        {
+            return ObjectTypes.AfPaaTidCombi;
+        }
         else
         {
             throw new UnknownObjectException("Ukendt object forventet");
@@ -244,6 +248,28 @@ public class Server
                     }
                     OutputString = Json.Serialize(StoppeSteder);
                     return OutputString;
+
+                case ObjectTypes.AfPaaTidCombi:
+
+                    AfPåTidCombi afPaa = new AfPåTidCombi();
+                    if (WhereCondition == "None")
+                    {
+                        RowsFromDB = MysqlControls.SelectAll(afPaa.GetTableName());
+                    }
+                    else
+                    {
+                        RowsFromDB = MysqlControls.SelectAllWhere(afPaa.GetTableName(), WhereCondition);
+                    }
+                    List<AfPåTidCombi> afPaaList = new List<AfPåTidCombi>();
+                    foreach (var SS in RowsFromDB.RowData)
+                    {
+                        AfPåTidCombi newAfPaa = new AfPåTidCombi();
+                        newAfPaa.Update(SS);
+                        afPaaList.Add(newAfPaa);
+                    }
+                    OutputString = Json.Serialize(afPaaList);
+                    return OutputString;
+
                 case ObjectTypes.Unknown:
                     break;
                 default:
@@ -454,7 +480,7 @@ public class Server
             double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response) / 1024, 2);
             Print.PrintCenterColorSingle("Incoming connection from ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
             Print.PrintCenterColorSingle("R: ", SizeOfMsg.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
-            Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8)+"\n", ConsoleColor.Green);
+            Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8) + "\n", ConsoleColor.Green);
             // Sender beskeden. 
             handler.Send(msg);
         }

@@ -83,6 +83,10 @@ public static class ServerCommands
                     SimBus TestBusSim = new SimBus(Testbus, Ugedag);
                 }
                 break;
+            case "algoritme":
+                new Algoritme();
+                break;
+              
             case "oprettestbusser":
                 Bus OrigBus = new Bus();
                 OrigBus.BusID = 30;
