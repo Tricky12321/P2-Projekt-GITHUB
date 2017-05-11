@@ -177,9 +177,9 @@ namespace ServerGPSSimulering
             double timeBetweenPoints;
             int timeBetweenPointsMilSec;
 
-
             int j = 0;
 
+            Algoritme algoritme = new Algoritme();
 
             for (int i = 0; i < elementerIRute; ++i)
             {
@@ -218,6 +218,7 @@ namespace ServerGPSSimulering
                             try
                             {
                                 SimulatedBus.PassengersTotal += RandomPassagerer();
+                                algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
                             }
                             catch (Exception)
                             {

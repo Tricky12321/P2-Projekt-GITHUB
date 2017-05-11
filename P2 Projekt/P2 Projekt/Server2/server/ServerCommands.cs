@@ -102,9 +102,6 @@ public static class ServerCommands
                     SimBus TestBusSim = new SimBus(Testbus, Ugedag);
                 }
                 break;
-            case "algoritme":
-                new Algoritme("day >= 1 AND day <= 5 AND busID = 30");
-                break;
               
             case "oprettestbusser":
                 Bus OrigBus = new Bus();

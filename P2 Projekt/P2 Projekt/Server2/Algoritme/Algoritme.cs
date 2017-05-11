@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-class Algoritme
+public class Algoritme
 {
     int travlhedsFaktor = 1;
     int forventedePassagerer;
@@ -15,7 +15,7 @@ class Algoritme
     Bus placeholderBus;
 
     //day >= 1 AND day <= 5 AND busID = 30
-    public Algoritme(string whereCondition)
+    public void GetAlgoritmeData(string whereCondition)
     {
         List<NetworkObject> DatabaseAlgorithm;
         RealClient AlgorithmDataClient = new RealClient();
