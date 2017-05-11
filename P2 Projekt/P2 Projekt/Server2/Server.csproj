@@ -114,6 +114,7 @@
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Utilities\IpAdresse.cs" />
     <Compile Include="Utilities\Json.cs" />
+    <Compile Include="Utilities\JsonCache.cs" />
     <Compile Include="Utilities\Log.cs" />
     <Compile Include="Utilities\objectTypes.cs" />
     <Compile Include="Utilities\OS.cs" />

@@ -92,6 +92,7 @@ public static class Program
         Thread.Sleep(500);
         // Start så IPv4 og/eller IPv6
         Server.StartServer(true, true);
+        JsonCache.StartThreads();
     }
 
     public static void RunTest()

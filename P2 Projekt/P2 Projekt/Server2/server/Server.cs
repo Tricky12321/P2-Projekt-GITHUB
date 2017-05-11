@@ -188,6 +188,10 @@ public class Server
                     Bus SingleBus = new Bus();
                     if (WhereCondition == "None")
                     {
+                        if (JsonCache.AlleBusserCache != null)
+                        {
+                            return JsonCache.AlleBusserCache;
+                        }
                         RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
                     }
                     else
@@ -207,6 +211,10 @@ public class Server
                     Rute SingleRute = new Rute();
                     if (WhereCondition == "None")
                     {
+                        if (JsonCache.AlleRuterCache != null)
+                        {
+                            return JsonCache.AlleRuterCache;
+                        }
                         RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
 
                     }
@@ -228,6 +236,10 @@ public class Server
                     Stoppested Stoppested = new Stoppested();
                     if (WhereCondition == "None")
                     {
+                        if (JsonCache.AlleStoppeStederCache != null)
+                        {
+                            return JsonCache.AlleStoppeStederCache;
+                        }
                         RowsFromDB = MysqlControls.SelectAll(Stoppested.GetTableName());
 
                     }
