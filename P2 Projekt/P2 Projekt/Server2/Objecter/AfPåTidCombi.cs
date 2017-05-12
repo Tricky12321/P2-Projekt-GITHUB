@@ -91,10 +91,8 @@ public class AfPåTidCombi : MysqlObject
         Week = Convert.ToInt32(row.Values[8]);
         Stop = new Stoppested();
         Stop.StoppestedID = Convert.ToInt32(row.Values[9]);
-        Stop.GetUpdate();
         Bus = new Bus();
         Bus.BusID = Convert.ToInt32(row.Values[10]);
-        Bus.GetUpdate();
     }
 
     public override string[] GetValues()

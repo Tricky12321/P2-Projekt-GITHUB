@@ -512,6 +512,7 @@ public class Server
                     }
                 }
             }
+            Thread.Sleep(100);
         }
     }
 }

@@ -27,6 +27,7 @@ public class Algoritme
         }
 
         placeholderBus = DataAlgorithm.First().Bus;
+        placeholderBus.GetUpdate();
 
         Algoritmen();
     }
@@ -45,12 +46,11 @@ public class Algoritme
         }
 
         int indexForStop = placeholderBus.Rute.StoppeSteder.FindIndex(x => x.StoppestedID == DataAlgorithm.Last().Stop.StoppestedID);
-
-        int[] futureAverages = new int[futureHistory.Count];
+        List<int> futureAverages = new List<int>();
         for (int i = 0; i < placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1); i++)
         {
             futureHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == placeholderBus.Rute.StoppeSteder[indexForStop + 1 + i].StoppestedID).ToList());
-            futureAverages[i] = FindAverage(futureHistory[i]);
+            futureAverages.Add(FindAverage(futureHistory[i]));
         }
 
         forventedeAfvigelse = (int)Math.Round(travlSidsteStops.Average());
