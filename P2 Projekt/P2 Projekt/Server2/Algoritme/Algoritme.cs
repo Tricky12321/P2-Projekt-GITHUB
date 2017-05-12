@@ -39,7 +39,8 @@ public class Algoritme
         List<List<AfPåTidCombi>> futureHistory = new List<List<AfPåTidCombi>>();
 
         int[] lastFiveAverages = new int[lastFiveStops.Count];
-        for (int i = 0; i < lastFiveStops.Count; i++)
+        int LastFiveStopsCount = lastFiveStops.Count;
+        for (int i = 0; i < LastFiveStopsCount; i++)
         {
             lastFiveHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == lastFiveStops[i].Stop.StoppestedID).ToList());
             lastFiveAverages[i] = FindAverage(lastFiveHistory[i]);
@@ -47,15 +48,16 @@ public class Algoritme
 
         int indexForStop = placeholderBus.Rute.StoppeSteder.FindIndex(x => x.StoppestedID == DataAlgorithm.Last().Stop.StoppestedID);
         List<int> futureAverages = new List<int>();
-        for (int i = 0; i < placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1); i++)
+        int StoppeStederCount = placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1);
+        for (int i = 0; i < StoppeStederCount; i++)
         {
             futureHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == placeholderBus.Rute.StoppeSteder[indexForStop + 1 + i].StoppestedID).ToList());
             futureAverages.Add(FindAverage(futureHistory[i]));
         }
 
         forventedeAfvigelse = (int)Math.Round(travlSidsteStops.Average());
-
-        for (int i = 0; i < placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1); i++)
+        int StoppeStederCount2 = placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1);
+        for (int i = 0; i < StoppeStederCount2; i++)
         {
             placeholderBus.StoppeStederMTid[indexForStop + 1 + i].AfPåTidComb.First().ForventetAfvigelse = futureAverages[i] + forventedeAfvigelse;
             
