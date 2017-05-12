@@ -15,13 +15,15 @@ public class Algoritme
     //day >= 1 AND day <= 5 AND busID = 30
     public void GetAlgoritmeData(string whereCondition)
     {
-        List<NetworkObject> DatabaseAlgorithm;
-        RealClient AlgorithmDataClient = new RealClient();
-        DatabaseAlgorithm = AlgorithmDataClient.RequestAllWhere(ObjectTypes.AfPaaTidCombi, whereCondition);
 
-        foreach (var item in DatabaseAlgorithm)
+        RealClient AlgorithmDataClient = new RealClient();
+        AfPåTidCombi PlaceholderTest = new AfPåTidCombi();
+        var AlleBusserFraDatabase = MysqlControls.SelectAllWhere(PlaceholderTest.GetTableName(),whereCondition);
+        foreach (var item in AlleBusserFraDatabase.RowData)
         {
-            DataAlgorithm.Add(item as AfPåTidCombi);
+            AfPåTidCombi AfPåToAdd = new AfPåTidCombi();
+            AfPåToAdd.Update(item);
+            DataAlgorithm.Add(AfPåToAdd);
         }
 
         placeholderBus = DataAlgorithm.First().Bus;
@@ -32,7 +34,6 @@ public class Algoritme
     private void Algoritmen()
     {
         List<AfPåTidCombi> lastFiveStops = DataAlgorithm.OrderByDescending(x => x.ID).Take(5).ToList();
-
         List<List<AfPåTidCombi>> lastFiveHistory = new List<List<AfPåTidCombi>>();
         List<List<AfPåTidCombi>> futureHistory = new List<List<AfPåTidCombi>>();
 
