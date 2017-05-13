@@ -115,7 +115,7 @@ public class RealClient
                 // Receive the response from the remote device. 
                 long bytesRec = HandleConnection(sender, ref bytes, ref ReturnString);
                 //long bytesRec = sender.Receive(bytes);
-                Thread.Sleep(10);
+                //Thread.Sleep(10);
                 if (ReturnString != "1<EOF>")
                 {
 

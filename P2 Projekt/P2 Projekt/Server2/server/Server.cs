@@ -11,7 +11,7 @@ using JsonSerializer;
 
 public class Server
 {
-
+    private uint _connectionsWaiting = 0;
     private uint _port;
 
     public uint GetPort => _port;
@@ -366,6 +366,7 @@ public class Server
             lock (ConnectionWaiting)
             {
                 ConnectionWaiting.Add(handler);
+                _connectionsWaiting++;
             }
         }
     }
@@ -499,7 +500,8 @@ public class Server
     {
         while (true)
         {
-            if (ConnectionWaiting.Count > 0)
+
+            if (_connectionsWaiting > 0)
             {
                 if (ConnectionWaiting[0] != null)
                 {
@@ -510,9 +512,10 @@ public class Server
                     {
                         ConnectionWaiting.Remove(ConnectionWaiting[0]);
                     }
+                    _connectionsWaiting--;
                 }
             }
-            Thread.Sleep(100);
+            Thread.Sleep(10);
         }
     }
 }

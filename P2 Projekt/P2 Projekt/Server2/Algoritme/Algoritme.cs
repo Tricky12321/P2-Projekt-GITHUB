@@ -38,8 +38,8 @@ public class Algoritme
         List<List<AfPåTidCombi>> lastFiveHistory = new List<List<AfPåTidCombi>>();
         List<List<AfPåTidCombi>> futureHistory = new List<List<AfPåTidCombi>>();
 
-        int[] lastFiveAverages = new int[lastFiveStops.Count];
         int LastFiveStopsCount = lastFiveStops.Count;
+        int[] lastFiveAverages = new int[LastFiveStopsCount];
         for (int i = 0; i < LastFiveStopsCount; i++)
         {
             lastFiveHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == lastFiveStops[i].Stop.StoppestedID).ToList());
@@ -54,7 +54,6 @@ public class Algoritme
             futureHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == placeholderBus.Rute.StoppeSteder[indexForStop + 1 + i].StoppestedID).ToList());
             futureAverages.Add(FindAverage(futureHistory[i]));
         }
-
         forventedeAfvigelse = (int)Math.Round(travlSidsteStops.Average());
         int StoppeStederCount2 = placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1);
         for (int i = 0; i < StoppeStederCount2; i++)
@@ -62,7 +61,7 @@ public class Algoritme
             placeholderBus.StoppeStederMTid[indexForStop + 1 + i].AfPåTidComb.First().ForventetAfvigelse = futureAverages[i] + forventedeAfvigelse;
             
         }
-
+        
         placeholderBus.UploadToDatabase();
 
 
