@@ -104,17 +104,17 @@ public static class MysqlControls
 
     }
 
-    public static void DelteAll(string table)
+    public static void DeleteAll(string table)
     {
         Mysql.RunQueryWithReturn($"DELETE * FROM `{table}`");
     }
 
-    public static void DelteAllWhere(string table, string whereCondition)
+    public static void DeleteAllWhere(string table, string whereCondition)
     {
         Mysql.RunQueryWithReturn($"DELETE * FROM `{table}` WHERE {whereCondition}");
     }
 
-    public static void DelteWhere(string table, string condition, string whereCondition)
+    public static void DeleteWhere(string table, string condition, string whereCondition)
     {
         Mysql.RunQueryWithReturn($"DELETE {condition} FROM `{table}` WHERE {whereCondition}");
     }
@@ -183,5 +183,10 @@ public static class MysqlControls
         return OutputArray.ToArray();
     }
 
+    public static Row GetLastLineFrom(string TableName, string WhereCondition)
+    {
+        TableDecode Tbl = Mysql.RunQueryWithReturn($"SELECT * FROM `{TableName}` {WhereCondition} ORDER BY `ID` DESC LIMIT 1;");
+        return Tbl.RowData.First();
+    }
     
 }

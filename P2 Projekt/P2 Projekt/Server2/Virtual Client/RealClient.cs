@@ -57,20 +57,20 @@ public class RealClient
             }
             catch (ArgumentNullException ane)
             {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                Print.WriteLine($"ArgumentNullException : {ane.ToString()}");
             }
             catch (SocketException se)
             {
-                Console.WriteLine("SocketException : {0}", se.ToString());
+                Print.WriteLine($"SocketException : {se.ToString()}");
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                Print.WriteLine($"Unexpected exception : {e.ToString()}");
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.ToString());
+            Print.WriteLine(e.ToString());
         }
         // return output;
     }
@@ -117,7 +117,8 @@ public class RealClient
                 if (ReturnString != "1<EOF>")
                 {
                     ReturnList = Json.Deserialize(ReturnString);
-                } else
+                }
+                else
                 {
                     System.Diagnostics.Debug.Print("Der er ikke noget at deseralisere");
 
@@ -131,20 +132,20 @@ public class RealClient
             }
             catch (ArgumentNullException ane)
             {
-                Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                Print.WriteLine($"ArgumentNullException : {ane.ToString()}");
             }
             catch (SocketException se)
             {
-                Console.WriteLine("SocketException : {0}", se.ToString());
+                Print.WriteLine($"SocketException : {se.ToString()}");
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                Print.WriteLine($"Unexpected exception : {e.ToString()}");
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.ToString());
+            Print.WriteLine(e.ToString());
         }
         return ReturnList;
         // return output;

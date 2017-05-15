@@ -9,7 +9,8 @@ public class AfPåTidCombi
     public Tidspunkt Tidspunkt;
     public int afstigninger;
     public int påstigninger;
-    public int ForventetAfvigelse;
+    public int ForventetPassagere;
+
 
     public AfPåTidCombi(Tidspunkt tidspunkt)
     {

@@ -10,6 +10,7 @@ public class AfPåTidCombi
     public Tidspunkt Tidspunkt;
     public int afstigninger;
     public int påstigninger;
+    public int ForventetPassagere;
 
     public override string ToString()
     {

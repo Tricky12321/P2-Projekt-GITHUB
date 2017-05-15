@@ -8,24 +8,34 @@ using System.Diagnostics;
 using JsonSerializer;
 public static class JsonCache
 {
-    public static string AlleBusserCache {
+    public static string AlleBusserCache
+    {
         get { lock (BusserLock) { return _alleBusserCache; } }
-        set { lock (BusserLock) { _alleBusserCache = value; } } }
+        set { lock (BusserLock) { _alleBusserCache = value; } }
+    }
 
-    public static string AlleStoppeStederCache {
+    public static string AlleStoppeStederCache
+    {
         get { lock (StoppeStederLock) { return _alleStoppeStederCache; } }
-        set { lock (StoppeStederLock) { _alleStoppeStederCache = value; } } }
+        set { lock (StoppeStederLock) { _alleStoppeStederCache = value; } }
+    }
 
-    public static string AlleRuterCache {
+    public static string AlleRuterCache
+    {
         get { lock (RuterLock) { return _alleRuterCache; } }
-        set { lock (RuterLock) { _alleRuterCache = value; } } }
+        set { lock (RuterLock) { _alleRuterCache = value; } }
+    }
 
     private static string _alleBusserCache;
+
     private static string _alleStoppeStederCache;
+
     private static string _alleRuterCache;
 
     public static object BusserLock = new object() { };
+
     public static object StoppeStederLock = new object() { };
+
     public static object RuterLock = new object() { };
 
     private const int _sleepTime = 1000;
@@ -57,10 +67,10 @@ public static class JsonCache
         {
             AlleRuterCache = OutputString;
         }
+        Debug.Print("Updated Rute Cache");
         Thread.Sleep(_sleepTime);
 
     }
-
 
     public static void UpdateStoppeStederCache()
     {
@@ -79,6 +89,8 @@ public static class JsonCache
         {
             AlleStoppeStederCache = OutputString;
         }
+        Debug.Print("Updated StoppeSteds Cache");
+
         Thread.Sleep(_sleepTime);
 
     }
@@ -100,6 +112,8 @@ public static class JsonCache
         {
             AlleBusserCache = OutputString;
         }
+        Debug.Print("Updated Busserm Cache");
+
         Thread.Sleep(_sleepTime);
     }
 }

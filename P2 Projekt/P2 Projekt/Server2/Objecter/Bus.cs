@@ -101,7 +101,7 @@ public class Bus : MysqlObject
                 if (TidRegex.IsMatch(singleTid))
                 {
                     AfPåTidCombi AfPåObj = new AfPåTidCombi(new Tidspunkt(singleTid));
-                    AfPåObj.ForventetAfvigelse = Convert.ToInt32(Afvigelse[k]);
+                    AfPåObj.ForventetPassagere = Convert.ToInt32(Afvigelse[k]);
                     AfTidList.Add(AfPåObj);
                 }
             }
@@ -136,7 +136,7 @@ public class Bus : MysqlObject
             foreach (var stopmtid in StoppeStederMTid[i].AfPåTidComb)
             {
                     StoppeStederTID.Append(stopmtid.Tidspunkt.SinpleString() + ";");
-                    AfvigelseSTB.Append(stopmtid.ForventetAfvigelse.ToString() + ";");
+                    AfvigelseSTB.Append(stopmtid.ForventetPassagere.ToString() + ";");
             }
             AfvigelseSTB.Append("}.");
             StoppeStederTID.Append("}.");
