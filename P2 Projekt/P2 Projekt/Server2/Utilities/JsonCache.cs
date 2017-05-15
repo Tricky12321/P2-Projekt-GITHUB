@@ -8,20 +8,28 @@ using System.Diagnostics;
 using JsonSerializer;
 public static class JsonCache
 {
-    public static string AlleBusserCache {
+    public static string AlleBusserCache
+    {
         get { lock (BusserLock) { return _alleBusserCache; } }
-        set { lock (BusserLock) { _alleBusserCache = value; } } }
+        set { lock (BusserLock) { _alleBusserCache = value; } }
+    }
 
-    public static string AlleStoppeStederCache {
+    public static string AlleStoppeStederCache
+    {
         get { lock (StoppeStederLock) { return _alleStoppeStederCache; } }
-        set { lock (StoppeStederLock) { _alleStoppeStederCache = value; } } }
+        set { lock (StoppeStederLock) { _alleStoppeStederCache = value; } }
+    }
 
-    public static string AlleRuterCache {
+    public static string AlleRuterCache
+    {
         get { lock (RuterLock) { return _alleRuterCache; } }
-        set { lock (RuterLock) { _alleRuterCache = value; } } }
+        set { lock (RuterLock) { _alleRuterCache = value; } }
+    }
 
     private static string _alleBusserCache;
+
     private static string _alleStoppeStederCache;
+
     private static string _alleRuterCache;
 
     public static object BusserLock = new object() { };

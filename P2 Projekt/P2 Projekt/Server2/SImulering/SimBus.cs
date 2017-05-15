@@ -76,8 +76,10 @@ namespace ServerGPSSimulering
                 Stoppested Stop = SimulatedBus.StoppeStederMTid.First().Stop;
                 Tidspunkt Time = SimulatedBus.StoppeStederMTid.First().AfPåTidComb.First().Tidspunkt;
                 AfPåTidCombi NewAfPåTidComb = new AfPåTidCombi(0, SimulatedBus.PassengersTotal, Stop, SimulatedBus, UgeDag, Week, Time, SimulatedBus.PassengersTotal, SimulatedBus.TotalCapacity);
+                SimulatedBus.StoppeStederMTid.First().AfPåTidComb[0] = NewAfPåTidComb;
                 NewAfPåTidComb.UploadToDatabase();
                 SimulatedBus.UploadToDatabase();
+                Algoritme.Algoritmen(SimulatedBus);
             }
         }
 
@@ -127,7 +129,7 @@ namespace ServerGPSSimulering
                             if (!NoDelay) { Thread.Sleep(timeBetweenPointsMilSec / steps); }
                         }
                     }
-                    if (j < SimulatedBus.StoppeStederMTid.Count)
+                    if (j < SimulatedBus.StoppeStederMTid.Count-1)
                     {
                         double distance = DistanceBetweenPoints(SimulatedBus.placering.xCoordinate, SimulatedBus.placering.yCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate);
                         bool AtStop = distance < 0.1;
@@ -155,6 +157,7 @@ namespace ServerGPSSimulering
                             NewAfPåTidComb.UploadToDatabase();
                             SendToServer();
                             Debug.WriteLine("Stop:" + j);
+                            SimulatedBus.StoppeStederMTid[j].AfPåTidComb[0] = NewAfPåTidComb;
                             j++;
                             Algoritme.Algoritmen(SimulatedBus);
                             //algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
