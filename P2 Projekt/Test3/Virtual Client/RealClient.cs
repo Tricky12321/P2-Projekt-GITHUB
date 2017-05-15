@@ -9,7 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 public class RealClient
 {
-    private const bool _localTest = false;
+    private const bool _localTest = true;
     private string _host = _localTest ? "127.0.0.1" : "172.25.11.120";
     private uint _port = 12943;
 
@@ -115,7 +115,7 @@ public class RealClient
                 // Receive the response from the remote device. 
                 long bytesRec = HandleConnection(sender, ref bytes, ref ReturnString);
                 //long bytesRec = sender.Receive(bytes);
-                Thread.Sleep(10);
+                //Thread.Sleep(10);
                 if (ReturnString != "1<EOF>")
                 {
 

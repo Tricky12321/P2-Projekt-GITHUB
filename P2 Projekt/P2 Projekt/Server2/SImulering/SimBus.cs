@@ -56,8 +56,8 @@ namespace ServerGPSSimulering
             DrivetimeInSeconds = ((SlutHour - StartHour) * 60 + SlutMinut - StartMinut) * 60;
 
             busAvgSpeedMprSec = RuteDistance * 1000 / DrivetimeInSeconds;
-            //MoveToStart();
-            Thread BusMovementThread = new Thread(new ThreadStart(BusMovement));
+            MoveToStart();
+            Thread BusMovementThread = new Thread(new ThreadStart(BedreBusMovement));
             BusMovementThread.Start();
             Console.WriteLine("Simlering startet");
         }
