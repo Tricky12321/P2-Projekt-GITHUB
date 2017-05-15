@@ -239,6 +239,10 @@ namespace ProgramTilBusselskab
                         {
                             stoppested.ToolTip.Fill = Brushes.Red;
                         }
+                        else if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
+                        {
+                            stoppested.ToolTip.Fill = Brushes.Yellow;
+                        }
                         else
                         {
                             stoppested.ToolTip.Fill = Brushes.Green;
