@@ -201,7 +201,7 @@
             // 
             // timer_UpdateMap
             // 
-            this.timer_UpdateMap.Interval = 1000;
+            this.timer_UpdateMap.Interval = 5000;
             this.timer_UpdateMap.Tick += new System.EventHandler(this.timer_UpdateMap_Tick);
             // 
             // Simulation
