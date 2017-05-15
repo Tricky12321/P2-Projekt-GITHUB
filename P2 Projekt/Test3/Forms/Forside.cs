@@ -199,6 +199,7 @@ namespace ProgramTilBusselskab
                     Test3.Properties.Resources.bus);
 
                 busMark.ToolTipText = bus.PassengersTotal.ToString() + " af " + (bus.CapacitySitting + bus.CapacityStanding) + "\nStåpladser: " + bus.CapacityStanding + " og siddeplader " + bus.CapacitySitting;
+                busMark.ToolTip.Foreground = Brushes.Black;
 
                 if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.PassengersTotal)
                 {
@@ -224,6 +225,9 @@ namespace ProgramTilBusselskab
 
                     GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
 
+                    bool warningRed = false;
+                    bool warningYellow = false;
+
                     foreach (Stoppested stop in bus.Rute.StoppeSteder)
                     {
                         GMapMarker stoppested =
@@ -232,25 +236,41 @@ namespace ProgramTilBusselskab
                         Test3.Properties.Resources.busSkilt);
                         stopLayer.Markers.Add(stoppested);
 
+
+
                         //Indsætter tekst med antal passagerer
                         stoppested.ToolTipText = stop.StoppestedName + " " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().Tidspunkt.ToString() + "\nForventede passagerer " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere;
 
                         if ((bus.CapacitySitting + bus.CapacityStanding) < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
                         {
                             stoppested.ToolTip.Fill = Brushes.Red;
+                            warningRed = true;
                         }
                         else if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
                         {
                             stoppested.ToolTip.Fill = Brushes.Yellow;
+                            warningYellow = true;
+
                         }
                         else
                         {
                             stoppested.ToolTip.Fill = Brushes.Green;
+
                         }
 
                         //Bestemmer farverne på tekstbobble
                         stoppested.ToolTip.Foreground = Brushes.Black;
                     }
+
+                    if (warningRed)
+                    {
+                        MessageBox.Show("Bussen forventes at blive fuld senere på ruten!");
+                    }
+                    else if (warningYellow)
+                    {
+                        MessageBox.Show("Bussen forventes at blive næsten fuld senere på ruten!");
+                    }
+
                     gMapsMap.Overlays.Add(stopLayer);
                     gMapsMap.Overlays.Add(busOverlay);
                     gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
