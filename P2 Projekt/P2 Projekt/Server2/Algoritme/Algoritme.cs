@@ -55,9 +55,9 @@ public static class Algoritme
         return i;
     }
 
-    public static void Algoritmen(Bus placeholderBus)
+    public static void Algoritmen(ref Bus localBus)
     {
-        
+        Bus placeholderBus = localBus;
         Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
         int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
         List<AfPåTidCombi> StoppeStederTid = new List<AfPåTidCombi>();
@@ -108,26 +108,35 @@ public static class Algoritme
             // Beregner gennemsnittet af de sidste stoppesteder, maks 5 sidste.
             for (int i = 0; i < antal; i++)
             {
-                
+
                 LastStopsData.Add(-placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().Afstigninger + placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().Påstigninger);
             }
         }
-        int Afvigelse = 0;
-        if (AntalBesøgteStoppesteder >= 2)
-        {
-            Afvigelse = (int)Math.Round(LastStopsData.Average() - MånedAverage.Average(),0);
 
+        int Afvigelse = 0;
+        if (AntalBesøgteStoppesteder > 1)
+        {
+            Afvigelse = (int)Math.Round(LastStopsData.Average() - MånedAverage.Average(), 0);
         }
         int Total = placeholderBus.PassengersTotal;
+        BesøgteStopIDs.Reverse();
         for (int i = AntalBesøgteStoppesteder; i < AntalTotaleStopPåRute; i++)
         {
-            double _afstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Afstigninger);
-            double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Påstigninger);
-            int SingleAfvigelse = (int)Math.Round((-_afstigningerAverage + _påstigningerAverage) + Afvigelse, 0);
-            placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere = Total + SingleAfvigelse;
-            Total += SingleAfvigelse;
+            if (!BesøgteStopIDs.Take(BesøgteStopIDs.Count - 1).Contains(placeholderBus.StoppeStederMTid[i].Stop.StoppestedID))
+            {
+                double _afstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Afstigninger);
+                double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Påstigninger);
+                int SingleAfvigelse = (int)Math.Round((-_afstigningerAverage + _påstigningerAverage) + Afvigelse, 0);
+                placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere = Total + SingleAfvigelse;
+                if (placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere < 0)
+                {
+                    placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere = 0;
+                }
+                Total += SingleAfvigelse;
+            }
         }
         placeholderBus.UploadToDatabase();
+        localBus = placeholderBus;
     }
 
     private static int FindAverage(List<AfPåTidCombi> combiList)
