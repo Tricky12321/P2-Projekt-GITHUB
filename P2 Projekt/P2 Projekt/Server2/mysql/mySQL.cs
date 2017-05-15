@@ -23,9 +23,9 @@ public static class Mysql
     // ---------------------------------------------------------------------------------------------------
     public static void Start()
     {
-        Console.WriteLine("mySQL connection:");
-        Console.WriteLine($"{_username}@{_ip}:3306");
-        Console.Write("Connecting...");
+        Print.WriteLine("mySQL connection:");
+        Print.WriteLine($"{_username}@{_ip}:3306");
+        Print.Write("Connecting...");
         Connect();
         Print.PrintSuccessFailedLine(Connected);
         Print.PrintLine(ConsoleColor.Green);

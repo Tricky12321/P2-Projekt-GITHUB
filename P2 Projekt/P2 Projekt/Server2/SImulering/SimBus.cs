@@ -59,14 +59,14 @@ namespace ServerGPSSimulering
             MoveToStart();
             Thread BusMovementThread = new Thread(new ThreadStart(BedreBusMovement));
             BusMovementThread.Start();
-            Console.WriteLine("Simlering startet");
+            Print.WriteLine("Simlering startet");
         }
 
         private void MoveToStart()
         {
             GPS Start = new GPS();
             int points = SimulatedRute.route.Points.Count();
-            Console.WriteLine($"Points: {points}");
+            Print.WriteLine($"Points: {points}");
             if (points > 0)
             {
                 Start.xCoordinate = SimulatedRute.route.Points.First().Lat;

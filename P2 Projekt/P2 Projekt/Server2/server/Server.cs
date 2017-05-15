@@ -67,7 +67,7 @@ public class Server
         IPAddress[] IPs = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
         foreach (IPAddress IP in IPs)
         {
-            Console.WriteLine($"Listning on {IP.ToString()}:{_port}");
+            Print.WriteLine($"Listning on {IP.ToString()}:{_port}");
         }
     }
 
@@ -81,7 +81,7 @@ public class Server
         // IPV4 SERVER ->->->->->->->->->->->->->->->->->
         if (_serverType == ServerType.Ipv4)
         {
-            Console.WriteLine("Type: IPv4");
+            Print.WriteLine("Type: IPv4");
             IPEndPoint localEndPointv4 = new IPEndPoint(IPAddress.Any, (int)_port);
             Socket listenerv4 = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             listenerv4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
@@ -94,7 +94,7 @@ public class Server
         // IPV6 SERVER ->->->->->->->->->->->->->->->->->
         else if (_serverType == ServerType.Ipv6)
         {
-            Console.WriteLine("Type: IPv6");
+            Print.WriteLine("Type: IPv6");
             IPEndPoint localEndPointv6 = new IPEndPoint(IPAddress.IPv6Any, (int)_port);
             Socket listenerv6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
             listenerv6.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
@@ -354,8 +354,8 @@ public class Server
         listener.Bind(localEndPoint);
         listener.Listen(100);
         // Start listening for connections. 
-        Console.WriteLine($"IP: {localEndPoint.Address}");
-        Console.Write("Server Starting...");
+        Print.WriteLine($"IP: {localEndPoint.Address}");
+        Print.Write("Server Starting...");
         Print.PrintSuccessFailedLine(_serverType == ServerType.Ipv4 ? IPV4Started : IPV6Started);
         Print.PrintLine(ConsoleColor.Green);
         // StartWorkers();
@@ -455,7 +455,7 @@ public class Server
     {
         if (Handler_pre == null)
         {
-            Console.WriteLine("Der er ikke noget object?!");
+            Print.WriteLine("Der er ikke noget object?!");
         }
         Socket handler = Handler_pre as Socket;
         string data;
@@ -485,7 +485,7 @@ public class Server
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.ToString());
+            Print.WriteLine(e.ToString());
         }
         finally
         {

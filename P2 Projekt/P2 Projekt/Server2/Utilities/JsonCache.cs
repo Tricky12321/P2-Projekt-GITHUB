@@ -25,7 +25,9 @@ public static class JsonCache
     private static string _alleRuterCache;
 
     public static object BusserLock = new object() { };
+
     public static object StoppeStederLock = new object() { };
+
     public static object RuterLock = new object() { };
 
     private const int _sleepTime = 1000;
@@ -57,10 +59,10 @@ public static class JsonCache
         {
             AlleRuterCache = OutputString;
         }
+        Debug.Print("Updated Rute Cache");
         Thread.Sleep(_sleepTime);
 
     }
-
 
     public static void UpdateStoppeStederCache()
     {
@@ -79,6 +81,8 @@ public static class JsonCache
         {
             AlleStoppeStederCache = OutputString;
         }
+        Debug.Print("Updated StoppeSteds Cache");
+
         Thread.Sleep(_sleepTime);
 
     }
@@ -100,6 +104,8 @@ public static class JsonCache
         {
             AlleBusserCache = OutputString;
         }
+        Debug.Print("Updated Busserm Cache");
+
         Thread.Sleep(_sleepTime);
     }
 }
