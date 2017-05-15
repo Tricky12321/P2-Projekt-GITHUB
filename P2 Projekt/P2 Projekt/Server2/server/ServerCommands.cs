@@ -97,10 +97,11 @@ public static class ServerCommands
                 {
                     Bus Testbus = new Bus();
                     Testbus.BusID = 30;
-                        //Convert.ToInt32(Console.ReadLine());
+                    //Convert.ToInt32(Console.ReadLine());
                     //day Ugedag = (day)Convert.ToInt32(Console.ReadLine());
+                    day Ugedag = (day)1;
                     Testbus.GetUpdate();
-                    SimBus TestBusSim = new SimBus(Testbus/*, Ugedag*/);
+                    SimBus TestBusSim = new SimBus(Testbus, Ugedag);
                 }
                 break;
               
