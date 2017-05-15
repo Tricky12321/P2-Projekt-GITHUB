@@ -23,7 +23,7 @@ namespace AndroidApp
             BusNavn = bus.busName;
             Tidspunkt = tidspunkt.ToString();
             PasNu = $"Nuværende passagerer: {bus.PassengersTotal} af {bus.CapacitySitting + bus.CapacityStanding}";
-            PasForv = $"Forventede passagerer: {"10"} af {bus.CapacitySitting + bus.CapacityStanding}";
+            PasForv = $"Forventede passagerer: {bus.StoppeStederMTid.Where(x=> x.Stop.StoppestedName == stoppested).First().AfPåTidComb.First().ForventetPassagere} af {bus.CapacitySitting + bus.CapacityStanding}";
             Stoppested = stoppested;
 
             if (bus.PassengersTotal < bus.CapacitySitting*0.8)

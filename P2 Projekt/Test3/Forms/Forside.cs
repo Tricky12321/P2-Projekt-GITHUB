@@ -250,12 +250,10 @@ namespace ProgramTilBusselskab
                         {
                             stoppested.ToolTip.Fill = Brushes.Yellow;
                             warningYellow = true;
-
                         }
                         else
                         {
                             stoppested.ToolTip.Fill = Brushes.Green;
-
                         }
 
                         //Bestemmer farverne på tekstbobble
