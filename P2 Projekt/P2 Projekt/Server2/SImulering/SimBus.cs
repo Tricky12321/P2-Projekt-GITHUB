@@ -31,9 +31,9 @@ namespace ServerGPSSimulering
 
         public day UgeDag;
         public const int Week = 5;
-        public SimBus(Bus simulatedBus /*, day WeekDay, bool delay = true*/)
+        public SimBus(Bus simulatedBus, day WeekDay, bool delay = true)
         {
-            //UgeDag = WeekDay;
+            UgeDag = WeekDay;
             simulatedBus.GetUpdate();
             SimulatedBus = simulatedBus;
             SimulatedRute = new SimRoute(SimulatedBus.Rute, "Simuleringsrute");
