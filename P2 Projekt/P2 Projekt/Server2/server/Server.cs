@@ -205,6 +205,10 @@ public class Server
                         AlleBusser.Add(NewBus);
                     }
                     OutputString = Json.Serialize(AlleBusser);
+                    if (AlleBusser[0].StoppeStederMTid[8].AfPåTidComb[0].ForventetPassagere != 0)
+                    {
+                        Debug.Print("asdf");
+                    }
                     return OutputString;
                 case ObjectTypes.Rute:
                     Rute SingleRute = new Rute();

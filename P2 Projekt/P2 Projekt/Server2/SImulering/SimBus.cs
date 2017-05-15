@@ -117,7 +117,7 @@ namespace ServerGPSSimulering
                     GPS SinglePoint = new GPS();
                     SinglePoint.xCoordinate = (FirstPoint.xCoordinate - NextPoint.xCoordinate) / steps;
                     SinglePoint.yCoordinate = (FirstPoint.yCoordinate - NextPoint.yCoordinate) / steps;
-                    for (int k = 0; k < steps; k++)
+                    for (int k = 0; k < steps-2; k++)
                     {
                         GPS NyBusLok = SimulatedBus.placering;
                         NyBusLok.xCoordinate -= SinglePoint.xCoordinate;
@@ -129,7 +129,7 @@ namespace ServerGPSSimulering
                             if (!NoDelay) { Thread.Sleep(timeBetweenPointsMilSec / steps); }
                         }
                     }
-                    if (j < SimulatedBus.StoppeStederMTid.Count-1)
+                    if (j < SimulatedBus.StoppeStederMTid.Count)
                     {
                         double distance = DistanceBetweenPoints(SimulatedBus.placering.xCoordinate, SimulatedBus.placering.yCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate);
                         bool AtStop = distance < 0.1;

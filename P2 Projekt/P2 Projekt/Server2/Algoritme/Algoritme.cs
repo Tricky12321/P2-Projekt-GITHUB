@@ -113,95 +113,21 @@ public static class Algoritme
             }
         }
         int Afvigelse = 0;
-        if (AntalBesøgteStoppesteder >= 3)
+        if (AntalBesøgteStoppesteder >= 2)
         {
             Afvigelse = (int)Math.Round(LastStopsData.Average() - MånedAverage.Average(),0);
 
         }
         int Total = placeholderBus.PassengersTotal;
-        int AntalStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
-        for (int i = AntalBesøgteStoppesteder; i < AntalStopPåRute; i++)
+        for (int i = AntalBesøgteStoppesteder; i < AntalTotaleStopPåRute; i++)
         {
-            double _afstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i - 1].Stop.StoppestedID)).Average(x => x.Afstigninger);
-            double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i - 1].Stop.StoppestedID)).Average(x => x.Påstigninger);
+            double _afstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Afstigninger);
+            double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Påstigninger);
             int SingleAfvigelse = (int)Math.Round((-_afstigningerAverage + _påstigningerAverage) + Afvigelse, 0);
             placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere = Total + SingleAfvigelse;
             Total += SingleAfvigelse;
         }
-
-        Debug.Print("");
-
-        #region comment
-        /*
-        int forventedeAfvigelse;
-        List<int> TravlSidsteStops = new List<int>();
-        List<AfPåTidCombi> DataAlgorithm = new List<AfPåTidCombi>();
-        //string whereCondition = "day >= 1 AND day <= 5 AND busID = " + placeholderBus.BusID;
-        GetAlgoritmeData(whereCondition, ref placeholderBus, DataAlgorithm);
-
-
-        List<List<AfPåTidCombi>> lastFiveHistory = new List<List<AfPåTidCombi>>();
-        List<List<AfPåTidCombi>> futureHistory = new List<List<AfPåTidCombi>>();
-
-
-        
-        int LastFiveStopsCount = lastFiveStops.Count;
-        int[] lastFiveAverages = new int[LastFiveStopsCount];
-        for (int i = 0; i < LastFiveStopsCount; i++)
-        {
-            lastFiveHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == lastFiveStops[i].Stop.StoppestedID).ToList());
-            lastFiveAverages[i] = FindAverage(lastFiveHistory[i]);
-        }
-
-        int indexForStop = placeholderBus.Rute.StoppeSteder.FindIndex(x => x.StoppestedID == DataAlgorithm.Last().Stop.StoppestedID);
-        List<int> futureAverages = new List<int>();
-        int StoppeStederCount = placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1);
-        for (int i = 0; i < StoppeStederCount; i++)
-        {
-            futureHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == placeholderBus.Rute.StoppeSteder[indexForStop + 1 + i].StoppestedID).ToList());
-            futureAverages.Add(FindAverage(futureHistory[i]));
-        }
-        forventedeAfvigelse = (int)Math.Round(TravlSidsteStops.Average());
-        int StoppeStederCount2 = placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1);
-        for (int i = 0; i < StoppeStederCount2; i++)
-        {
-
-            placeholderBus.StoppeStederMTid[indexForStop + 1 + i].AfPåTidComb.First().ForventetAfvigelse = futureAverages[i] + forventedeAfvigelse;
-
-        }
-
         placeholderBus.UploadToDatabase();
-
-        currentHistory = DataAlgorithm.Where(x => x.Stop.StoppestedID == nextStop.StoppestedID).ToList();
-
-        int currentAverage = FindAverage(currentHistory);
-
-        decimal Travlhedsfaktor = 1;
-        decimal Resultat = ForrigeDage.Average();
-        int[] FemSidsteStoppesteder;
-
-        decimal[5] Forskel;
-        decimal GennemsnitligForskel;
-        decimal[] FemSidsteGennemsnit;
-
-        //Udregning-----------------------------------------
-        for (int i = 0; i < 5; ++i)
-        {
-
-            if (FemSidsteGennemsnit[i] <= 3 && FemSidsteGennemsnit[i] >= -3)
-            {
-
-            }
-            else
-            {
-                Forskel[i] = FemSidsteStoppesteder[i] - FemSidsteGennemsnit[i];
-            }
-        }
-        //Resultat------------------------------------------
-        Travlhedsfaktor = Forskel.Average();
-        Resultat *= Travlhedsfaktor;
-        return (int)Resultat;*/
-        #endregion
     }
 
     private static int FindAverage(List<AfPåTidCombi> combiList)
