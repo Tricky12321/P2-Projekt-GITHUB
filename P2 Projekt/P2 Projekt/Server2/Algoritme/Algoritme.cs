@@ -58,44 +58,10 @@ public class Algoritme
         int StoppeStederCount2 = placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1);
         for (int i = 0; i < StoppeStederCount2; i++)
         {
-            placeholderBus.StoppeStederMTid[indexForStop + 1 + i].AfPåTidComb.First().ForventetAfvigelse = futureAverages[i] + forventedeAfvigelse;
-            
+            placeholderBus.StoppeStederMTid[indexForStop + 1 + i].AfPåTidComb.First().ForventetAfvigelse = futureAverages[i] + forventedeAfvigelse; 
         }
         
         placeholderBus.UploadToDatabase();
-
-
-        /*
-        currentHistory = DataAlgorithm.Where(x => x.Stop.StoppestedID == nextStop.StoppestedID).ToList();
-
-        int currentAverage = FindAverage(currentHistory);
-
-        decimal Travlhedsfaktor = 1;
-        decimal Resultat = ForrigeDage.Average();
-        int[] FemSidsteStoppesteder;
-
-        decimal[5] Forskel;
-        decimal GennemsnitligForskel;
-        decimal[] FemSidsteGennemsnit;
-
-        //Udregning-----------------------------------------
-        for (int i = 0; i < 5; ++i)
-        {
-
-            if (FemSidsteGennemsnit[i] <= 3 && FemSidsteGennemsnit[i] >= -3)
-            {
-
-            }
-            else
-            {
-                Forskel[i] = FemSidsteStoppesteder[i] - FemSidsteGennemsnit[i];
-            }
-        }
-        //Resultat------------------------------------------
-        Travlhedsfaktor = Forskel.Average();
-        Resultat *= Travlhedsfaktor;
-        return (int)Resultat;*/
-
     }
 
     private int FindAverage(List<AfPåTidCombi> combiList)
