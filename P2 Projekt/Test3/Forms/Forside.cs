@@ -235,8 +235,16 @@ namespace ProgramTilBusselskab
                         //Indsætter tekst med antal passagerer
                         stoppested.ToolTipText = stop.StoppestedName + " " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().Tidspunkt.ToString() + "\nForventede passagerer " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere;
 
+                        if ((bus.CapacitySitting + bus.CapacityStanding) < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
+                        {
+                            stoppested.ToolTip.Fill = Brushes.Red;
+                        }
+                        else
+                        {
+                            stoppested.ToolTip.Fill = Brushes.Green;
+                        }
+
                         //Bestemmer farverne på tekstbobble
-                        stoppested.ToolTip.Fill = Brushes.White;
                         stoppested.ToolTip.Foreground = Brushes.Black;
                     }
                     gMapsMap.Overlays.Add(stopLayer);
