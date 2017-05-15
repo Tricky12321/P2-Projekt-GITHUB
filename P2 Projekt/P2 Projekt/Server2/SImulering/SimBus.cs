@@ -95,7 +95,6 @@ namespace ServerGPSSimulering
             int j = 1;
 
 
-            Algoritme algoritme = new Algoritme();
             // Starter med at sætte bussen til at være ved det første punkt.
             for (int i = 0; i < ElementerIRute; i++)
             {
@@ -157,8 +156,8 @@ namespace ServerGPSSimulering
                             SendToServer();
                             Debug.WriteLine("Stop:" + j);
                             j++;
-
-                            algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
+                            Algoritme.Algoritmen(SimulatedBus);
+                            //algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
                         }
 
                     }
@@ -183,7 +182,7 @@ namespace ServerGPSSimulering
 
             int j = 0;
 
-            Algoritme algoritme = new Algoritme();
+            //Algoritme algoritme = new Algoritme();
 
             for (int i = 0; i < elementerIRute; ++i)
             {
@@ -220,7 +219,7 @@ namespace ServerGPSSimulering
                             j++;
 
                                 SimulatedBus.PassengersTotal += RandomPassagerer();
-                                algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
+                                //algoritme.GetAlgoritmeData("day >= 1 AND day <= 5 AND busID = " + SimulatedBus.BusID);
                             Debug.WriteLine("Stop:" + j);
                         }
                     }

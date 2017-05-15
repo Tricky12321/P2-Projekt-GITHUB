@@ -4,19 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Algoritme
+public static class Algoritme
 {
-    int forventedeAfvigelse;
-    List<int> travlSidsteStops = new List<int>();
-    List<AfPåTidCombi> DataAlgorithm = new List<AfPåTidCombi>();
 
-    Bus placeholderBus;
+    public static Bus placeholderBus;
 
     //day >= 1 AND day <= 5 AND busID = 30
-    public void GetAlgoritmeData(string whereCondition)
+    public static void GetAlgoritmeData(string whereCondition, Bus PlaceholderBus, List<AfPåTidCombi> DataAlgorithm)
     {
-
-        RealClient AlgorithmDataClient = new RealClient();
         AfPåTidCombi PlaceholderTest = new AfPåTidCombi();
         var AlleBusserFraDatabase = MysqlControls.SelectAllWhere(PlaceholderTest.GetTableName(),whereCondition);
         foreach (var item in AlleBusserFraDatabase.RowData)
@@ -26,17 +21,22 @@ public class Algoritme
             DataAlgorithm.Add(AfPåToAdd);
         }
 
-        placeholderBus = DataAlgorithm.First().Bus;
-        placeholderBus.GetUpdate();
-
-        Algoritmen();
+        PlaceholderBus = DataAlgorithm.First().Bus;
+        PlaceholderBus.GetUpdate();
     }
 
-    private void Algoritmen()
+    public static void Algoritmen(Bus placeholderBus)
     {
+        int forventedeAfvigelse;
+        List<int> TravlSidsteStops = new List<int>();
+        List<AfPåTidCombi> DataAlgorithm = new List<AfPåTidCombi>();
+        string whereCondition = "day >= 1 AND day <= 5 AND busID = " + placeholderBus.BusID;
+        GetAlgoritmeData(whereCondition, placeholderBus, DataAlgorithm);
         List<AfPåTidCombi> lastFiveStops = DataAlgorithm.OrderByDescending(x => x.ID).Take(5).ToList();
         List<List<AfPåTidCombi>> lastFiveHistory = new List<List<AfPåTidCombi>>();
         List<List<AfPåTidCombi>> futureHistory = new List<List<AfPåTidCombi>>();
+
+        
 
         int LastFiveStopsCount = lastFiveStops.Count;
         int[] lastFiveAverages = new int[LastFiveStopsCount];
@@ -54,17 +54,19 @@ public class Algoritme
             futureHistory.Add(DataAlgorithm.Where(x => x.Stop.StoppestedID == placeholderBus.Rute.StoppeSteder[indexForStop + 1 + i].StoppestedID).ToList());
             futureAverages.Add(FindAverage(futureHistory[i]));
         }
-        forventedeAfvigelse = (int)Math.Round(travlSidsteStops.Average());
+        forventedeAfvigelse = (int)Math.Round(TravlSidsteStops.Average());
+        UpdateTravlhed(forventedeAfvigelse, TravlSidsteStops);
         int StoppeStederCount2 = placeholderBus.Rute.StoppeSteder.Count - (indexForStop + 1);
         for (int i = 0; i < StoppeStederCount2; i++)
         {
+
             placeholderBus.StoppeStederMTid[indexForStop + 1 + i].AfPåTidComb.First().ForventetAfvigelse = futureAverages[i] + forventedeAfvigelse;
             
         }
         
         placeholderBus.UploadToDatabase();
 
-
+        #region comment
         /*
         currentHistory = DataAlgorithm.Where(x => x.Stop.StoppestedID == nextStop.StoppestedID).ToList();
 
@@ -95,10 +97,10 @@ public class Algoritme
         Travlhedsfaktor = Forskel.Average();
         Resultat *= Travlhedsfaktor;
         return (int)Resultat;*/
-
+        #endregion
     }
 
-    private int FindAverage(List<AfPåTidCombi> combiList)
+    private static int FindAverage(List<AfPåTidCombi> combiList)
     {
         decimal average = 0;
         foreach (AfPåTidCombi combi in combiList)
@@ -112,16 +114,16 @@ public class Algoritme
 
 
 
-    private void UpdateTravlhed(int afvigelse)
+    private static void UpdateTravlhed(int afvigelse, List<int> TravlSidsteStops)
     {
-        if (travlSidsteStops.Count == 5)
+        if (TravlSidsteStops.Count == 5)
         {
-            travlSidsteStops.RemoveAt(0);
-            travlSidsteStops.Add(afvigelse);
+            TravlSidsteStops.RemoveAt(0);
+            TravlSidsteStops.Add(afvigelse);
         }
         else
         {
-            travlSidsteStops.Add(afvigelse);
+            TravlSidsteStops.Add(afvigelse);
         }
     }
 
