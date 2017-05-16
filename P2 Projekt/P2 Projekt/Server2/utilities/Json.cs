@@ -23,6 +23,11 @@ namespace JsonSerializer
 
         public static void SerializeThreaded(object Obj)
         {
+            // Det objekt der bliver modtaget, skal være et SerializeThreadObject
+            if (!(Obj is SerializeThreadObject))
+            {
+                throw new NotCorrectObject("Object must be of type SerializeThreadObject!");
+            }
             SerializeThreadObject NewObj = (Obj as SerializeThreadObject);
             JsonSerializerSettings Settings = new JsonSerializerSettings();
             lock (NewObj.OutputString)
@@ -102,6 +107,11 @@ namespace JsonSerializer
 
         public static void DeSerializeThreaded(object Obj)
         {
+            // Det objekt der bliver modtaget, skal være et DeSerializeThreadObject
+            if (!(Obj is DeSerializeThreadObject))
+            {
+                throw new NotCorrectObject("Object must be of type DeSerializeThreadObject!");
+            }
             DeSerializeThreadObject NewObj = (Obj as DeSerializeThreadObject);
             NewObj.Obj = NewObj.Obj.Replace(@"\", string.Empty);
             NewObj.Obj = NewObj.Obj.Replace("<EOF>", string.Empty);

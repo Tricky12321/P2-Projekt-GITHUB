@@ -24,7 +24,7 @@ public class Rute : MysqlObject
 
     public override int GetID()
     {
-        return this.RuteID;
+        return RuteID;
     }
 
     public override string GetIDCollumName()

@@ -7,7 +7,9 @@ using System.Linq;
 public class TableDecode
 {
     public List<Row> RowData = new List<Row>();
+
     public int Count => RowData.Count;
+
     public TableDecode(MySqlDataReader Reader)
     {
         if (Reader != null)

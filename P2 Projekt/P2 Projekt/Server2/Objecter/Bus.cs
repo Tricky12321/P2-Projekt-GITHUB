@@ -45,7 +45,7 @@ public class Bus : MysqlObject
 
     public override int GetID()
     {
-        return this.BusID;
+        return BusID;
     }
 
     public override string GetIDCollumName()

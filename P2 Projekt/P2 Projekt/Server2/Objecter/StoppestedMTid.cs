@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class StoppestedMTid
 {
@@ -26,11 +23,6 @@ public class StoppestedMTid
         AfPåTidComb = afPåTidList;
     }
 
-    public StoppestedMTid(StoppestedMTid stop, params AfPåTidCombi[] afPåTidComb)
-    {
-        this.Stop = stop.Stop;
-        AfPåTidComb = afPåTidComb.ToList();
-    }
 
     public StoppestedMTid()
     {

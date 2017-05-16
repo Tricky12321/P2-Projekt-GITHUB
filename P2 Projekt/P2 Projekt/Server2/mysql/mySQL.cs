@@ -88,13 +88,12 @@ public static class Mysql
                 string LogQuery = Query;
                 if (Query.Length > 50)
                 {
-                    LogQuery = Query.Substring(0, 45);
+                    LogQuery = Query.Substring(0, 200);
                     LogQuery = LogQuery.Replace("\"", "\\\"");
                     LogQuery = LogQuery.Replace("'", "\\'");
                     LogQuery += "...";
                     Debug.Print(LogQuery);
                 }
-                Log.LogData("RunQuery", $"{LogQuery} blev kørt");
             }
             catch (Exception e)
             {
@@ -105,8 +104,11 @@ public static class Mysql
         try
         {
             MySqlCommand cmd = SqlConnection.CreateCommand();
-            Debug.Print($"SQL QUERY: {cmd.CommandText}");
             cmd.CommandText = Query;
+            if (!NoLog)
+            {
+                Debug.Print($"SQL QUERY: {Query}");
+            }
             SqlConnection.Open();
             cmd.ExecuteNonQuery();
             // Console.WriteLine($"{_sqlConnect.ConnectionString}");
@@ -123,12 +125,14 @@ public static class Mysql
         return true;
     }
 
-    public static TableDecode RunQueryWithReturn(string Query)
+    public static TableDecode RunQueryWithReturn(string Query, bool NoLog = false)
     {
-        Log.LogData("RunQueryWIthReturn", $"{Query} blev kørt");
+        if (!NoLog)
+        {
+            Log.LogData("RunQueryWIthReturn", $"{Query} blev kørt");
+        }
         TableDecode TableContent = null;
         MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
-
         try
         {
             // Hvilken commando skal der køres (Query)
