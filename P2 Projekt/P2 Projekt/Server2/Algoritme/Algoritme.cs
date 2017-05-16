@@ -55,7 +55,7 @@ public static class Algoritme
         return i;
     }
 
-    public static void Algoritmen(ref Bus localBus)
+    public static void AlgoritmeStarter(ref Bus localBus)
     {
         Bus placeholderBus = localBus;
         Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
@@ -76,6 +76,13 @@ public static class Algoritme
             NewAfPåTid.Update(item);
             SidsteMånedAfPåTid.Add(NewAfPåTid);
         }
+
+        Algoritmen(ref placeholderBus, SidsteMånedAfPåTid, AntalBesøgteStoppesteder, AntalTotaleStopPåRute);
+    }
+
+    public static void Algoritmen(ref Bus localBus, List<AfPåTidCombi> SidsteMånedAfPåTid, int AntalBesøgteStoppesteder, int AntalTotaleStopPåRute)
+    {
+        Bus placeholderBus = localBus;
         // Henter alle ID's på de stoppesteder der er besøgt
         List<int> BesøgteStopIDs = new List<int>();
         for (int i = 0; i < AntalBesøgteStoppesteder; i++)
