@@ -94,7 +94,7 @@ public static class Algoritme
         {
             // Unittesting funktion her:
             // LIGE HER:::::-vvvvvvvvvvvvvvvvvvv
-
+            SidsteMånedAfPåTid = UnitTestingData(placeholderBus, AntalBesøgteStoppesteder, AntalTotaleStopPåRute);
         }
         // Henter alle ID's på de stoppesteder der er besøgt
         List<int> BesøgteStopIDs = new List<int>();
