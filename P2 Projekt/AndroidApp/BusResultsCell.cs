@@ -18,17 +18,17 @@ namespace AndroidApp
     {
         /* Skal tage imod et bus objekt + hvad den ellers har brug for, og omdanne det til strings,
          * som BusResultsAdapter kan vise */
-        public BusResultsCell (Bus bus, Tidspunkt tidspunkt, string stoppested)
+        public BusResultsCell(Bus bus, Tidspunkt tidspunkt, string stoppested)
         {
             BusNavn = bus.busName;
             Tidspunkt = tidspunkt.ToString();
             PasNu = $"Nuværende passagerer: {bus.PassengersTotal} af {bus.CapacitySitting + bus.CapacityStanding}";
-            PasForv = $"Forventede passagerer: {bus.StoppeStederMTid.Where(x=> x.Stop.StoppestedName == stoppested).First().AfPåTidComb.First().ForventetPassagere} af {bus.CapacitySitting + bus.CapacityStanding}";
+            PasForv = $"Forventede passagerer: {bus.StoppeStederMTid.Where(x => x.Stop.StoppestedName == stoppested).First().AfPåTidComb.First().ForventetPassagere} af {bus.CapacitySitting + bus.CapacityStanding}";
             Stoppested = stoppested;
 
-            if (bus.PassengersTotal < bus.CapacitySitting*0.8)
+            if (bus.PassengersTotal < bus.CapacitySitting * 0.8)
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
-            else if ((bus.PassengersTotal >= bus.CapacitySitting*0.8) && (bus.PassengersTotal < bus.CapacitySitting))
+            else if ((bus.PassengersTotal >= bus.CapacitySitting * 0.8) && (bus.PassengersTotal < bus.CapacitySitting))
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusNaesteningensiddepladser;
             else if ((bus.PassengersTotal >= bus.CapacitySitting) && (bus.PassengersTotal < bus.CapacitySitting + bus.CapacityStanding))
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;

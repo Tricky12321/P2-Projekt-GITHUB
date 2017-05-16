@@ -26,18 +26,17 @@ namespace ServerGPSSimulering
         public int SlutMinut;
 
         public int DrivetimeInSeconds;
-        public bool NoDelay = false;
         public double busAvgSpeedMprSec;
 
         public day UgeDag;
         public const int Week = 5;
-        public SimBus(Bus simulatedBus, day WeekDay, bool delay = true)
+
+        public SimBus(Bus simulatedBus, day WeekDay)
         {
             UgeDag = WeekDay;
             simulatedBus.GetUpdate();
             SimulatedBus = simulatedBus;
             SimulatedRute = new SimRoute(SimulatedBus.Rute, "Simuleringsrute");
-            NoDelay = !delay;
             int elementerIRute = SimulatedRute.route.Points.Count();
             for (int i = 0; i < elementerIRute; ++i)
             {
@@ -56,7 +55,7 @@ namespace ServerGPSSimulering
             DrivetimeInSeconds = ((SlutHour - StartHour) * 60 + SlutMinut - StartMinut) * 60;
 
             busAvgSpeedMprSec = RuteDistance * 1000 / DrivetimeInSeconds;
-            MoveToStart();
+            //MoveToStart();
             Thread BusMovementThread = new Thread(new ThreadStart(BusMovement));
             BusMovementThread.Start();
             Print.WriteLine("Simlering startet");
@@ -85,108 +84,109 @@ namespace ServerGPSSimulering
         }
 
         public void BedreBusMovement()
-        {
-            int ElementerIRute = SimulatedRute.route.Points.Count();
-            int steps = 5;
-            if (NoDelay)
-            {
-                steps = 1;
-            }
-            double distanceBetweenPoints;
-            double timeBetweenPoints;
-            int timeBetweenPointsMilSec;
-            int j = 1;
+         {
+             int ElementerIRute = SimulatedRute.route.Points.Count();
+             int steps = 5;
+             if (NoDelay)
+             {
+                 steps = 1;
+             }
+             double distanceBetweenPoints;
+             double timeBetweenPoints;
+             int timeBetweenPointsMilSec;
+             int j = 1;
 
 
-            // Starter med at sætte bussen til at være ved det første punkt.
-            for (int i = 0; i < ElementerIRute; i++)
-            {
-                if (i + 1 < ElementerIRute)
-                {
-                    distanceBetweenPoints = DistanceBetweenPoints(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng, SimulatedRute.route.Points[i + 1].Lat, SimulatedRute.route.Points[i + 1].Lng) * 1000;
+             // Starter med at sætte bussen til at være ved det første punkt.
+             for (int i = 0; i < ElementerIRute; i++)
+             {
+                 if (i + 1 < ElementerIRute)
+                 {
+                     distanceBetweenPoints = DistanceBetweenPoints(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng, SimulatedRute.route.Points[i + 1].Lat, SimulatedRute.route.Points[i + 1].Lng) * 1000;
 
-                    timeBetweenPoints = distanceBetweenPoints / busAvgSpeedMprSec;
-                    timeBetweenPointsMilSec = (int)(timeBetweenPoints * 1000);
+                     timeBetweenPoints = distanceBetweenPoints / busAvgSpeedMprSec;
+                     timeBetweenPointsMilSec = (int)(timeBetweenPoints * 1000);
 
-                    GPS FirstPoint = new GPS();
-                    FirstPoint.xCoordinate = SimulatedRute.route.Points[i].Lat;
-                    FirstPoint.yCoordinate = SimulatedRute.route.Points[i].Lng;
-                    GPS NextPoint = new GPS();
-                    NextPoint.xCoordinate = SimulatedRute.route.Points[i + 1].Lat;
-                    NextPoint.yCoordinate = SimulatedRute.route.Points[i + 1].Lng;
-                    // for steps = 10, vil kordinaterne for single point, være 1/10 af afstanden mellem 2 punkter
-                    double DistanceBetweenNextStops = DistanceBetweenPoints(NextPoint.xCoordinate, NextPoint.yCoordinate, FirstPoint.xCoordinate, FirstPoint.yCoordinate);
-                    //steps = (int)Math.Round(DistanceBetweenNextStops / 0.05f, 0);
-                    GPS SinglePoint = new GPS();
-                    SinglePoint.xCoordinate = (FirstPoint.xCoordinate - NextPoint.xCoordinate) / steps;
-                    SinglePoint.yCoordinate = (FirstPoint.yCoordinate - NextPoint.yCoordinate) / steps;
-                    //Debug.Print($"Taking {steps} steps...");
-                    double DistanceToNextStop = DistanceBetweenPoints(SimulatedBus.placering, NextPoint);
-                    double distance = DistanceBetweenPoints(SimulatedBus.placering.xCoordinate, SimulatedBus.placering.yCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate);
-                    bool AtStop = distance < 0.05;
-                    for (int k = 0; k < steps && DistanceToNextStop > 0 && AtStop == false; k++)
-                    {
-                        distance = DistanceBetweenPoints(SimulatedBus.placering.xCoordinate, SimulatedBus.placering.yCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate);
-                        AtStop = distance < 0.05;
-                        GPS NyBusLok = SimulatedBus.placering;
-                        NyBusLok.xCoordinate -= SinglePoint.xCoordinate;
-                        NyBusLok.yCoordinate -= SinglePoint.yCoordinate;
-                        DistanceToNextStop = DistanceBetweenPoints(NyBusLok, NextPoint);
-                        SimulatedBus.placering = NextPoint;
-                        if (timeBetweenPointsMilSec/steps > 0f)
-                        {
-                            Debug.Print($"Sleeping for {timeBetweenPointsMilSec / steps}");
-                            Thread.Sleep((timeBetweenPointsMilSec/steps)+5);
-                        }
-                        new Thread(new ThreadStart(SendToServer)).Start();
-                        DistanceToNextStop = DistanceBetweenPoints(NyBusLok, NextPoint);
-                        Debug.Print($"Step {k}/{steps}, Distance to next point is {DistanceToNextStop}");
-                    }
-                    if (j < SimulatedBus.StoppeStederMTid.Count)
-                    {
+                     GPS FirstPoint = new GPS();
+                     FirstPoint.xCoordinate = SimulatedRute.route.Points[i].Lat;
+                     FirstPoint.yCoordinate = SimulatedRute.route.Points[i].Lng;
+                     GPS NextPoint = new GPS();
+                     NextPoint.xCoordinate = SimulatedRute.route.Points[i + 1].Lat;
+                     NextPoint.yCoordinate = SimulatedRute.route.Points[i + 1].Lng;
+                     // for steps = 10, vil kordinaterne for single point, være 1/10 af afstanden mellem 2 punkter
+                     double DistanceBetweenNextStops = DistanceBetweenPoints(NextPoint.xCoordinate, NextPoint.yCoordinate, FirstPoint.xCoordinate, FirstPoint.yCoordinate);
+                     //steps = (int)Math.Round(DistanceBetweenNextStops / 0.05f, 0);
+                     GPS SinglePoint = new GPS();
+                     SinglePoint.xCoordinate = (FirstPoint.xCoordinate - NextPoint.xCoordinate) / steps;
+                     SinglePoint.yCoordinate = (FirstPoint.yCoordinate - NextPoint.yCoordinate) / steps;
+                     //Debug.Print($"Taking {steps} steps...");
+                     double DistanceToNextStop = DistanceBetweenPoints(SimulatedBus.placering, NextPoint);
+                     double distance = DistanceBetweenPoints(SimulatedBus.placering.xCoordinate, SimulatedBus.placering.yCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate);
+                     bool AtStop = distance < 0.05;
+                     for (int k = 0; k < steps && DistanceToNextStop > 0 && AtStop == false; k++)
+                     {
+                         distance = DistanceBetweenPoints(SimulatedBus.placering.xCoordinate, SimulatedBus.placering.yCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate, SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate);
+                         AtStop = distance < 0.05;
+                         GPS NyBusLok = SimulatedBus.placering;
+                         NyBusLok.xCoordinate -= SinglePoint.xCoordinate;
+                         NyBusLok.yCoordinate -= SinglePoint.yCoordinate;
+                         DistanceToNextStop = DistanceBetweenPoints(NyBusLok, NextPoint);
+                         SimulatedBus.placering = NextPoint;
+                         if (timeBetweenPointsMilSec/steps > 0f)
+                         {
+                             Debug.Print($"Sleeping for {timeBetweenPointsMilSec / steps}");
+                             Thread.Sleep((timeBetweenPointsMilSec/steps)+5);
+                         }
+                         new Thread(new ThreadStart(SendToServer)).Start();
+                         DistanceToNextStop = DistanceBetweenPoints(NyBusLok, NextPoint);
+                         Debug.Print($"Step {k}/{steps}, Distance to next point is {DistanceToNextStop}");
+                     }
+                     if (j < SimulatedBus.StoppeStederMTid.Count)
+                     {
 
-                        Debug.Print($"Distance was: {distance.ToString()}");
-                        int stopnr = j;
-                        if (AtStop)
-                        {
+                         Debug.Print($"Distance was: {distance.ToString()}");
+                         int stopnr = j;
+                         if (AtStop)
+                         {
 
-                            int RngPassPÅ = RandomPassagerer();
-                            int RngPassAF = RandomPassagerer();
-                            Stoppested Stop = SimulatedBus.StoppeStederMTid[j].Stop;
-                            Tidspunkt Time = SimulatedBus.StoppeStederMTid[j].AfPåTidComb.First().Tidspunkt;
-                            if (SimulatedBus.PassengersTotal - RngPassAF < 0)
-                            {
-                                RngPassAF = SimulatedBus.PassengersTotal;
-                            }
-                            SimulatedBus.PassengersTotal -= RngPassAF;
-                            //Thread.Sleep(10);
-                            if (SimulatedBus.PassengersTotal + RngPassPÅ > SimulatedBus.TotalCapacity)
-                            {
-                                RngPassPÅ = SimulatedBus.PassengersTotal - SimulatedBus.TotalCapacity;
-                            }
-                            SimulatedBus.PassengersTotal += RngPassPÅ;
-                            AfPåTidCombi NewAfPåTidComb = new AfPåTidCombi(RngPassAF, RngPassPÅ, Stop, SimulatedBus, UgeDag, Week, Time, SimulatedBus.PassengersTotal, SimulatedBus.TotalCapacity);
-                            NewAfPåTidComb.ForventetPassagere = SimulatedBus.PassengersTotal;
-                            NewAfPåTidComb.UploadToDatabase();
-                            SendToServer();
-                            Debug.WriteLine("Stop:" + j);
-                            SimulatedBus.StoppeStederMTid[j].AfPåTidComb[0] = NewAfPåTidComb;
-                            j++;
-                            Algoritme.Algoritmen(ref SimulatedBus);
-                        }
+                             int RngPassPÅ = RandomPassagerer();
+                             int RngPassAF = RandomPassagerer();
+                             Stoppested Stop = SimulatedBus.StoppeStederMTid[j].Stop;
+                             Tidspunkt Time = SimulatedBus.StoppeStederMTid[j].AfPåTidComb.First().Tidspunkt;
+                             if (SimulatedBus.PassengersTotal - RngPassAF < 0)
+                             {
+                                 RngPassAF = SimulatedBus.PassengersTotal;
+                             }
+                             SimulatedBus.PassengersTotal -= RngPassAF;
+                             //Thread.Sleep(10);
+                             if (SimulatedBus.PassengersTotal + RngPassPÅ > SimulatedBus.TotalCapacity)
+                             {
+                                 RngPassPÅ = SimulatedBus.PassengersTotal - SimulatedBus.TotalCapacity;
+                             }
+                             SimulatedBus.PassengersTotal += RngPassPÅ;
+                             AfPåTidCombi NewAfPåTidComb = new AfPåTidCombi(RngPassAF, RngPassPÅ, Stop, SimulatedBus, UgeDag, Week, Time, SimulatedBus.PassengersTotal, SimulatedBus.TotalCapacity);
+                             NewAfPåTidComb.ForventetPassagere = SimulatedBus.PassengersTotal;
+                             NewAfPåTidComb.UploadToDatabase();
+                             SendToServer();
+                             Debug.WriteLine("Stop:" + j);
+                             SimulatedBus.StoppeStederMTid[j].AfPåTidComb[0] = NewAfPåTidComb;
+                             j++;
+                             Algoritme.Algoritmen(ref SimulatedBus);
+                         }
 
-                    }
-                }
-                else
-                {
-                    SimulatedBus.placering.xCoordinate = SimulatedRute.route.Points[i].Lat;
-                    SimulatedBus.placering.yCoordinate = SimulatedRute.route.Points[i].Lng;
-                    SendToServer();
+                     }
+                 }
+                 else
+                 {
+                     SimulatedBus.placering.xCoordinate = SimulatedRute.route.Points[i].Lat;
+                     SimulatedBus.placering.yCoordinate = SimulatedRute.route.Points[i].Lng;
+                     SendToServer();
 
-                }
+                 }
 
-            }
-        }
+             }
+         }
+         
 
         public void BusMovement()
         {
@@ -195,14 +195,17 @@ namespace ServerGPSSimulering
             double timeBetweenPoints;
             int timeBetweenPointsMilSec;
 
+            int algoritmeTid = 0;
+
             int j = 0;
 
-            Algoritme.Algoritmen(ref SimulatedBus);
+            //Algoritme.Algoritmen(ref SimulatedBus);
 
             for (int i = 0; i < elementerIRute; ++i)
             {
                 if (i + 1 < elementerIRute)
                 {
+
                     Stopwatch Tidstagning = new Stopwatch();
 
                     Tidstagning.Start();
@@ -218,10 +221,15 @@ namespace ServerGPSSimulering
                     timeBetweenPointsMilSec = (int)(timeBetweenPoints * 1000);
                     Tidstagning.Stop();
 
-                    int Sleeptimer = timeBetweenPointsMilSec - (int)Tidstagning.ElapsedMilliseconds;
+                    int Sleeptimer = timeBetweenPointsMilSec - (int)Tidstagning.ElapsedMilliseconds - algoritmeTid;
                     if (Sleeptimer > 0)
                     {
                         Thread.Sleep(Sleeptimer);
+                        algoritmeTid = 0;
+                    }
+                    else
+                    {
+                        algoritmeTid -= timeBetweenPointsMilSec - (int)Tidstagning.ElapsedMilliseconds;
                     }
 
                     if (SimulatedBus.StoppeStederMTid.Count > j)
@@ -234,7 +242,14 @@ namespace ServerGPSSimulering
                             j++;
 
                             SimulatedBus.PassengersTotal += RandomPassagerer();
+
+                            Stopwatch Algoritmetid = new Stopwatch();
+                            Algoritmetid.Start();
+
                             Algoritme.Algoritmen(ref SimulatedBus);
+
+                            Algoritmetid.Stop();
+                            algoritmeTid += (int)Algoritmetid.ElapsedMilliseconds;
                             Debug.WriteLine("Stop:" + j);
                         }
                     }
@@ -248,8 +263,8 @@ namespace ServerGPSSimulering
                 {
                     SimulatedBus.placering.xCoordinate = SimulatedRute.route.Points[i].Lat;
                     SimulatedBus.placering.yCoordinate = SimulatedRute.route.Points[i].Lng;
-                    SendToServer();
                 }
+                SendToServer();
             }
         }
 
