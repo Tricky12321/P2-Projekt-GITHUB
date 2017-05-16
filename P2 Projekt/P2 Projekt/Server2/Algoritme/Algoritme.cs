@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
 
 public static class Algoritme
 {
@@ -55,13 +56,8 @@ public static class Algoritme
         return i;
     }
 
-    public static void Algoritmen(ref Bus localBus)
+    public static List<AfPåTidCombi> GetSidsteMånedData(Bus placeholderBus, int AntalBesøgteStoppesteder, int AntalTotaleStopPåRute)
     {
-        Bus placeholderBus = localBus;
-        Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
-        int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
-        List<AfPåTidCombi> StoppeStederTid = new List<AfPåTidCombi>();
-        int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
         // Finder ud om der er tale om en weekend eller en hverdag
         // Hvis det er en hverdag: Så vælg alle dage som er hverdage
         // Hvis der er en weekend: Så vælg alle dage som er weekend
@@ -75,6 +71,30 @@ public static class Algoritme
             AfPåTidCombi NewAfPåTid = new AfPåTidCombi();
             NewAfPåTid.Update(item);
             SidsteMånedAfPåTid.Add(NewAfPåTid);
+        }
+        return SidsteMånedAfPåTid;
+    }
+
+    public static List<AfPåTidCombi> UnitTestingData(Bus placeholderBus, int AntalBesøgteStoppesteder, int AntalTotaleStopPåRute)
+    {
+        return null;
+    }
+
+    public static Bus Algoritmen(Bus placeholderBus, bool UnitTesting = false)
+    {
+        Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
+        int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
+        List<AfPåTidCombi> StoppeStederTid = new List<AfPåTidCombi>();
+        int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
+        List<AfPåTidCombi> SidsteMånedAfPåTid = new List<AfPåTidCombi>();
+        if (UnitTesting)
+        {
+            SidsteMånedAfPåTid = GetSidsteMånedData(placeholderBus, AntalBesøgteStoppesteder, AntalTotaleStopPåRute);
+        } else
+        {
+            // Unittesting funktion her:
+            // LIGE HER:::::-vvvvvvvvvvvvvvvvvvv
+
         }
         // Henter alle ID's på de stoppesteder der er besøgt
         List<int> BesøgteStopIDs = new List<int>();
@@ -114,12 +134,14 @@ public static class Algoritme
         }
 
         int Afvigelse = 0;
+        // Hvis den har besøgt mere end 1 stoppested, så skal afvigelse beregnes
         if (AntalBesøgteStoppesteder > 1)
         {
             Afvigelse = (int)Math.Round(LastStopsData.Average() - MånedAverage.Average(), 0);
         }
         int Total = placeholderBus.PassengersTotal;
         BesøgteStopIDs.Reverse();
+        // For alle stoppesteder som er besøgt, skal der beregnes forventet passagere tal
         for (int i = AntalBesøgteStoppesteder; i < AntalTotaleStopPåRute; i++)
         {
             if (!BesøgteStopIDs.Take(BesøgteStopIDs.Count - 1).Contains(placeholderBus.StoppeStederMTid[i].Stop.StoppestedID))
@@ -127,16 +149,20 @@ public static class Algoritme
                 double _afstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Afstigninger);
                 double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == placeholderBus.StoppeStederMTid[i].Stop.StoppestedID)).Average(x => x.Påstigninger);
                 int SingleAfvigelse = (int)Math.Round((-_afstigningerAverage + _påstigningerAverage) + Afvigelse, 0);
-                placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere = Total + SingleAfvigelse;
-                if (placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere < 0)
+                placeholderBus.StoppeStederMTid[i].AfPåTidComb[0].ForventetPassagere = Total + SingleAfvigelse;
+                if (placeholderBus.StoppeStederMTid[i].AfPåTidComb[0].ForventetPassagere < 0)
                 {
-                    placeholderBus.StoppeStederMTid[i].AfPåTidComb.First().ForventetPassagere = 0;
+                    placeholderBus.StoppeStederMTid[i].AfPåTidComb[0].ForventetPassagere = 0;
                 }
                 Total += SingleAfvigelse;
             }
+            else
+            {
+                placeholderBus.StoppeStederMTid[i].AfPåTidComb[0].ForventetPassagere = placeholderBus.StoppeStederMTid[i].AfPåTidComb[0].TotalPassagere;
+            }
         }
-        placeholderBus.UploadToDatabase();
-        localBus = placeholderBus;
+        new Thread(new ThreadStart(placeholderBus.UploadToDatabase)).Start();
+        return placeholderBus;
     }
 
     private static int FindAverage(List<AfPåTidCombi> combiList)

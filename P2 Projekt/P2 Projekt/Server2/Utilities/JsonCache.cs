@@ -52,69 +52,75 @@ public static class JsonCache
 
     public static void UpdateRuterCache()
     {
-        string OutputString;
-        Rute SingleRute = new Rute();
-        var RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
-        List<Rute> AlleRuter = new List<Rute>();
-        foreach (var SS in RowsFromDB.RowData)
+        while (true)
         {
-            Rute NewRute = new Rute();
-            NewRute.Update(SS);
-            AlleRuter.Add(NewRute);
+            string OutputString;
+            Rute SingleRute = new Rute();
+            var RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
+            List<Rute> AlleRuter = new List<Rute>();
+            foreach (var SS in RowsFromDB.RowData)
+            {
+                Rute NewRute = new Rute();
+                NewRute.Update(SS);
+                AlleRuter.Add(NewRute);
+            }
+            OutputString = Json.Serialize(AlleRuter);
+            lock (RuterLock)
+            {
+                AlleRuterCache = OutputString;
+            }
+            Debug.Print("Updated Rute Cache");
+            Thread.Sleep(_sleepTime);
         }
-        OutputString = Json.Serialize(AlleRuter);
-        lock (RuterLock)
-        {
-            AlleRuterCache = OutputString;
-        }
-        Debug.Print("Updated Rute Cache");
-        Thread.Sleep(_sleepTime);
-
     }
 
     public static void UpdateStoppeStederCache()
     {
-        string OutputString;
-        Stoppested SingleStoppeSted = new Stoppested();
-        var RowsFromDB = MysqlControls.SelectAll(SingleStoppeSted.GetTableName());
-        List<Stoppested> AlleStoppesteder = new List<Stoppested>();
-        foreach (var SS in RowsFromDB.RowData)
+        while (true)
         {
-            Stoppested NewStoppested = new Stoppested();
-            NewStoppested.Update(SS);
-            AlleStoppesteder.Add(NewStoppested);
+            string OutputString;
+            Stoppested SingleStoppeSted = new Stoppested();
+            var RowsFromDB = MysqlControls.SelectAll(SingleStoppeSted.GetTableName());
+            List<Stoppested> AlleStoppesteder = new List<Stoppested>();
+            foreach (var SS in RowsFromDB.RowData)
+            {
+                Stoppested NewStoppested = new Stoppested();
+                NewStoppested.Update(SS);
+                AlleStoppesteder.Add(NewStoppested);
+            }
+            OutputString = Json.Serialize(AlleStoppesteder);
+            lock (StoppeStederLock)
+            {
+                AlleStoppeStederCache = OutputString;
+            }
+            Debug.Print("Updated StoppeSteds Cache");
+            Thread.Sleep(_sleepTime);
         }
-        OutputString = Json.Serialize(AlleStoppesteder);
-        lock (StoppeStederLock)
-        {
-            AlleStoppeStederCache = OutputString;
-        }
-        Debug.Print("Updated StoppeSteds Cache");
-
-        Thread.Sleep(_sleepTime);
-
     }
 
     public static void UpdateBusserCache()
     {
-        string OutputString;
-        Bus SingleBus = new Bus();
-        var RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
-        List<Bus> AlleBusser = new List<Bus>();
-        foreach (var SS in RowsFromDB.RowData)
+        while (true)
         {
-            Bus NewBus = new Bus();
-            NewBus.Update(SS);
-            AlleBusser.Add(NewBus);
+            string OutputString;
+            Bus SingleBus = new Bus();
+            var RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
+            List<Bus> AlleBusser = new List<Bus>();
+            foreach (var SS in RowsFromDB.RowData)
+            {
+                Bus NewBus = new Bus();
+                NewBus.Update(SS);
+                AlleBusser.Add(NewBus);
+            }
+            OutputString = Json.Serialize(AlleBusser);
+            lock (BusserLock)
+            {
+                AlleBusserCache = OutputString;
+            }
+            Debug.Print("Updated Busserm Cache");
+            Thread.Sleep(_sleepTime);
         }
-        OutputString = Json.Serialize(AlleBusser);
-        lock (BusserLock)
-        {
-            AlleBusserCache = OutputString;
-        }
-        Debug.Print("Updated Busserm Cache");
 
-        Thread.Sleep(_sleepTime);
     }
 }
 
