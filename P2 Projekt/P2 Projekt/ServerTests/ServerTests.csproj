@@ -50,6 +50,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Algoritme\AlgoritmeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ServerTests.cs" />
     <Compile Include="Utilities\IPHandlerTests.cs" />

@@ -200,6 +200,7 @@ namespace ProgramTilBusselskab
 
                 busMark.ToolTipText = bus.PassengersTotal.ToString() + " af " + (bus.CapacitySitting + bus.CapacityStanding) + "\nStåpladser: " + bus.CapacityStanding + " og siddeplader " + bus.CapacitySitting;
                 busMark.ToolTip.Foreground = Brushes.Black;
+                busMark.ToolTipMode = MarkerTooltipMode.Always;
 
                 if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.PassengersTotal)
                 {
@@ -227,6 +228,8 @@ namespace ProgramTilBusselskab
 
                     bool warningRed = false;
                     bool warningYellow = false;
+                    WarningLabel.Visible = false;
+                    
 
                     foreach (Stoppested stop in bus.Rute.StoppeSteder)
                     {
@@ -262,11 +265,13 @@ namespace ProgramTilBusselskab
 
                     if (warningRed)
                     {
-                        MessageBox.Show("Bussen forventes at blive fuld senere på ruten!");
+                        WarningLabel.ForeColor = Color.Red;
+                        WarningLabel.Visible = true;
                     }
                     else if (warningYellow)
                     {
-                        MessageBox.Show("Bussen forventes at blive næsten fuld senere på ruten!");
+                        WarningLabel.ForeColor = Color.Yellow;
+                        WarningLabel.Visible = true;
                     }
 
                     gMapsMap.Overlays.Add(stopLayer);

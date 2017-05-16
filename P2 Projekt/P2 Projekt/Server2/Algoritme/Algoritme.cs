@@ -123,9 +123,9 @@ public static class Algoritme
                 double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == StoppeStedsID)).Average(x => x.Påstigninger);
                 // Beregner den gennemsnitlige afvigelse som denne dag har haft indtil videre. 
                 int SingleAfvigelse = (int)Math.Round((-_afstigningerAverage + _påstigningerAverage) + Afvigelse, 0);
-                // Sætter bussens forventede passagere tal, ved kommende stop, til bussens forventede total, og afvigelsen for dagen sammen
+                // Sætter bussens forventede passagertal, ved kommende stop, til bussens forventede total, og afvigelsen for dagen sammen
                 StoppeStedsAfPåTid.ForventetPassagere = Total + SingleAfvigelse;
-                // Sikre at bussen ikke kan have negative passagere antal
+                // Sikrer at bussen ikke kan have negative passagerantal
                 if (StoppeStedsAfPåTid.ForventetPassagere < 0)
                 {
                     StoppeStedsAfPåTid.ForventetPassagere = 0;

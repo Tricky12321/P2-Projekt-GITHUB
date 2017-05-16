@@ -12,6 +12,16 @@ public class Rute : MysqlObject
 
     public Rute() { }
 
+    public Rute(string ruteName, int ruteID, params Stoppested[] stoppested)
+    {
+        RuteName = ruteName;
+        RuteID = ruteID;
+        foreach (Stoppested stop in stoppested)
+        {
+            StoppeSteder.Add(stop);
+        }
+    }
+
     public override string ToString()
     {
         return RuteName;
