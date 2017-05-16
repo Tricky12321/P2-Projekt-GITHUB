@@ -2,12 +2,13 @@
 
 public abstract class MysqlObject : NetworkObject
 {
-
+    // Start metode, bliver ikke rigtigt brugt...
     public abstract void Start();
 
+    // Henter kollonnerne for tabellen der høre til objektet
     public string[] GetCollumsDB()
     {
-        return MysqlControls.SelectOne(this.GetTableName()).RowData[0].Colums.ToArray();
+        return MysqlControls.SelectOne(GetTableName()).RowData[0].Colums.ToArray();
     }
 
     public abstract string[] GetValues();
@@ -32,6 +33,7 @@ public abstract class MysqlObject : NetworkObject
 
     public void UploadToDatabase()
     {
+        // Hvis der allerede eksistere et objekt i databasen med dette ID, så skal det opdateres, ellers skal det oprettes.
         if (MysqlControls.IsIDInDatabase(this))
         {
             MysqlControls.UpdateWhere(GetTableName(), GetCollumsDB(), GetValues(), WhereID());

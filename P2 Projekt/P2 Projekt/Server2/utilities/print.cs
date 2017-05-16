@@ -3,11 +3,13 @@ using System.Text;
 
 public static class Print
 {
+    public static readonly object ConsoleWriterLock = new object();
+
     public static void PrintLine(ConsoleColor Color)
     {
         PrintColorLine("------------------------------", ConsoleColor.Green);
     }
-    public static readonly object ConsoleWriterLock = new object();
+
     public static void PrintColorLine(string Text, ConsoleColor ForegroundColor)
     {
         PrintColor(Text + "\n", ForegroundColor, ConsoleColor.Black);

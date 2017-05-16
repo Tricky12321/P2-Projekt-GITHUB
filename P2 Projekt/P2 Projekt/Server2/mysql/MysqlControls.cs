@@ -78,9 +78,9 @@ public static class MysqlControls
         return Mysql.RunQueryWithReturn($"SELECT `{condition}` FROM `{table}`");
     }
 
-    public static TableDecode SelectAll(string table)
+    public static TableDecode SelectAll(string table, bool NoLog = false)
     {
-        return Mysql.RunQueryWithReturn($"SELECT * FROM `{table}`");
+        return Mysql.RunQueryWithReturn($"SELECT * FROM `{table}`",NoLog);
     }
 
     public static TableDecode SelectAllWhere(string table, string whereCondition)
@@ -101,7 +101,6 @@ public static class MysqlControls
     public static TableDecode SelectOneWhere(string table, string whereCondition)
     {
         return Mysql.RunQueryWithReturn($"SELECT * FROM `{table}` WHERE {whereCondition} LIMIT 1");
-
     }
 
     public static void DeleteAll(string table)
@@ -181,6 +180,12 @@ public static class MysqlControls
             OutputArray.Add(colum.Values[0]);   
         }
         return OutputArray.ToArray();
+    }
+
+    public static Row GetLastLineFrom(string TableName)
+    {
+        TableDecode Tbl = Mysql.RunQueryWithReturn($"SELECT * FROM `{TableName}` ORDER BY `ID` DESC LIMIT 1;");
+        return Tbl.RowData.First();
     }
 
     public static Row GetLastLineFrom(string TableName, string WhereCondition)

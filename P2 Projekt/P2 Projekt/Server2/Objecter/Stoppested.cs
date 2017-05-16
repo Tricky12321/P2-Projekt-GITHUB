@@ -36,7 +36,7 @@ public class Stoppested : MysqlObject
     }
     public override int GetID()
     {
-        return this.StoppestedID;
+        return StoppestedID;
     }
 
     public override void Start()

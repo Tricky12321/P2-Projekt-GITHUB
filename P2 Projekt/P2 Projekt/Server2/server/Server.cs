@@ -87,8 +87,7 @@ public class Server
             listenerv4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV4Started = true;
             IPv4Server = this;
-            WorkerDelagateThread = new Thread(new ThreadStart(HandleWorkers));
-            WorkerDelagateThread.Start();
+            (WorkerDelagateThread = new Thread(new ThreadStart(HandleWorkers))).Start();
             SocketServer(localEndPointv4, listenerv4);
         }
         // IPV6 SERVER ->->->->->->->->->->->->->->->->->
@@ -100,8 +99,7 @@ public class Server
             listenerv6.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             IPV6Started = true;
             IPv6Server = this;
-            WorkerDelagateThread = new Thread(new ThreadStart(HandleWorkers));
-            WorkerDelagateThread.Start();
+            (WorkerDelagateThread = new Thread(new ThreadStart(HandleWorkers))).Start();
             SocketServer(localEndPointv6, listenerv6);
         }
     }
@@ -388,11 +386,6 @@ public class Server
         // Hvis den skal starte IPV6 Server
         if (IPv6)
         {
-            // Hvis der også er bedt om at få startet en IPV4 server, så skal den vente på at den er startet først.
-            if (IPv4)
-            {
-                Utilities.WaitFor(ref Server.IPV4Started);
-            }
             Server SocketServerIPv6 = new Server(12943, ServerType.Ipv6);
             Thread IPv6Thread = new Thread(new ThreadStart(SocketServerIPv6.StartListening));
             IPv6Thread.Start();

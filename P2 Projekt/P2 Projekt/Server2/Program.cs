@@ -8,70 +8,13 @@ public static class Program
 {
     public static bool ExitProgramBool = false;
 
-    public static List<NetworkObject> ClassesToHandle = new List<NetworkObject>();
-
-    public static void TestObject()
-    {
-        // Lavet et nyt Test Object
-        Test TestObj = new Test();                                                  
-        // Laver et nyt stopur
-        System.Diagnostics.Stopwatch Timer = new System.Diagnostics.Stopwatch();    
-        // Starter stopuret
-        Timer.Start();                                                              
-        //serialiseere objectet
-        string JsonString = Json.Serialize(TestObj);                                
-        // Stopper stopuret
-        Timer.Stop();                                                               
-        // Udskriver tiden
-        Console.WriteLine($"Serialise: {Timer.ElapsedMilliseconds} ms");            
-        // Genstarter stopuret
-        Timer.Restart();                                                            
-        // Deserialiserer objectet
-        Test TestObjDe = Json.Deserialize(JsonString)[0] as Test;                      
-        // Stopper stopuret
-        Timer.Stop();                                                               
-        // Udskriver tiden
-        Console.WriteLine($"Deserialise: {Timer.ElapsedMilliseconds} ms");       
-    }
-
-    public static void TestRealClient()
-    {
-        //Rute BusRute = new Rute();
-        //BusRute.RuteID = 1;
-        //BusRute.GetUpdate();
-        /*
-        RealClient TestClient = new RealClient();
-        Bus TestBus = new Bus();
-        
-        TestBus.busID = 1;
-        TestBus.busLok = new GPS();
-        TestBus.busLok.xCoordinate = 54.2123;
-        TestBus.busLok.yCoordinate = -21.2123;
-        TestBus.busName = "2 Væddeløbsbanen";
-        TestBus.CapacitySitting = 32;
-        TestBus.CapacityStanding = 20;
-        TestBus.besøgteStop = 123;
-        TestBus.rute = new Rute();
-        TestBus.rute.ruteName = "asdf";
-        TestBus.rute.ruteID = 1;
-        TestClient.SendObject(TestBus, typeof(Bus));
-        
-        List<NetworkObject> NwOs = TestClient.RequestAllWhere(ObjectTypes.BusStop, "");
-        foreach (NetworkObject NwO in NwOs)
-        {
-            System.Diagnostics.Debug.Print(NwO.ToString());
-        }
-        */
-    }
-
     public static int Main(String[] args)
     {
         // Printer lige om det er linux eller ej
         Utilities.CheckOS();
-        Thread StartAllThread = new Thread(new ThreadStart(StartAll));
-        Thread TestThread = new Thread(new ThreadStart(RunTest));
-        StartAllThread.Start();
-        TestThread.Start();
+        // 
+        new Thread(new ThreadStart(StartAll)).Start();
+        ListenForCommands();
         while (!ExitProgramBool)
         {
 
@@ -89,16 +32,19 @@ public static class Program
         // Start mySQL serveren først!
         Mysql.StartmySQL();
         Utilities.WaitFor(ref Mysql.Connected);
+        // Venter lige 500 ms for at give Console et øjeblik til at printe. 
         Thread.Sleep(500);
         // Start så IPv4 og/eller IPv6
         Server.StartServer(true, true);
         JsonCache.StartThreads();
     }
 
-    public static void RunTest()
+    public static void ListenForCommands()
     {
-        //RunBusTest();
+        // Venter på at alle servere er startet, og at der er forbindelse til database.
         Utilities.WaitFor(ref Mysql.Connected);
+        Utilities.WaitFor(ref Server.IPV4Started);
+        Utilities.WaitFor(ref Server.IPV6Started);
         ServerCommands.WaitForCommand();
     }
 

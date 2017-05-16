@@ -1,28 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using ServerGPSSimulering;
 
 
 public static class ServerCommands
 {
-    public static void WaitForCommand()
+    private static void WatiForESC()
     {
-        Thread.Sleep(1000);
         Print.PrintCenterColor("Press ", "ESC", " to enter commands", ConsoleColor.DarkMagenta);
         do
         {
             while (!Console.KeyAvailable)
             {
-                // Do something
+                // Vent...
             }
-        } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+        }
+        while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+    }
+
+    public static void WaitForCommand()
+    {
+        Thread.Sleep(1000);
+        // Lytter efter om der bliver trykket ESC, hvis dette bliver gjort, går man ind i Command mode, og der vil ikke blive skrevet ud på STDIO
+        WatiForESC();
+
         string command;
-        int k = 0;
-        Client TestClient;
-        Thread TestClientThread;
         lock (Print.ConsoleWriterLock)
         {
             Console.Write("\n> ");
@@ -30,68 +32,6 @@ public static class ServerCommands
         }
         switch (command.ToLower())
         {
-            case "ultratest":
-                for (int i = 0; i < 1000; i++)
-                {
-                    Print.PrintCenterColor("Test: ", k.ToString(), "#", ConsoleColor.Yellow);
-                    k++;
-                    TestClient = new Client();
-                    TestClientThread = new Thread(new ThreadStart(TestClient.SendTestObject));
-                    TestClientThread.Start();
-                    Thread.Sleep(100);
-                }
-                break;
-            case "hardtest":
-                for (int i = 0; i < 100; i++)
-                {
-                    Print.PrintCenterColor("Test: ", k.ToString(), "#", ConsoleColor.Yellow);
-                    k++;
-                    TestClient = new Client();
-                    TestClientThread = new Thread(new ThreadStart(TestClient.SendTestObject));
-                    TestClientThread.Start();
-                    Thread.Sleep(500);
-                }
-                break;
-            case "fixdatabase":
-                TableDecode DatabaseContent =  Mysql.RunQueryWithReturn("SELECT * FROM `AfpaaTid` ORDER BY WEEK asc, day ASC, ID ASC");
-                int AfpåTidCount = 1;
-                foreach (var item in DatabaseContent.RowData)
-                {
-                    AfPåTidCombi Test = new AfPåTidCombi();
-                    Test.Update(item);
-                    Test.ID = AfpåTidCount;
-                    Test.UploadToDatabase();
-                    Console.WriteLine($"Uploaded {AfpåTidCount} to database");
-                    AfpåTidCount++;
-                }
-                break;
-            case "makebustest":
-
-                string JsonCompare = "object,Bus|{\"StoppeStederMTid\":[{\"Stop\":{\"StoppestedName\":\"Skydebanevej v/ Væddeløbsbanen\",\"StoppestedID\":1,\"StoppestedLok\":{\"xCoordinate\":57.054779,\"yCoordinate\":9.882309}},\"AfPåTidComb\":[{\"ID\":0,\"Tidspunkt\":{\"hour\":13,\"minute\":0},\"afstigninger\":0,\"påstigninger\":0},{\"ID\":0,\"Tidspunkt\":{\"hour\":14,\"minute\":0},\"afstigninger\":0,\"påstigninger\":0}]}],\"busName\":\"TestBus\",\"BusID\":9999,\"placering\":{\"xCoordinate\":57.054779,\"yCoordinate\":9.882309},\"CapacitySitting\":22,\"CapacityStanding\":222,\"Rute\":{\"RuteName\":\"TestRute\",\"RuteID\":999,\"StoppeSteder\":[{\"StoppestedName\":\"Skydebanevej v/ Væddeløbsbanen\",\"StoppestedID\":1,\"StoppestedLok\":{\"xCoordinate\":57.054779,\"yCoordinate\":9.882309}}]},\"PassengerUpdate\":null,\"PassengersTotal\":0}";
-                Bus NyBus = JsonSerializer.Json.Deserialize(JsonCompare).First() as Bus;
-                NyBus.UploadToDatabase();
-                break;
-            case "middletest":
-                for (int i = 0; i < 25; i++)
-                {
-                    Print.PrintCenterColor("Test: ", k.ToString(), "#", ConsoleColor.Yellow);
-                    k++;
-                    TestClient = new Client();
-                    TestClientThread = new Thread(new ThreadStart(TestClient.SendTestObject));
-                    TestClientThread.Start();
-                    Thread.Sleep(1000);
-                }
-                break;
-            case "test":
-
-                Print.PrintCenterColor("Test: ", k.ToString(), "#", ConsoleColor.Yellow);
-                k++;
-                TestClient = new Client();
-                TestClientThread = new Thread(new ThreadStart(TestClient.SendTestObject));
-                TestClientThread.Start();
-                //Mysql.RunTest();
-                // Laver en ny tråd til at køre den virtuelle klient i, dette sikre at serveren køre som den skal og ikke bliver langsom. 
-                break;
             case "testbus":
                 lock (Print.ConsoleWriterLock)
                 {
@@ -104,25 +44,7 @@ public static class ServerCommands
                     SimBus TestBusSim = new SimBus(Testbus, Ugedag);
                 }
                 break;
-              
-            case "oprettestbusser":
-                Bus OrigBus = new Bus();
-                OrigBus.BusID = 30;
-                OrigBus.GetUpdate();
-                OrigBus.BusID = 31;
-                OrigBus.UploadToDatabase();
-                OrigBus.BusID = 32;
-                OrigBus.UploadToDatabase();
-                OrigBus.BusID = 33;
-                OrigBus.UploadToDatabase();
-                OrigBus.BusID = 34;
-                OrigBus.UploadToDatabase();
-                OrigBus.BusID = 35;
-                OrigBus.UploadToDatabase();
-                OrigBus.BusID = 36;
-                OrigBus.UploadToDatabase();
-                break;
-
+            // Simulateweek simulere en hel uges data for en bus. 
             /*case "simulateweek":
                 lock (Print.ConsoleWriterLock)
                 {
@@ -157,10 +79,15 @@ public static class ServerCommands
                 }
                 break;*/
             case "realclient":
-                Program.TestRealClient();
+                RealClient TestClient = new RealClient();
+                Bus TestBus = new Bus();
+                TestBus.BusID = 30;
+                TestBus.GetUpdate();
+                TestClient.SendObject(TestBus, typeof(Bus));
                 break;
             case "exit":
             case "quit":
+                Print.PrintColorLine("Program killed [0]", ConsoleColor.Red);
                 Environment.Exit(0);
                 Program.ExitProgramBool = true;
                 break;

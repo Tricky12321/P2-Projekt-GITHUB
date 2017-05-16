@@ -105,13 +105,11 @@
     <Compile Include="Objecter\Rute.cs" />
     <Compile Include="Objecter\Stoppested.cs" />
     <Compile Include="Objecter\StoppestedMTid.cs" />
-    <Compile Include="Objecter\Test.cs" />
     <Compile Include="Objecter\Tidspunkt.cs" />
     <Compile Include="Objecter\Lists.cs" />
     <Compile Include="Server\ServerType.cs" />
     <Compile Include="SImulering\SimBus.cs" />
     <Compile Include="SImulering\SimRoute.cs" />
-    <Compile Include="Utilities\ArrayHandler.cs" />
     <Compile Include="Utilities\Exceptions.cs" />
     <Compile Include="Utilities\IpAdresse.cs" />
     <Compile Include="Utilities\Json.cs" />
@@ -129,9 +127,7 @@
     <Compile Include="Utilities\DeSerializeThreadClass.cs" />
     <Compile Include="Utilities\SerializeThreadClass.cs" />
     <Compile Include="Utilities\Utilities.cs" />
-    <Compile Include="Virtual Client\Client.cs" />
     <Compile Include="Virtual Client\RealClient.cs" />
-    <Compile Include="Virtual Client\TestObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

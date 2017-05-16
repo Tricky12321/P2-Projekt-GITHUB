@@ -53,7 +53,7 @@ public class AfPåTidCombi : MysqlObject
 
     public override int GetID()
     {
-        return this.ID;
+        return ID;
     }
 
     public override string GetIDCollumName()

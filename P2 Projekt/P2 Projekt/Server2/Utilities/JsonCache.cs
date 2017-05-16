@@ -38,7 +38,7 @@ public static class JsonCache
 
     public static object RuterLock = new object() { };
 
-    private const int _sleepTime = 1000;
+    private const int _sleepTime = 2500;
 
     public static void StartThreads()
     {
@@ -56,7 +56,7 @@ public static class JsonCache
         {
             string OutputString;
             Rute SingleRute = new Rute();
-            var RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
+            var RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName(),true);
             List<Rute> AlleRuter = new List<Rute>();
             foreach (var SS in RowsFromDB.RowData)
             {
@@ -80,7 +80,7 @@ public static class JsonCache
         {
             string OutputString;
             Stoppested SingleStoppeSted = new Stoppested();
-            var RowsFromDB = MysqlControls.SelectAll(SingleStoppeSted.GetTableName());
+            var RowsFromDB = MysqlControls.SelectAll(SingleStoppeSted.GetTableName(), true);
             List<Stoppested> AlleStoppesteder = new List<Stoppested>();
             foreach (var SS in RowsFromDB.RowData)
             {
@@ -104,7 +104,7 @@ public static class JsonCache
         {
             string OutputString;
             Bus SingleBus = new Bus();
-            var RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
+            var RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName(), true);
             List<Bus> AlleBusser = new List<Bus>();
             foreach (var SS in RowsFromDB.RowData)
             {
