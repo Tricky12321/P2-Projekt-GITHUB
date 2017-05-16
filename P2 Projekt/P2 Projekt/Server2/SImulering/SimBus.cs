@@ -201,11 +201,13 @@ namespace ServerGPSSimulering
 
             //Algoritme.Algoritmen(ref SimulatedBus);
 
+            Stopwatch test = new Stopwatch();
+            test.Start();
+
             for (int i = 0; i < elementerIRute; ++i)
             {
                 if (i + 1 < elementerIRute)
                 {
-
                     Stopwatch Tidstagning = new Stopwatch();
 
                     Tidstagning.Start();
@@ -241,10 +243,10 @@ namespace ServerGPSSimulering
                         {
                             j++;
 
-                            SimulatedBus.PassengersTotal += RandomPassagerer();
-
                             Stopwatch Algoritmetid = new Stopwatch();
                             Algoritmetid.Start();
+
+                            SimulatedBus.PassengersTotal += RandomPassagerer();
 
                             Algoritme.Algoritmen(ref SimulatedBus);
 
@@ -266,6 +268,8 @@ namespace ServerGPSSimulering
                 }
                 SendToServer();
             }
+            test.Stop();
+            Debug.WriteLine(test.ElapsedMilliseconds);
         }
 
         private int RandomPassagerer()
