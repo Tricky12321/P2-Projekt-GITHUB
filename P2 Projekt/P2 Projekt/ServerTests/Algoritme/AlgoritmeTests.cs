@@ -31,61 +31,51 @@ namespace Tests
                                                                                 stopSctJoseph);
 
             Bus TestBus = new Bus("TestBus", 10001, 15, 15, TestRute, 
-                (new StoppestedMTid(stopSkydebanevej, 
-                (new AfPåTidCombi(new Tidspunkt(12, 00))), 
-                (new AfPåTidCombi(new Tidspunkt(13, 00))))), 
-                (new StoppestedMTid(stopSctJoseph, 
-                (new AfPåTidCombi(new Tidspunkt(14, 00))), 
-                (new AfPåTidCombi(new Tidspunkt(15, 00))))));
+                (new StoppestedMTid()), 
+                (new StoppestedMTid()),
+                (new StoppestedMTid()),
+                (new StoppestedMTid()),
+                (new StoppestedMTid()),
+                (new StoppestedMTid()));
 
-            List<AfPåTidCombi> TestAfPåTidCombi = new List<AfPåTidCombi>();
-            
-            /* Historik til alle 6 stoppesteder 
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[0], TestBus, (day)1, 1, new Tidspunkt(10, 00), 2, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)1, 1, new Tidspunkt(10, 10), 4, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)1, 1, new Tidspunkt(10, 20), 6, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)1, 1, new Tidspunkt(10, 30), 8, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)1, 1, new Tidspunkt(10, 40), 10, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[5], TestBus, (day)1, 1, new Tidspunkt(10, 50), 12, 30));
-
-            /* Dagens rute, hvor bussen har besøgt 5 stoppesteder 
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[0], TestBus, (day)2, 1, new Tidspunkt(10, 00), 2, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)2, 1, new Tidspunkt(10, 10), 4, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)2, 1, new Tidspunkt(10, 20), 6, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)2, 1, new Tidspunkt(10, 30), 8, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)2, 1, new Tidspunkt(10, 40), 10, 30));
-            */
-            Bus ForventetBus = new Bus("TestBus", 10001, 15, 15, TestRute,
-                (new StoppestedMTid(stopSkydebanevej,
-                (new AfPåTidCombi(new Tidspunkt(12, 00))),
-                (new AfPåTidCombi(new Tidspunkt(13, 00))))),
-                (new StoppestedMTid(stopSctJoseph,
-                (new AfPåTidCombi(new Tidspunkt(14, 00))),
-                (new AfPåTidCombi(new Tidspunkt(15, 00))))));
-
-
-
-
+            /* Historik til alle 6 stoppesteder */
             TestBus.StoppeStederMTid[0].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[0], TestBus, (day)1, 1, new Tidspunkt(10, 00), 2, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)1, 1, new Tidspunkt(10, 10), 4, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)1, 1, new Tidspunkt(10, 20), 6, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)1, 1, new Tidspunkt(10, 30), 8, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)1, 1, new Tidspunkt(10, 40), 10, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[5], TestBus, (day)1, 1, new Tidspunkt(10, 50), 12, 30));
+            TestBus.StoppeStederMTid[1].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)1, 1, new Tidspunkt(10, 10), 4, 30));
+            TestBus.StoppeStederMTid[2].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)1, 1, new Tidspunkt(10, 20), 6, 30));
+            TestBus.StoppeStederMTid[3].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)1, 1, new Tidspunkt(10, 30), 8, 30));
+            TestBus.StoppeStederMTid[4].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)1, 1, new Tidspunkt(10, 40), 10, 30));
+            TestBus.StoppeStederMTid[5].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[5], TestBus, (day)1, 1, new Tidspunkt(10, 50), 12, 30));
 
-            /* Dagens rute, hvor bussen har besøgt 5 stoppesteder 
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[0], TestBus, (day)2, 1, new Tidspunkt(10, 00), 2, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)2, 1, new Tidspunkt(10, 10), 4, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)2, 1, new Tidspunkt(10, 20), 6, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)2, 1, new Tidspunkt(10, 30), 8, 30));
-            TestAfPåTidCombi.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)2, 1, new Tidspunkt(10, 40), 10, 30));
+            /* Dagens rute, hvor bussen har besøgt 5 stoppesteder */
+            TestBus.StoppeStederMTid[0].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[0], TestBus, (day)2, 1, new Tidspunkt(10, 00), 2, 30));
+            TestBus.StoppeStederMTid[1].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)2, 1, new Tidspunkt(10, 10), 4, 30));
+            TestBus.StoppeStederMTid[2].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)2, 1, new Tidspunkt(10, 20), 6, 30));
+            TestBus.StoppeStederMTid[3].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)2, 1, new Tidspunkt(10, 30), 8, 30));
+            TestBus.StoppeStederMTid[4].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)2, 1, new Tidspunkt(10, 40), 10, 30));
+            TestBus.StoppeStederMTid[5].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[5], TestBus, (day)2, 1, new Tidspunkt(10, 50), 12, 30));
+
+            Bus ForventetBus = TestBus;
+
+
+
+            ForventetBus.StoppeStederMTid[5].AfPåTidComb[1].ForventetPassagere = 10;
+
             
-            */
+            List<AfPåTidCombi> TestAfPåTidCombi = new List<AfPåTidCombi>();
 
-
-
-
-            Assert.AreEqual(Algoritme.Algoritmen(TestBus, TestAfPåTidCombi, 5), ForventetBus);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[0].AfPåTidComb[0]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[1].AfPåTidComb[0]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[2].AfPåTidComb[0]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[3].AfPåTidComb[0]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[4].AfPåTidComb[0]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[5].AfPåTidComb[0]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[0].AfPåTidComb[1]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[1].AfPåTidComb[1]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[2].AfPåTidComb[1]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[3].AfPåTidComb[1]);
+            TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[4].AfPåTidComb[1]);
+            
+            Assert.AreEqual(Algoritme.Algoritmen(TestBus, TestAfPåTidCombi, 5).StoppeStederMTid[5].AfPåTidComb[0].ForventetPassagere, 12);
 
         }
     }
