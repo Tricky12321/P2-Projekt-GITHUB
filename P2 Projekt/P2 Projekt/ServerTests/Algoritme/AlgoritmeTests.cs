@@ -13,6 +13,13 @@ namespace Tests
         [Test()]
         public void AlgoritmenTest()
         {
+            
+            Assert.AreEqual(3, enfuckingfunktion());
+
+        }
+
+        public int enfuckingfunktion()
+        {
             Rute TestRute;
 
             // Stoppesteder til rute 2 med Storvorde //
@@ -30,37 +37,31 @@ namespace Tests
                                                                                 stopSchleppegrellsgade,
                                                                                 stopSctJoseph);
 
-            Bus TestBus = new Bus("TestBus", 10001, 15, 15, TestRute, 
-                (new StoppestedMTid()), 
-                (new StoppestedMTid()),
-                (new StoppestedMTid()),
-                (new StoppestedMTid()),
-                (new StoppestedMTid()),
-                (new StoppestedMTid()));
+            Bus TestBus = new Bus("TestBus", 10001, 15, 15, TestRute,
+                (new StoppestedMTid(TestRute.StoppeSteder[0], new AfPåTidCombi())),
+                (new StoppestedMTid(TestRute.StoppeSteder[1], new AfPåTidCombi())),
+                (new StoppestedMTid(TestRute.StoppeSteder[2], new AfPåTidCombi())),
+                (new StoppestedMTid(TestRute.StoppeSteder[3], new AfPåTidCombi())),
+                (new StoppestedMTid(TestRute.StoppeSteder[4], new AfPåTidCombi())),
+                (new StoppestedMTid(TestRute.StoppeSteder[5], new AfPåTidCombi())));
 
             /* Historik til alle 6 stoppesteder */
-            TestBus.StoppeStederMTid[0].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[0], TestBus, (day)1, 1, new Tidspunkt(10, 00), 2, 30));
-            TestBus.StoppeStederMTid[1].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)1, 1, new Tidspunkt(10, 10), 4, 30));
-            TestBus.StoppeStederMTid[2].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)1, 1, new Tidspunkt(10, 20), 6, 30));
-            TestBus.StoppeStederMTid[3].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)1, 1, new Tidspunkt(10, 30), 8, 30));
-            TestBus.StoppeStederMTid[4].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)1, 1, new Tidspunkt(10, 40), 10, 30));
-            TestBus.StoppeStederMTid[5].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[5], TestBus, (day)1, 1, new Tidspunkt(10, 50), 12, 30));
+            TestBus.StoppeStederMTid[0].AfPåTidComb[0] = (new AfPåTidCombi(0, 3, TestRute.StoppeSteder[0], TestBus, (day)1, 1, new Tidspunkt(10, 00), 2, 30));
+            TestBus.StoppeStederMTid[1].AfPåTidComb[0] = (new AfPåTidCombi(0, 4, TestRute.StoppeSteder[1], TestBus, (day)1, 1, new Tidspunkt(10, 10), 4, 30));
+            TestBus.StoppeStederMTid[2].AfPåTidComb[0] = (new AfPåTidCombi(0, 5, TestRute.StoppeSteder[2], TestBus, (day)1, 1, new Tidspunkt(10, 20), 6, 30));
+            TestBus.StoppeStederMTid[3].AfPåTidComb[0] = (new AfPåTidCombi(0, 6, TestRute.StoppeSteder[3], TestBus, (day)1, 1, new Tidspunkt(10, 30), 8, 30));
+            TestBus.StoppeStederMTid[4].AfPåTidComb[0] = (new AfPåTidCombi(0, 7, TestRute.StoppeSteder[4], TestBus, (day)1, 1, new Tidspunkt(10, 40), 10, 30));
+            TestBus.StoppeStederMTid[5].AfPåTidComb[0] = (new AfPåTidCombi(0, 8, TestRute.StoppeSteder[5], TestBus, (day)1, 1, new Tidspunkt(10, 50), 12, 30));
 
+            Bus AndenTestBus = TestBus;
             /* Dagens rute, hvor bussen har besøgt 5 stoppesteder */
-            TestBus.StoppeStederMTid[0].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[0], TestBus, (day)2, 1, new Tidspunkt(10, 00), 2, 30));
-            TestBus.StoppeStederMTid[1].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[1], TestBus, (day)2, 1, new Tidspunkt(10, 10), 4, 30));
-            TestBus.StoppeStederMTid[2].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[2], TestBus, (day)2, 1, new Tidspunkt(10, 20), 6, 30));
-            TestBus.StoppeStederMTid[3].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[3], TestBus, (day)2, 1, new Tidspunkt(10, 30), 8, 30));
-            TestBus.StoppeStederMTid[4].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[4], TestBus, (day)2, 1, new Tidspunkt(10, 40), 10, 30));
-            TestBus.StoppeStederMTid[5].AfPåTidComb.Add(new AfPåTidCombi(0, 2, TestRute.StoppeSteder[5], TestBus, (day)2, 1, new Tidspunkt(10, 50), 12, 30));
+            TestBus.StoppeStederMTid[0].AfPåTidComb.Add(new AfPåTidCombi(0, 0, TestRute.StoppeSteder[0], TestBus, (day)2, 1, new Tidspunkt(10, 00), 2, 30));
+            TestBus.StoppeStederMTid[1].AfPåTidComb.Add(new AfPåTidCombi(0, 0, TestRute.StoppeSteder[1], TestBus, (day)2, 1, new Tidspunkt(10, 10), 4, 30));
+            TestBus.StoppeStederMTid[2].AfPåTidComb.Add(new AfPåTidCombi(0, 0, TestRute.StoppeSteder[2], TestBus, (day)2, 1, new Tidspunkt(10, 20), 6, 30));
+            TestBus.StoppeStederMTid[3].AfPåTidComb.Add(new AfPåTidCombi(0, 0, TestRute.StoppeSteder[3], TestBus, (day)2, 1, new Tidspunkt(10, 30), 8, 30));
+            TestBus.StoppeStederMTid[4].AfPåTidComb.Add(new AfPåTidCombi(0, 0, TestRute.StoppeSteder[4], TestBus, (day)2, 1, new Tidspunkt(10, 40), 12, 30));
+            //TestBus.StoppeStederMTid[5].AfPåTidComb.Add(new AfPåTidCombi(0, 900, TestRute.StoppeSteder[5], TestBus, (day)2, 1, new Tidspunkt(10, 50), 12, 30));
 
-            Bus ForventetBus = TestBus;
-
-
-
-            ForventetBus.StoppeStederMTid[5].AfPåTidComb[1].ForventetPassagere = 10;
-
-            
             List<AfPåTidCombi> TestAfPåTidCombi = new List<AfPåTidCombi>();
 
             TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[0].AfPåTidComb[0]);
@@ -74,9 +75,7 @@ namespace Tests
             TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[2].AfPåTidComb[1]);
             TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[3].AfPåTidComb[1]);
             TestAfPåTidCombi.Add(TestBus.StoppeStederMTid[4].AfPåTidComb[1]);
-            
-            Assert.AreEqual(Algoritme.Algoritmen(TestBus, TestAfPåTidCombi, 5).StoppeStederMTid[5].AfPåTidComb[0].ForventetPassagere, 12);
-
+            return Algoritme.Algoritmen(TestBus, TestAfPåTidCombi, 5).StoppeStederMTid[5].AfPåTidComb[0].ForventetPassagere;
         }
     }
 }
