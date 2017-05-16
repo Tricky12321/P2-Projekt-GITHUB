@@ -56,8 +56,16 @@ public static class Algoritme
         return i;
     }
 
-    public static List<AfPåTidCombi> GetSidsteMånedData(Bus placeholderBus, int AntalBesøgteStoppesteder, int AntalTotaleStopPåRute)
+    public static Bus StartAlgoritmen(Bus placeholderBus)
     {
+        return Algoritmen(placeholderBus, GetSidsteMånedData(placeholderBus));
+    }
+
+    public static List<AfPåTidCombi> GetSidsteMånedData(Bus placeholderBus)
+    {
+        Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
+        int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
+        int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
         // Finder ud om der er tale om en weekend eller en hverdag
         // Hvis det er en hverdag: Så vælg alle dage som er hverdage
         // Hvis der er en weekend: Så vælg alle dage som er weekend
@@ -75,22 +83,14 @@ public static class Algoritme
         return SidsteMånedAfPåTid;
     }
 
-    public static Bus Algoritmen(Bus placeholderBus, List<AfPåTidCombi> ExtraData = null)
+    public static Bus Algoritmen(Bus placeholderBus, List<AfPåTidCombi> Data)
     {
         Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
         int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
         List<AfPåTidCombi> StoppeStederTid = new List<AfPåTidCombi>();
         int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
         List<AfPåTidCombi> SidsteMånedAfPåTid = new List<AfPåTidCombi>();
-        if (ExtraData == null)
-        {
-            SidsteMånedAfPåTid = GetSidsteMånedData(placeholderBus, AntalBesøgteStoppesteder, AntalTotaleStopPåRute);
-        } else
-        {
-            // Unittesting funktion her:
-            // LIGE HER:::::-vvvvvvvvvvvvvvvvvvv
-            SidsteMånedAfPåTid = ExtraData;
-        }
+        SidsteMånedAfPåTid = Data;
         // Henter alle ID's på de stoppesteder der er besøgt
         List<int> BesøgteStopIDs = new List<int>();
         for (int i = 0; i < AntalBesøgteStoppesteder; i++)

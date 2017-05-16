@@ -81,7 +81,7 @@ namespace ServerGPSSimulering
                 NewAfPåTidComb.ForventetPassagere = SimulatedBus.PassengersTotal;
                 NewAfPåTidComb.UploadToDatabase();
                 SimulatedBus.UploadToDatabase();
-                SimulatedBus = Algoritme.Algoritmen(SimulatedBus);
+                SimulatedBus = Algoritme.StartAlgoritmen(SimulatedBus);
             }
         }
 
@@ -196,7 +196,7 @@ namespace ServerGPSSimulering
                             NewAfPåTidComb.ForventetPassagere = SimulatedBus.PassengersTotal;
                             NewAfPåTidComb.UploadToDatabase();
                             // Starter Algoritmen
-                            SimulatedBus = Algoritme.Algoritmen(SimulatedBus);
+                            SimulatedBus = Algoritme.StartAlgoritmen(SimulatedBus);
                             SimulatedBus.StoppeStederMTid[j].AfPåTidComb[0] = NewAfPåTidComb;
                             SendToServer();
                             Test.Stop();
@@ -228,7 +228,7 @@ namespace ServerGPSSimulering
 
             int j = 0;
 
-            SimulatedBus = Algoritme.Algoritmen( SimulatedBus);
+            SimulatedBus = Algoritme.StartAlgoritmen( SimulatedBus);
 
             for (int i = 0; i < elementerIRute; ++i)
             {
@@ -265,7 +265,7 @@ namespace ServerGPSSimulering
                             j++;
 
                             SimulatedBus.PassengersTotal += RandomPassagerer();
-                            SimulatedBus = Algoritme.Algoritmen(SimulatedBus);
+                            SimulatedBus = Algoritme.StartAlgoritmen(SimulatedBus);
                             SendToServer();
 
                             Debug.WriteLine("Stop:" + j);
