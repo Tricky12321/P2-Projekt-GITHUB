@@ -8,22 +8,6 @@ using System.Threading;
 
 public static class Algoritme
 {
-    //day >= 1 AND day <= 5 AND busID = 30
-    public static void GetAlgoritmeData(string whereCondition, ref Bus PlaceholderBus, List<AfPåTidCombi> DataAlgorithm)
-    {
-        AfPåTidCombi PlaceholderTest = new AfPåTidCombi();
-        var AlleBusserFraDatabase = MysqlControls.SelectAllWhere(PlaceholderTest.GetTableName(), whereCondition);
-        foreach (var item in AlleBusserFraDatabase.RowData)
-        {
-            AfPåTidCombi AfPåToAdd = new AfPåTidCombi();
-            AfPåToAdd.Update(item);
-            DataAlgorithm.Add(AfPåToAdd);
-        }
-
-        PlaceholderBus = DataAlgorithm.First().Bus;
-        PlaceholderBus.GetUpdate();
-    }
-
     private static Stoppested GetCurrentStop(Bus EnEllerAndenBus)
     {
         Stoppested SidsteStop = new Stoppested();
@@ -58,7 +42,9 @@ public static class Algoritme
 
     public static Bus StartAlgoritmen(Bus placeholderBus)
     {
-        return Algoritmen(placeholderBus, GetSidsteMånedData(placeholderBus));
+        Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
+        int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
+        return Algoritmen(placeholderBus, GetSidsteMånedData(placeholderBus), AntalBesøgteStoppesteder);
     }
 
     public static List<AfPåTidCombi> GetSidsteMånedData(Bus placeholderBus)
@@ -83,10 +69,8 @@ public static class Algoritme
         return SidsteMånedAfPåTid;
     }
 
-    public static Bus Algoritmen(Bus placeholderBus, List<AfPåTidCombi> Data)
+    public static Bus Algoritmen(Bus placeholderBus, List<AfPåTidCombi> Data, int AntalBesøgteStoppesteder)
     {
-        Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
-        int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
         List<AfPåTidCombi> StoppeStederTid = new List<AfPåTidCombi>();
         int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
         List<AfPåTidCombi> SidsteMånedAfPåTid = new List<AfPåTidCombi>();
