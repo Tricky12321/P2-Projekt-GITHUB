@@ -75,26 +75,21 @@ public static class Algoritme
         return SidsteMånedAfPåTid;
     }
 
-    public static List<AfPåTidCombi> UnitTestingData(Bus placeholderBus, int AntalBesøgteStoppesteder, int AntalTotaleStopPåRute)
-    {
-        return null;
-    }
-
-    public static Bus Algoritmen(Bus placeholderBus, bool UnitTesting = false)
+    public static Bus Algoritmen(Bus placeholderBus, List<AfPåTidCombi> ExtraData = null)
     {
         Stoppested NuværendeStop = GetCurrentStop(placeholderBus);
         int AntalBesøgteStoppesteder = AntalBesøgteStop(NuværendeStop, placeholderBus);
         List<AfPåTidCombi> StoppeStederTid = new List<AfPåTidCombi>();
         int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
         List<AfPåTidCombi> SidsteMånedAfPåTid = new List<AfPåTidCombi>();
-        if (UnitTesting)
+        if (ExtraData == null)
         {
             SidsteMånedAfPåTid = GetSidsteMånedData(placeholderBus, AntalBesøgteStoppesteder, AntalTotaleStopPåRute);
         } else
         {
             // Unittesting funktion her:
             // LIGE HER:::::-vvvvvvvvvvvvvvvvvvv
-            SidsteMånedAfPåTid = UnitTestingData(placeholderBus, AntalBesøgteStoppesteder, AntalTotaleStopPåRute);
+            SidsteMånedAfPåTid = ExtraData;
         }
         // Henter alle ID's på de stoppesteder der er besøgt
         List<int> BesøgteStopIDs = new List<int>();
