@@ -55,8 +55,7 @@ public static class JsonCache
         while (true)
         {
             string OutputString;
-            Rute SingleRute = new Rute();
-            var RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName(),true);
+            var RowsFromDB = MysqlControls.SelectAll(new Rute().GetTableName(),true);
             List<Rute> AlleRuter = new List<Rute>();
             foreach (var SS in RowsFromDB.RowData)
             {
@@ -79,8 +78,7 @@ public static class JsonCache
         while (true)
         {
             string OutputString;
-            Stoppested SingleStoppeSted = new Stoppested();
-            var RowsFromDB = MysqlControls.SelectAll(SingleStoppeSted.GetTableName(), true);
+            var RowsFromDB = MysqlControls.SelectAll(new Stoppested().GetTableName(), true);
             List<Stoppested> AlleStoppesteder = new List<Stoppested>();
             foreach (var SS in RowsFromDB.RowData)
             {
@@ -103,8 +101,7 @@ public static class JsonCache
         while (true)
         {
             string OutputString;
-            Bus SingleBus = new Bus();
-            var RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName(), true);
+            var RowsFromDB = MysqlControls.SelectAll(new Bus().GetTableName(), true);
             List<Bus> AlleBusser = new List<Bus>();
             foreach (var SS in RowsFromDB.RowData)
             {

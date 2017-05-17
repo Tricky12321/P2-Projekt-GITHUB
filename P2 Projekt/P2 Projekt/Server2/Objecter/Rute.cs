@@ -55,7 +55,6 @@ public class Rute : MysqlObject
     public override void Update(TableDecode TableContent)
     {
         Update(TableContent.RowData[0]);
-
     }
 
     public override string[] GetValues()
