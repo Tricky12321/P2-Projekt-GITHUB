@@ -97,7 +97,7 @@ public static class Mysql
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                
             }
         }
         MySqlConnection SqlConnection = new MySqlConnection(_connectionString);

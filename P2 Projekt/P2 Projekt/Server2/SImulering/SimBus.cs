@@ -81,7 +81,6 @@ namespace ServerGPSSimulering
                 NewAfPåTidComb.ForventetPassagere = SimulatedBus.PassengersTotal;
                 NewAfPåTidComb.UploadToDatabase();
                 SimulatedBus.UploadToDatabase();
-                SimulatedBus = Algoritme.StartAlgoritmen(SimulatedBus);
             }
         }
 

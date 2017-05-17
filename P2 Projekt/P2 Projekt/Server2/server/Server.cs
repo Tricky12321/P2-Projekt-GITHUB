@@ -474,7 +474,7 @@ public class Server
             // Laver Response om fra en string til bytes baseret på UTF8
             byte[] msg = Encoding.UTF8.GetBytes(response);
             double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response) / 1024, 2);
-            Print.PrintCenterColorSingle("Incoming connection from ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
+            Print.PrintCenterColorSingle("Connection: ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
             Print.PrintCenterColorSingle("R: ", SizeOfMsg.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
             Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8) + "\n", ConsoleColor.Green);
             // Sender beskeden. 
