@@ -81,25 +81,6 @@ public static class Mysql
 
     public static bool RunQuery(string Query, bool NoLog = false)
     {
-        if (!NoLog)
-        {
-            try
-            {
-                string LogQuery = Query;
-                if (Query.Length > 50)
-                {
-                    LogQuery = Query.Substring(0, 200);
-                    LogQuery = LogQuery.Replace("\"", "\\\"");
-                    LogQuery = LogQuery.Replace("'", "\\'");
-                    LogQuery += "...";
-                    Debug.Print(LogQuery);
-                }
-            }
-            catch (Exception e)
-            {
-                
-            }
-        }
         MySqlConnection SqlConnection = new MySqlConnection(_connectionString);
         try
         {

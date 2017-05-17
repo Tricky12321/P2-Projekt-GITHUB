@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 public class Bus : MysqlObject
 {
-    public List<StoppestedMTid> StoppeStederMTid = new List<StoppestedMTid>();
+    
 
     public string busName;
     public int BusID;
@@ -15,7 +15,7 @@ public class Bus : MysqlObject
     public int CapacitySitting;
     public int CapacityStanding;
     public Rute Rute;
-
+    public List<StoppestedMTid> StoppeStederMTid = new List<StoppestedMTid>();
     public int TotalCapacity => CapacitySitting + CapacityStanding;
     public Bus()
     {

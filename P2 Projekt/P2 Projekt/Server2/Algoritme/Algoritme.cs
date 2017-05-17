@@ -116,8 +116,7 @@ public static class Algoritme
         int Total = 0;
         BesøgteStopIDs.Reverse();
         // For alle stoppesteder som er besøgt, skal der beregnes forventet passagere tal
-        int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
-        for (int i = 0; i < AntalTotaleStopPåRute; i++)
+        for (int i = 0; i < TotaleAntalStops; i++)
         {
             // Sætter nogle hjælpe variabler for at gøre udtryk kortere
             int StoppeStedsID = placeholderBus.StoppeStederMTid[i].Stop.StoppestedID;

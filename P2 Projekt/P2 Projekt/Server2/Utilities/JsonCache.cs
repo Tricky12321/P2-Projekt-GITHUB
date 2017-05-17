@@ -52,8 +52,10 @@ public static class JsonCache
 
     public static void UpdateRuterCache()
     {
+        Stopwatch Timer = new Stopwatch();
         while (true)
         {
+            Timer.Restart();
             string OutputString;
             var RowsFromDB = MysqlControls.SelectAll(new Rute().GetTableName(),true);
             List<Rute> AlleRuter = new List<Rute>();
@@ -69,14 +71,22 @@ public static class JsonCache
                 AlleRuterCache = OutputString;
             }
             Debug.Print("Updated Rute Cache");
-            Thread.Sleep(_sleepTime);
+            Timer.Stop();
+            int sleeptime = (_sleepTime - (int)Timer.ElapsedMilliseconds);
+            if (sleeptime < 0)
+            {
+                sleeptime = 0;
+            }
+            Thread.Sleep(sleeptime);
         }
     }
 
     public static void UpdateStoppeStederCache()
     {
+        Stopwatch Timer = new Stopwatch();
         while (true)
         {
+            Timer.Restart();
             string OutputString;
             var RowsFromDB = MysqlControls.SelectAll(new Stoppested().GetTableName(), true);
             List<Stoppested> AlleStoppesteder = new List<Stoppested>();
@@ -92,14 +102,22 @@ public static class JsonCache
                 AlleStoppeStederCache = OutputString;
             }
             Debug.Print("Updated StoppeSteds Cache");
-            Thread.Sleep(_sleepTime);
+            Timer.Stop();
+            int sleeptime = (_sleepTime - (int)Timer.ElapsedMilliseconds);
+            if (sleeptime < 0)
+            {
+                sleeptime = 0;
+            }
+            Thread.Sleep(sleeptime);
         }
     }
 
     public static void UpdateBusserCache()
     {
+        Stopwatch Timer = new Stopwatch();
         while (true)
         {
+            Timer.Restart();
             string OutputString;
             var RowsFromDB = MysqlControls.SelectAll(new Bus().GetTableName(), true);
             List<Bus> AlleBusser = new List<Bus>();
@@ -115,7 +133,13 @@ public static class JsonCache
                 AlleBusserCache = OutputString;
             }
             Debug.Print("Updated Busserm Cache");
-            Thread.Sleep(_sleepTime);
+            Timer.Stop();
+            int sleeptime = (_sleepTime - (int)Timer.ElapsedMilliseconds);
+            if (sleeptime < 0)
+            {
+                sleeptime = 0;
+            }
+            Thread.Sleep(sleeptime);
         }
 
     }
