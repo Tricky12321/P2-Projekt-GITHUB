@@ -121,7 +121,7 @@ public static class Algoritme
             // Sætter nogle hjælpe variabler for at gøre udtryk kortere
             int StoppeStedsID = placeholderBus.StoppeStederMTid[i].Stop.StoppestedID;
             AfPåTidCombi StoppeStedsAfPåTid = placeholderBus.StoppeStederMTid[i].AfPåTidComb[0];
-            if (!BesøgteStopIDs.Take(BesøgteStopIDs.Count).Contains(StoppeStedsID))
+            if (!BesøgteStopIDs.Contains(StoppeStedsID))
             {
                 // Beregner gennemsnittet af af og påstigninger den sidste måned
 
