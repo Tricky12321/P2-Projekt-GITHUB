@@ -58,7 +58,7 @@ namespace ServerGPSSimulering
 
             busAvgSpeedMprSec = RuteDistance * 1000 / DrivetimeInSeconds;
             MoveToStart();
-            Thread BusMovementThread = new Thread(new ThreadStart(BedreBusMovement));
+            Thread BusMovementThread = new Thread(new ThreadStart(BusMovement));
             BusMovementThread.Start();
             //Print.WriteLine("Simlering startet");
         }
@@ -84,7 +84,7 @@ namespace ServerGPSSimulering
             }
         }
 
-        public void BedreBusMovement()
+        public void BusMovement()
         {
             int ElementerIRute = SimulatedRute.route.Points.Count();
             int steps = 3;
@@ -218,7 +218,7 @@ namespace ServerGPSSimulering
             Print.PrintCenterColor("Simulation took: ", ((double)Timer.ElapsedMilliseconds / 1000).ToString(), " sec", ConsoleColor.Green);
         }
 
-        public void BusMovement()
+        /* public void BusMovement()
         {
             int elementerIRute = SimulatedRute.route.Points.Count();
             double distanceBetweenPoints;
@@ -284,7 +284,7 @@ namespace ServerGPSSimulering
                 }
             }
         }
-
+        */
         private int RandomPassagerer()
         {
             int negPosPas = FirstRandom.Next(1, 10);
@@ -338,6 +338,5 @@ namespace ServerGPSSimulering
             GMapRoute distanceRoute = new GMapRoute(placeholderPoints, "Placeholder");
             return distanceRoute.Distance;
         }
-
     }
 }
