@@ -80,6 +80,8 @@ public static class Algoritme
         {
             double AfstigningerAverage = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).Average(x => x.Afstigninger);
             double PåstigningerAverage = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).Average(x => x.Påstigninger);
+
+            var test = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).ToList();
             MånedAverage.Add(-AfstigningerAverage + PåstigningerAverage);
         }
 
