@@ -98,7 +98,7 @@ namespace ServerGPSSimulering
             double TotalAlgoTime = 0;
             Timer.Start();
             // Starter med at sætte bussen til at være ved det første punkt.
-            int StopepStederCount = SimulatedBus.StoppeStederMTid.Count;
+            int StoppeStederCount = SimulatedBus.StoppeStederMTid.Count;
             for (int i = 0; i < ElementerIRute; i++)
             {
                 if (i + 1 < ElementerIRute)
@@ -155,7 +155,7 @@ namespace ServerGPSSimulering
                     }
                     //Print.PrintColorLine($"Distance to next stop is {DistanceBetweenPoints(NextStop,SimulatedBus.placering)}",ConsoleColor.Green);
                     //Print.PrintColorLine($"Next stop is: {SimulatedBus.StoppeStederMTid[j].Stop.StoppestedName}",ConsoleColor.Green);
-                    if (j < StopepStederCount)
+                    if (j < StoppeStederCount)
                     {
                         int stopnr = j;
                         distance = DistanceBetweenPoints(SimulatedBus.placering, NextStop);
@@ -218,73 +218,6 @@ namespace ServerGPSSimulering
             Print.PrintCenterColor("Simulation took: ", ((double)Timer.ElapsedMilliseconds / 1000).ToString(), " sec", ConsoleColor.Green);
         }
 
-        /* public void BusMovement()
-        {
-            int elementerIRute = SimulatedRute.route.Points.Count();
-            double distanceBetweenPoints;
-            double timeBetweenPoints;
-            int timeBetweenPointsMilSec;
-
-            int j = 0;
-
-            SimulatedBus = Algoritme.StartAlgoritmen( SimulatedBus);
-
-            for (int i = 0; i < elementerIRute; ++i)
-            {
-                if (i + 1 < elementerIRute)
-                {
-                    Stopwatch Tidstagning = new Stopwatch();
-
-                    Tidstagning.Start();
-                    GPS placeringPlaceholder = new GPS(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng);
-                    SimulatedBus.placering = placeringPlaceholder;
-
-                    SendToServer();
-
-                    distanceBetweenPoints = DistanceBetweenPoints(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng, SimulatedRute.route.Points[i + 1].Lat, SimulatedRute.route.Points[i + 1].Lng);
-                    distanceBetweenPoints *= 1000;
-
-                    timeBetweenPoints = distanceBetweenPoints / busAvgSpeedMprSec;
-                    timeBetweenPointsMilSec = (int)(timeBetweenPoints * 1000);
-                    Tidstagning.Stop();
-
-                    int Sleeptimer = timeBetweenPointsMilSec - (int)Tidstagning.ElapsedMilliseconds;
-                    if (Sleeptimer > 0)
-                    {
-                        Thread.Sleep(Sleeptimer);
-                    }
-
-                    if (SimulatedBus.StoppeStederMTid.Count > j)
-                    {
-                        if (SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate < SimulatedRute.route.Points[i].Lat + 0.001 &&
-                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.xCoordinate > SimulatedRute.route.Points[i].Lat - 0.001 &&
-                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate < SimulatedRute.route.Points[i].Lng + 0.001 &&
-                            SimulatedBus.StoppeStederMTid[j].Stop.StoppestedLok.yCoordinate > SimulatedRute.route.Points[i].Lng - 0.001)
-                        {
-                            j++;
-
-                            SimulatedBus.PassengersTotal += RandomPassagerer();
-                            SimulatedBus = Algoritme.StartAlgoritmen(SimulatedBus);
-                            SendToServer();
-
-                            Debug.WriteLine("Stop:" + j);
-                        }
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Alle stoppesteder er besøgt");
-                    }
-                }
-
-                else
-                {
-                    SimulatedBus.placering.xCoordinate = SimulatedRute.route.Points[i].Lat;
-                    SimulatedBus.placering.yCoordinate = SimulatedRute.route.Points[i].Lng;
-                    SendToServer();
-                }
-            }
-        }
-        */
         private int RandomPassagerer()
         {
             int negPosPas = FirstRandom.Next(1, 10);
