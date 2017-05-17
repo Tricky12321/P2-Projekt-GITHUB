@@ -58,8 +58,7 @@
             this.gMapsMap.GrayScaleMode = false;
             this.gMapsMap.HelperLineOption = GMap.NET.WindowsForms.HelperLineOptions.DontShow;
             this.gMapsMap.LevelsKeepInMemmory = 5;
-            this.gMapsMap.Location = new System.Drawing.Point(8, 38);
-            this.gMapsMap.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gMapsMap.Location = new System.Drawing.Point(12, 58);
             this.gMapsMap.MarkersEnabled = true;
             this.gMapsMap.MaxZoom = 22;
             this.gMapsMap.MinZoom = 2;
@@ -72,17 +71,16 @@
             this.gMapsMap.ScaleMode = GMap.NET.WindowsForms.ScaleModes.Integer;
             this.gMapsMap.SelectedAreaFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(65)))), ((int)(((byte)(105)))), ((int)(((byte)(225)))));
             this.gMapsMap.ShowTileGridLines = false;
-            this.gMapsMap.Size = new System.Drawing.Size(681, 340);
+            this.gMapsMap.Size = new System.Drawing.Size(1022, 523);
             this.gMapsMap.TabIndex = 0;
             this.gMapsMap.Zoom = 13D;
             this.gMapsMap.Load += new System.EventHandler(this.gMapsMap_Load);
             // 
             // btn_opretBus
             // 
-            this.btn_opretBus.Location = new System.Drawing.Point(8, 8);
-            this.btn_opretBus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_opretBus.Location = new System.Drawing.Point(12, 12);
             this.btn_opretBus.Name = "btn_opretBus";
-            this.btn_opretBus.Size = new System.Drawing.Size(99, 27);
+            this.btn_opretBus.Size = new System.Drawing.Size(148, 42);
             this.btn_opretBus.TabIndex = 1;
             this.btn_opretBus.Text = "Opret bus";
             this.btn_opretBus.UseVisualStyleBackColor = true;
@@ -90,10 +88,9 @@
             // 
             // btn_opretStoppested
             // 
-            this.btn_opretStoppested.Location = new System.Drawing.Point(111, 8);
-            this.btn_opretStoppested.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_opretStoppested.Location = new System.Drawing.Point(166, 12);
             this.btn_opretStoppested.Name = "btn_opretStoppested";
-            this.btn_opretStoppested.Size = new System.Drawing.Size(99, 27);
+            this.btn_opretStoppested.Size = new System.Drawing.Size(148, 42);
             this.btn_opretStoppested.TabIndex = 2;
             this.btn_opretStoppested.Text = "Opret stoppested";
             this.btn_opretStoppested.UseVisualStyleBackColor = true;
@@ -101,10 +98,9 @@
             // 
             // btn_opretRute
             // 
-            this.btn_opretRute.Location = new System.Drawing.Point(215, 8);
-            this.btn_opretRute.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_opretRute.Location = new System.Drawing.Point(322, 12);
             this.btn_opretRute.Name = "btn_opretRute";
-            this.btn_opretRute.Size = new System.Drawing.Size(99, 27);
+            this.btn_opretRute.Size = new System.Drawing.Size(148, 42);
             this.btn_opretRute.TabIndex = 3;
             this.btn_opretRute.Text = "Opret rute";
             this.btn_opretRute.UseVisualStyleBackColor = true;
@@ -114,19 +110,17 @@
             // 
             this.combox_ruterTilVisning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.combox_ruterTilVisning.FormattingEnabled = true;
-            this.combox_ruterTilVisning.Location = new System.Drawing.Point(416, 421);
-            this.combox_ruterTilVisning.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.combox_ruterTilVisning.Location = new System.Drawing.Point(624, 648);
             this.combox_ruterTilVisning.Name = "combox_ruterTilVisning";
-            this.combox_ruterTilVisning.Size = new System.Drawing.Size(274, 21);
+            this.combox_ruterTilVisning.Size = new System.Drawing.Size(409, 28);
             this.combox_ruterTilVisning.TabIndex = 5;
             // 
             // btn_refresh
             // 
             this.btn_refresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_refresh.Location = new System.Drawing.Point(598, 8);
-            this.btn_refresh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_refresh.Location = new System.Drawing.Point(897, 12);
             this.btn_refresh.Name = "btn_refresh";
-            this.btn_refresh.Size = new System.Drawing.Size(91, 27);
+            this.btn_refresh.Size = new System.Drawing.Size(136, 42);
             this.btn_refresh.TabIndex = 6;
             this.btn_refresh.Text = "Opdater vindue";
             this.btn_refresh.UseVisualStyleBackColor = true;
@@ -135,10 +129,9 @@
             // btn_visPåKort
             // 
             this.btn_visPåKort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_visPåKort.Location = new System.Drawing.Point(523, 391);
-            this.btn_visPåKort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_visPåKort.Location = new System.Drawing.Point(784, 602);
             this.btn_visPåKort.Name = "btn_visPåKort";
-            this.btn_visPåKort.Size = new System.Drawing.Size(81, 27);
+            this.btn_visPåKort.Size = new System.Drawing.Size(122, 42);
             this.btn_visPåKort.TabIndex = 7;
             this.btn_visPåKort.Text = "Vis på kort";
             this.btn_visPåKort.UseVisualStyleBackColor = true;
@@ -147,10 +140,9 @@
             // btn_clearMap
             // 
             this.btn_clearMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_clearMap.Location = new System.Drawing.Point(608, 391);
-            this.btn_clearMap.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_clearMap.Location = new System.Drawing.Point(912, 602);
             this.btn_clearMap.Name = "btn_clearMap";
-            this.btn_clearMap.Size = new System.Drawing.Size(81, 27);
+            this.btn_clearMap.Size = new System.Drawing.Size(122, 42);
             this.btn_clearMap.TabIndex = 8;
             this.btn_clearMap.Text = "Nulstil kort";
             this.btn_clearMap.UseVisualStyleBackColor = true;
@@ -160,20 +152,18 @@
             // 
             this.chkbox_toggleStoppesteder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkbox_toggleStoppesteder.AutoSize = true;
-            this.chkbox_toggleStoppesteder.Location = new System.Drawing.Point(415, 395);
-            this.chkbox_toggleStoppesteder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkbox_toggleStoppesteder.Location = new System.Drawing.Point(623, 610);
             this.chkbox_toggleStoppesteder.Name = "chkbox_toggleStoppesteder";
-            this.chkbox_toggleStoppesteder.Size = new System.Drawing.Size(104, 17);
+            this.chkbox_toggleStoppesteder.Size = new System.Drawing.Size(155, 24);
             this.chkbox_toggleStoppesteder.TabIndex = 9;
             this.chkbox_toggleStoppesteder.Text = "Vis stoppesteder";
             this.chkbox_toggleStoppesteder.UseVisualStyleBackColor = true;
             // 
             // btn_visOprettede
             // 
-            this.btn_visOprettede.Location = new System.Drawing.Point(318, 8);
-            this.btn_visOprettede.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_visOprettede.Location = new System.Drawing.Point(477, 12);
             this.btn_visOprettede.Name = "btn_visOprettede";
-            this.btn_visOprettede.Size = new System.Drawing.Size(183, 27);
+            this.btn_visOprettede.Size = new System.Drawing.Size(274, 42);
             this.btn_visOprettede.TabIndex = 11;
             this.btn_visOprettede.Text = "Vis allerede oprettede objekter";
             this.btn_visOprettede.UseVisualStyleBackColor = true;
@@ -182,10 +172,9 @@
             // btn_visBusPåRute
             // 
             this.btn_visBusPåRute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btn_visBusPåRute.Location = new System.Drawing.Point(187, 391);
-            this.btn_visBusPåRute.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_visBusPåRute.Location = new System.Drawing.Point(280, 602);
             this.btn_visBusPåRute.Name = "btn_visBusPåRute";
-            this.btn_visBusPåRute.Size = new System.Drawing.Size(93, 27);
+            this.btn_visBusPåRute.Size = new System.Drawing.Size(140, 42);
             this.btn_visBusPåRute.TabIndex = 12;
             this.btn_visBusPåRute.Text = "Vis bus";
             this.btn_visBusPåRute.UseVisualStyleBackColor = true;
@@ -195,27 +184,25 @@
             // 
             this.combox_vælgBus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.combox_vælgBus.FormattingEnabled = true;
-            this.combox_vælgBus.Location = new System.Drawing.Point(8, 421);
-            this.combox_vælgBus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.combox_vælgBus.Location = new System.Drawing.Point(12, 648);
             this.combox_vælgBus.Name = "combox_vælgBus";
-            this.combox_vælgBus.Size = new System.Drawing.Size(274, 21);
+            this.combox_vælgBus.Size = new System.Drawing.Size(409, 28);
             this.combox_vælgBus.TabIndex = 13;
             // 
             // chkbox_medRute
             // 
             this.chkbox_medRute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkbox_medRute.AutoSize = true;
-            this.chkbox_medRute.Location = new System.Drawing.Point(8, 395);
-            this.chkbox_medRute.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkbox_medRute.Location = new System.Drawing.Point(12, 610);
             this.chkbox_medRute.Name = "chkbox_medRute";
-            this.chkbox_medRute.Size = new System.Drawing.Size(146, 17);
+            this.chkbox_medRute.Size = new System.Drawing.Size(219, 24);
             this.chkbox_medRute.TabIndex = 14;
             this.chkbox_medRute.Text = "Vis rute sammen med bus";
             this.chkbox_medRute.UseVisualStyleBackColor = true;
             // 
             // timer_UpdateMap
             // 
-            this.timer_UpdateMap.Interval = 1000;
+            this.timer_UpdateMap.Interval = 5000;
             this.timer_UpdateMap.Tick += new System.EventHandler(this.timer_UpdateMap_Tick);
             // 
             // WarningLabel
@@ -224,19 +211,20 @@
             this.WarningLabel.AutoSize = true;
             this.WarningLabel.BackColor = System.Drawing.Color.Transparent;
             this.WarningLabel.Font = new System.Drawing.Font("Microsoft YaHei", 35F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WarningLabel.Location = new System.Drawing.Point(307, 380);
+            this.WarningLabel.Location = new System.Drawing.Point(460, 585);
+            this.WarningLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.WarningLabel.Name = "WarningLabel";
-            this.WarningLabel.Size = new System.Drawing.Size(75, 62);
+            this.WarningLabel.Size = new System.Drawing.Size(112, 93);
             this.WarningLabel.TabIndex = 15;
             this.WarningLabel.Text = "!!!";
             this.WarningLabel.Visible = false;
             // 
             // Simulation
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
-            this.ClientSize = new System.Drawing.Size(701, 447);
+            this.ClientSize = new System.Drawing.Size(1052, 688);
             this.Controls.Add(this.WarningLabel);
             this.Controls.Add(this.chkbox_medRute);
             this.Controls.Add(this.combox_vælgBus);
@@ -251,8 +239,7 @@
             this.Controls.Add(this.btn_opretStoppested);
             this.Controls.Add(this.btn_opretBus);
             this.Controls.Add(this.gMapsMap);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.MinimumSize = new System.Drawing.Size(717, 486);
+            this.MinimumSize = new System.Drawing.Size(1064, 718);
             this.Name = "Simulation";
             this.Text = "Bus simulering";
             this.Load += new System.EventHandler(this.Simulation_Load);
