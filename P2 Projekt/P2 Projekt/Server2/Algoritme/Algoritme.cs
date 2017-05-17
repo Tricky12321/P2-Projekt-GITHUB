@@ -53,7 +53,7 @@ public static class Algoritme
         string whereCondition = (int)placeholderBus.StoppeStederMTid[AntalBesøgteStoppesteder].AfPåTidComb.First().UgeDag <= 5 ? $"day <= 5 AND busID = {placeholderBus.BusID}" : $"day >= 6 AND busID = {placeholderBus.BusID}";
         int WeekDaysInHistory = (int)placeholderBus.StoppeStederMTid[AntalBesøgteStoppesteder].AfPåTidComb.First().UgeDag <= 5 ? 5 : 2;
         // Henter en måneds historik, ikke nødvendigvis 4 uger, men den sidste måned af relevante dage.
-        var MånedHistorik = MysqlControls.SelectAllWhere(new AfPåTidCombi().GetTableName(), $"{whereCondition} ORDER BY ID DESC LIMIT {AntalTotaleStopPåRute * WeekDaysInHistory * 4}");
+        TableDecode MånedHistorik = MysqlControls.SelectAllWhere(new AfPåTidCombi().GetTableName(), $"{whereCondition} ORDER BY ID DESC LIMIT {AntalTotaleStopPåRute * WeekDaysInHistory * 4}");
         List<AfPåTidCombi> SidsteMånedAfPåTid = new List<AfPåTidCombi>();
         foreach (var item in MånedHistorik.RowData)
         {
@@ -81,7 +81,6 @@ public static class Algoritme
             double AfstigningerAverage = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).Average(x => x.Afstigninger);
             double PåstigningerAverage = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).Average(x => x.Påstigninger);
 
-            var test = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).ToList();
             MånedAverage.Add(-AfstigningerAverage + PåstigningerAverage);
         }
 
@@ -97,7 +96,7 @@ public static class Algoritme
             // Beregner gennemsnittet af de sidste stoppesteder, maks 5 sidste.
             int StartStop = (AntalBesøgteStoppesteder);
             int SlutStop = StartStop - antal;
-            for (int i = StartStop-1; i > SlutStop-1; i--)
+            for (int i = StartStop - 1; i > SlutStop - 1; i--)
             {
                 AfPåTidCombi BusAfPåTidCombo = placeholderBus.StoppeStederMTid[i].AfPåTidComb.First();
                 LastStopsData.Add(-BusAfPåTidCombo.Afstigninger + BusAfPåTidCombo.Påstigninger);
@@ -129,7 +128,7 @@ public static class Algoritme
                 double _afstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == StoppeStedsID)).Average(x => x.Afstigninger);
                 double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == StoppeStedsID)).Average(x => x.Påstigninger);
                 // Beregner den gennemsnitlige afvigelse som denne dag har haft indtil videre. 
-                
+
                 double SingleAfvigelse = (-_afstigningerAverage + _påstigningerAverage) + Afvigelse;
                 // Sætter bussens forventede passagertal, ved kommende stop, til bussens forventede total, og afvigelsen for dagen sammen
                 StoppeStedsAfPåTid.ForventetPassagere = (int)Math.Round(Total + SingleAfvigelse, 0);
@@ -141,7 +140,7 @@ public static class Algoritme
                 Debug.Print($"Afvigelse er: {SingleAfvigelse} | AF: {_afstigningerAverage} | PÅ: {_påstigningerAverage}");
                 Debug.Print($"Total er: {Total}");
                 // Total bliver talt op fordi den næste bus skal have data fra det foregående stoppested
-                Total += (int)Math.Round(SingleAfvigelse,0);
+                Total += (int)Math.Round(SingleAfvigelse, 0);
             }
             else
             {
