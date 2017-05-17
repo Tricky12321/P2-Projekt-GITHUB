@@ -149,7 +149,7 @@ public static class Algoritme
             }
         }
         // Starter en ny tråd, som har til opgave at uploade den opdaterede bus til databasen. 
-        new Thread(new ThreadStart(placeholderBus.UploadToDatabase)).Start();
+        // new Thread(new ThreadStart(placeholderBus.UploadToDatabase)).Start();
         // Returnere bussen, så simuleringen kan modtage den opdaterede bus. 
         return placeholderBus;
     }
