@@ -88,55 +88,64 @@ public static class Algoritme
         // Hvis bussen har besøgt mere end 1 stoppested.
         List<double> LastStopsData = new List<double>();
         //List<double> LastStopsDataHis = new List<double>();
+        int TotaleAntalStops = placeholderBus.Rute.StoppeSteder.Count();
         if (AntalBesøgteStoppesteder > 1)
         {
             // Sikre at der ikke kan blive valgt mere end 5, men der må godt vælges mindre end 5 
             int antal = AntalBesøgteStoppesteder <= 5 ? AntalBesøgteStoppesteder : 5;
             // Sidste antal stops, men maks 5
-            var SidsteStops = placeholderBus.StoppeStederMTid.OrderByDescending(x => x.AfPåTidComb.First().ID).Take(antal).ToList();
             // Beregner gennemsnittet af de sidste stoppesteder, maks 5 sidste.
-            for (int i = 0; i < antal; i++)
+            int StartStop = (AntalBesøgteStoppesteder);
+            int SlutStop = StartStop - antal;
+            for (int i = StartStop-1; i > SlutStop-1; i--)
             {
-                var BusAfPåTidCombo = placeholderBus.StoppeStederMTid[i].AfPåTidComb.First();
+                AfPåTidCombi BusAfPåTidCombo = placeholderBus.StoppeStederMTid[i].AfPåTidComb.First();
                 LastStopsData.Add(-BusAfPåTidCombo.Afstigninger + BusAfPåTidCombo.Påstigninger);
             }
         }
 
-        int Afvigelse = 0;
+        double Afvigelse = 0;
+        double LastStopsAverage = LastStopsData.Average();
+        double MånedAverageSingle = MånedAverage.Average();
         // Hvis den har besøgt mere end 1 stoppested, så skal afvigelse beregnes
         if (AntalBesøgteStoppesteder > 1)
         {
-            Afvigelse = (int)Math.Round(LastStopsData.Average() - MånedAverage.Average(), 0);
+            Afvigelse = LastStopsAverage - MånedAverageSingle;
         }
         // Total er bussen Totale passageretal før algoritmen
-        int Total = placeholderBus.PassengersTotal;
+        int Total = 0;
         BesøgteStopIDs.Reverse();
         // For alle stoppesteder som er besøgt, skal der beregnes forventet passagere tal
         int AntalTotaleStopPåRute = placeholderBus.Rute.StoppeSteder.Count();
-        for (int i = AntalBesøgteStoppesteder; i < AntalTotaleStopPåRute; i++)
+        for (int i = 0; i < AntalTotaleStopPåRute; i++)
         {
             // Sætter nogle hjælpe variabler for at gøre udtryk kortere
             int StoppeStedsID = placeholderBus.StoppeStederMTid[i].Stop.StoppestedID;
-            var StoppeStedsAfPåTid = placeholderBus.StoppeStederMTid[i].AfPåTidComb[0];
-            if (!BesøgteStopIDs.Take(BesøgteStopIDs.Count - 1).Contains(StoppeStedsID))
+            AfPåTidCombi StoppeStedsAfPåTid = placeholderBus.StoppeStederMTid[i].AfPåTidComb[0];
+            if (!BesøgteStopIDs.Take(BesøgteStopIDs.Count).Contains(StoppeStedsID))
             {
                 // Beregner gennemsnittet af af og påstigninger den sidste måned
+
                 double _afstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == StoppeStedsID)).Average(x => x.Afstigninger);
                 double _påstigningerAverage = (SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == StoppeStedsID)).Average(x => x.Påstigninger);
                 // Beregner den gennemsnitlige afvigelse som denne dag har haft indtil videre. 
-                int SingleAfvigelse = (int)Math.Round((-_afstigningerAverage + _påstigningerAverage) + Afvigelse, 0);
+                
+                double SingleAfvigelse = (-_afstigningerAverage + _påstigningerAverage) + Afvigelse;
                 // Sætter bussens forventede passagertal, ved kommende stop, til bussens forventede total, og afvigelsen for dagen sammen
-                StoppeStedsAfPåTid.ForventetPassagere = Total + SingleAfvigelse;
+                StoppeStedsAfPåTid.ForventetPassagere = (int)Math.Round(Total + SingleAfvigelse, 0);
                 // Sikrer at bussen ikke kan have negative passagerantal
                 if (StoppeStedsAfPåTid.ForventetPassagere < 0)
                 {
                     StoppeStedsAfPåTid.ForventetPassagere = 0;
                 }
+                Debug.Print($"Afvigelse er: {SingleAfvigelse} | AF: {_afstigningerAverage} | PÅ: {_påstigningerAverage}");
+                Debug.Print($"Total er: {Total}");
                 // Total bliver talt op fordi den næste bus skal have data fra det foregående stoppested
-                Total += SingleAfvigelse;
+                Total += (int)Math.Round(SingleAfvigelse,0);
             }
             else
             {
+                Total = StoppeStedsAfPåTid.TotalPassagere;
                 // Hvis dette er et stoppested som allerede er besøgt, skal det ForventedePassagere antal, bare sættes til TotalPassagere
                 StoppeStedsAfPåTid.ForventetPassagere = StoppeStedsAfPåTid.TotalPassagere;
             }

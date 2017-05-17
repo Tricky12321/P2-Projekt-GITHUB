@@ -6,7 +6,7 @@ public static class Utilities
     public static void WaitFor(ref bool Variable, bool State)
     {
         // Køre et while loop, indtil at variablen opfylder State
-        while (Variable != State)
+        //while (Variable != State)
         {
 
         }
