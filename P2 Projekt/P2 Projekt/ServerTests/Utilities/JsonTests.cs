@@ -74,6 +74,10 @@ namespace JsonSerializer.Tests
         [TestCase("object,Stoppested|", ExpectedResult = typeof(Stoppested))]
         [TestCase("object,StoppestedMTid|", ExpectedResult = typeof(StoppestedMTid))]
         [TestCase("object,Rute|", ExpectedResult = typeof(Rute))]
+        [TestCase("object,ASDF|", ExpectedResult = null)]
+        [TestCase("object,FIsK|", ExpectedResult = null)]
+        [TestCase("object,Hund|", ExpectedResult = null)]
+        [TestCase("object,Hest|", ExpectedResult = null)]
         public Type GetTypeFromStringTest(string JsonString)
         {
             return Json.GetTypeFromString(JsonString);

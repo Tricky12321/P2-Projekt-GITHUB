@@ -13,10 +13,10 @@ namespace ProgramTilBusselskab
 {
     public partial class OpretRute : Form
     {
-        const int routeNameMaxLenght = 200;
-        const int routeNameMinLenght = 1;
-        const int routeIDMaxLenght = 100000000;
-        const int routeIDMinLenght = 0;
+        const int routeNameMaxLength = 200;
+        const int routeNameMinLength = 1;
+        const int routeIDMaxLength = 100000000;
+        const int routeIDMinLength = 0;
 
         List<Stoppested> listStops = new List<Stoppested>();
 
@@ -51,9 +51,9 @@ namespace ProgramTilBusselskab
         {
             int ruteIDPlaceholder = 0;
 
-            if (txtbox_ruteName.Text.Length > routeNameMinLenght && txtbox_ruteName.Text.Length <= routeNameMaxLenght)
+            if (txtbox_ruteName.Text.Length > routeNameMinLength && txtbox_ruteName.Text.Length <= routeNameMaxLength)
             {
-                if (int.TryParse(txtbox_ruteID.Text, out ruteIDPlaceholder) && ruteIDPlaceholder < routeIDMaxLenght && ruteIDPlaceholder >= routeIDMinLenght)
+                if (int.TryParse(txtbox_ruteID.Text, out ruteIDPlaceholder) && ruteIDPlaceholder < routeIDMaxLength && ruteIDPlaceholder >= routeIDMinLength)
                 {
                     if (!Lists.listWithRoutes.Any(x => x.RuteID == ruteIDPlaceholder))
                     {

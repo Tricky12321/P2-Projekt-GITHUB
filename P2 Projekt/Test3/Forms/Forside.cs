@@ -51,38 +51,34 @@ namespace ProgramTilBusselskab
 
         private void Simulation_Load(object sender, EventArgs e)
         {
-            RealClient BusClient = new RealClient();
+            RealClient NewClient = new RealClient();
             int downloadedBusses = 0;
-            List<NetworkObject> DatabaseBus;
-            DatabaseBus = BusClient.RequestAllWhere(ObjectTypes.Bus, "None");
-            foreach (var item in DatabaseBus)
+            List<NetworkObject> DatabaseBus = NewClient.RequestAllWhere(ObjectTypes.Bus, "None"); 
+
+            foreach (Bus item in DatabaseBus)
             {
-                Lists.listWithBusses.Add(item as Bus);
+                Lists.listWithBusses.Add(item);
                 downloadedBusses++;
             }
 
-
             int downloadedRoutes = 0;
-            RealClient RuteClient = new RealClient();
-            List<NetworkObject> AlleRuter = RuteClient.RequestAllWhere(ObjectTypes.Rute, "None");
+            List<NetworkObject> AlleRuter = NewClient.RequestAllWhere(ObjectTypes.Rute, "None");
 
-            foreach (var item in AlleRuter)
+            foreach (Rute item in AlleRuter)
             {
-                Lists.listWithRoutes.Add((item as Rute));
+                Lists.listWithRoutes.Add(item);
                 downloadedRoutes++;
             }
 
-            RealClient StoppestederClient = new RealClient();
             int downloadedStops = 0;
-            List<NetworkObject> Stoppesteder = StoppestederClient.RequestAllWhere(ObjectTypes.BusStop, "None");
+            List<NetworkObject> Stoppesteder = NewClient.RequestAllWhere(ObjectTypes.BusStop, "None");
 
-            foreach (var item in Stoppesteder)
+            foreach (Stoppested item in Stoppesteder)
             {
-                Lists.listWithStops.Add(item as Stoppested);
+                Lists.listWithStops.Add(item);
                 downloadedStops++;
             }
             MessageBox.Show($"Der er blevet hentet: \nBus(ser): {downloadedBusses} \nRute(r): {downloadedRoutes} \nStoppested(er): {downloadedStops} \nHentet fra databasen");
-
             btn_refresh.PerformClick();
         }
 
@@ -110,7 +106,7 @@ namespace ProgramTilBusselskab
                 routesOverlay.Routes.Add(placeholderRute.route);
                 gMapsMap.Overlays.Add(routesOverlay);
 
-                if (chkbox_toggleStoppesteder.Checked == true)
+                if (chkbox_toggleStoppesteder.Checked)
                 {
                     GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
 
@@ -175,7 +171,8 @@ namespace ProgramTilBusselskab
             }
             catch (Exception)
             {
-                //MessageBox.Show("Bussen kunne ikke hentes fra serveren");
+                timer_UpdateMap.Enabled = false;
+                MessageBox.Show("Bussen kunne ikke hentes fra serveren");
             }
 
             ShowBus(valgtBus);
@@ -185,7 +182,7 @@ namespace ProgramTilBusselskab
         {
             RealClient Client = new RealClient();
             List<NetworkObject> ListOfObjs = Client.RequestAllWhere(ObjectTypes.Bus, $"`ID`={ID.ToString()}");
-            return (ListOfObjs[0] as Bus);
+            return (ListOfObjs.First() as Bus);
         }
 
         private void ShowBus(Bus bus)

@@ -36,39 +36,11 @@ public class Server
 
     public List<Socket> ConnectionWaiting = new List<Socket> { };
 
-    public Server(uint Port)
-    {
-        //IpAdress = IP;
-        _port = Port;
-        _serverType = ServerType.Ipv4;
-    }
-
     public Server(uint Port, ServerType ServerT)
     {
         //IpAdress = IP;
         _port = Port;
         _serverType = ServerT;
-    }
-
-    private IPAddress GetIPV4(IPAddress[] IPs)
-    {
-        foreach (IPAddress IP in IPs)
-        {
-            if (IPHandler.IsIPV4(IP.ToString()))
-            {
-                return IP;
-            }
-        }
-        return null;
-    }
-
-    private void PrintIps()
-    {
-        IPAddress[] IPs = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
-        foreach (IPAddress IP in IPs)
-        {
-            Print.WriteLine($"Listning on {IP.ToString()}:{_port}");
-        }
     }
 
     public void StartListening()
@@ -158,22 +130,12 @@ public class Server
     {
         // Retunere alt efter hvad der er valgt som object, så der kun er where condition tilbage
         //Stregen er : request,ALL,{OBJECT},{WHERE}
-        string WhereCondition = input.Substring(input.IndexOf(',') + 1);
-
-        return WhereCondition;
+        return input.Substring(input.IndexOf(',') + 1);
     }
 
-    public string GetRequestParams(string input)
-    {
-        // Retunere enten et ID, eller ALL
-        return input.Substring(input.IndexOf(","));
-    }
 
     private string GenerateResponse(ObjectTypes ObjType, string WhereCondition, bool All)
     {
-        TableDecode OutputObject;
-        TableDecode RowsFromDB;
-
         string OutputString;
 
         //Stregen er : request,ALL,{OBJECT},{WHERE}
@@ -182,138 +144,128 @@ public class Server
             switch (ObjType)
             {
                 case ObjectTypes.Bus:
-                    Bus SingleBus = new Bus();
-                    if (WhereCondition == "None")
-                    {
-                        if (JsonCache.AlleBusserCache != null)
-                        {
-                            return JsonCache.AlleBusserCache;
-                        }
-                        RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
-                    }
-                    else
-                    {
-                        RowsFromDB = MysqlControls.SelectAllWhere(SingleBus.GetTableName(), WhereCondition);
-                    }
-                    List<Bus> AlleBusser = new List<Bus>();
-                    foreach (var SS in RowsFromDB.RowData)
-                    {
-                        Bus NewBus = new Bus();
-                        NewBus.Update(SS);
-                        AlleBusser.Add(NewBus);
-                    }
-                    OutputString = Json.Serialize(AlleBusser);
-                    if (AlleBusser[0].StoppeStederMTid[8].AfPåTidComb[0].ForventetPassagere != 0)
-                    {
-                        Debug.Print("asdf");
-                    }
-                    return OutputString;
+                    return HandleBus(WhereCondition);
                 case ObjectTypes.Rute:
-                    Rute SingleRute = new Rute();
-                    if (WhereCondition == "None")
-                    {
-                        if (JsonCache.AlleRuterCache != null)
-                        {
-                            return JsonCache.AlleRuterCache;
-                        }
-                        RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
-
-                    }
-                    else
-                    {
-                        RowsFromDB = MysqlControls.SelectAllWhere(SingleRute.GetTableName(), WhereCondition);
-                    }
-                    List<Rute> AlleRuter = new List<Rute>();
-                    foreach (var SS in RowsFromDB.RowData)
-                    {
-                        Rute NewRute = new Rute();
-                        NewRute.Update(SS);
-                        AlleRuter.Add(NewRute);
-                    }
-                    OutputString = Json.Serialize(AlleRuter);
-                    return OutputString;
-
+                    return HandleRute(WhereCondition);
                 case ObjectTypes.BusStop:
-                    Stoppested Stoppested = new Stoppested();
-                    if (WhereCondition == "None")
-                    {
-                        if (JsonCache.AlleStoppeStederCache != null)
-                        {
-                            return JsonCache.AlleStoppeStederCache;
-                        }
-                        RowsFromDB = MysqlControls.SelectAll(Stoppested.GetTableName());
-
-                    }
-                    else
-                    {
-                        RowsFromDB = MysqlControls.SelectAllWhere(Stoppested.GetTableName(), WhereCondition);
-                    }
-                    List<Stoppested> StoppeSteder = new List<Stoppested>();
-                    foreach (var SS in RowsFromDB.RowData)
-                    {
-                        Stoppested NewStop = new Stoppested();
-                        NewStop.Update(SS);
-                        StoppeSteder.Add(NewStop);
-                    }
-                    OutputString = Json.Serialize(StoppeSteder);
-                    return OutputString;
-
+                    return HandleBusStop(WhereCondition);
                 case ObjectTypes.AfPaaTidCombi:
-
-                    AfPåTidCombi afPaa = new AfPåTidCombi();
-                    if (WhereCondition == "None")
-                    {
-                        RowsFromDB = MysqlControls.SelectAll(afPaa.GetTableName());
-                    }
-                    else
-                    {
-                        RowsFromDB = MysqlControls.SelectAllWhere(afPaa.GetTableName(), WhereCondition);
-                    }
-                    List<AfPåTidCombi> afPaaList = new List<AfPåTidCombi>();
-                    foreach (var SS in RowsFromDB.RowData)
-                    {
-                        AfPåTidCombi newAfPaa = new AfPåTidCombi();
-                        newAfPaa.Update(SS);
-                        afPaaList.Add(newAfPaa);
-                    }
-                    OutputString = Json.Serialize(afPaaList);
-                    return OutputString;
-
+                    return HandleAfPåTidCombi(WhereCondition);
                 case ObjectTypes.Unknown:
                     break;
-                default:
-                    break;
-            }
-
-        }
-        // Hvis der kun er
-        else
-        {
-            switch (ObjType)
-            {
-                case ObjectTypes.Bus:
-                    Bus BusObject = new Bus();
-                    OutputObject = BusObject.GetThisFromDB(WhereCondition);
-                    BusObject.Update(OutputObject);
-                    OutputString = Json.Serialize(BusObject);
-                    return OutputString;
-                case ObjectTypes.BusStop:
-                    Stoppested Stoppested = new Stoppested();
-                    RowsFromDB = MysqlControls.SelectAllWhere(Stoppested.GetTableName(), WhereCondition);
-                    List<Stoppested> StoppeSteder = new List<Stoppested>();
-                    foreach (var SS in RowsFromDB.RowData)
-                    {
-                        Stoppested NewStop = new Stoppested();
-                        NewStop.Update(SS);
-                        StoppeSteder.Add(NewStop);
-                    }
-                    OutputString = Json.Serialize(StoppeSteder);
-                    return OutputString;
-                default:
-                    throw new UnknownObjectException("Dette er et ukendt object");
             }
         }
         return "1";
+    }
+
+    private string HandleBus(string WhereCondition)
+    {
+        string OutputString;
+        TableDecode RowsFromDB;
+        Bus SingleBus = new Bus();
+        if (WhereCondition == "None")
+        {
+            if (JsonCache.AlleBusserCache != null)
+            {
+                return JsonCache.AlleBusserCache;
+            }
+            RowsFromDB = MysqlControls.SelectAll(SingleBus.GetTableName());
+        }
+        else
+        {
+            RowsFromDB = MysqlControls.SelectAllWhere(SingleBus.GetTableName(), WhereCondition);
+        }
+        List<Bus> AlleBusser = new List<Bus>();
+        foreach (var SS in RowsFromDB.RowData)
+        {
+            Bus NewBus = new Bus();
+            NewBus.Update(SS);
+            AlleBusser.Add(NewBus);
+        }
+        OutputString = Json.Serialize(AlleBusser);
+        return OutputString;
+    }
+
+    private string HandleRute(string WhereCondition)
+    {
+        string OutputString;
+        TableDecode RowsFromDB;
+        Rute SingleRute = new Rute();
+        if (WhereCondition == "None")
+        {
+            if (JsonCache.AlleRuterCache != null)
+            {
+                return JsonCache.AlleRuterCache;
+            }
+            RowsFromDB = MysqlControls.SelectAll(SingleRute.GetTableName());
+
+        }
+        else
+        {
+            RowsFromDB = MysqlControls.SelectAllWhere(SingleRute.GetTableName(), WhereCondition);
+        }
+        List<Rute> AlleRuter = new List<Rute>();
+        foreach (var SS in RowsFromDB.RowData)
+        {
+            Rute NewRute = new Rute();
+            NewRute.Update(SS);
+            AlleRuter.Add(NewRute);
+        }
+        OutputString = Json.Serialize(AlleRuter);
+        return OutputString;
+    }
+
+    private string HandleBusStop(string WhereCondition)
+    {
+        string OutputString;
+        TableDecode RowsFromDB;
+        Stoppested Stoppested = new Stoppested();
+        if (WhereCondition == "None")
+        {
+            if (JsonCache.AlleStoppeStederCache != null)
+            {
+                return JsonCache.AlleStoppeStederCache;
+            }
+            RowsFromDB = MysqlControls.SelectAll(Stoppested.GetTableName());
+
+        }
+        else
+        {
+            RowsFromDB = MysqlControls.SelectAllWhere(Stoppested.GetTableName(), WhereCondition);
+        }
+        List<Stoppested> StoppeSteder = new List<Stoppested>();
+        foreach (var SS in RowsFromDB.RowData)
+        {
+            Stoppested NewStop = new Stoppested();
+            NewStop.Update(SS);
+            StoppeSteder.Add(NewStop);
+        }
+        OutputString = Json.Serialize(StoppeSteder);
+        return OutputString;
+    }
+
+    private string HandleAfPåTidCombi(string WhereCondition)
+    {
+        string OutputString;
+        TableDecode RowsFromDB;
+        AfPåTidCombi afPaa = new AfPåTidCombi();
+        if (WhereCondition == "None")
+        {
+            RowsFromDB = MysqlControls.SelectAll(afPaa.GetTableName());
+        }
+        else
+        {
+            RowsFromDB = MysqlControls.SelectAllWhere(afPaa.GetTableName(), WhereCondition);
+        }
+        List<AfPåTidCombi> afPaaList = new List<AfPåTidCombi>();
+        foreach (var SS in RowsFromDB.RowData)
+        {
+            AfPåTidCombi newAfPaa = new AfPåTidCombi();
+            newAfPaa.Update(SS);
+            afPaaList.Add(newAfPaa);
+        }
+        OutputString = Json.Serialize(afPaaList);
+        return OutputString;
     }
 
     public string CheckMessage(string data)
@@ -329,8 +281,7 @@ public class Server
 
             ObjectTypes ObjType = GetRequestType(ref data);
             string WhereCondition = GetWhereCondition(ref data);
-            string Response = GenerateResponse(ObjType, WhereCondition, All);
-            return Response;
+            return GenerateResponse(ObjType, WhereCondition, All);
         }
         return "1";
     }
@@ -435,15 +386,6 @@ public class Server
         }
     }
 
-    private long PingRemote(EndPoint Remote)
-    {
-        long pingTime = 0;
-        Ping pingSender = new Ping();
-        PingReply reply = pingSender.Send(Remote.ToString().Substring(0, Remote.ToString().IndexOf(":")));
-        pingTime = reply.RoundtripTime;
-        return pingTime;
-    }
-
     // --------------------------------------------------------------
     // ------------------------ THREAD WORK HERE --------------------
     // --------------------------------------------------------------
@@ -455,18 +397,13 @@ public class Server
             Print.WriteLine("Der er ikke noget object?!");
         }
         Socket handler = Handler_pre as Socket;
-        string data;
+        string data = null;
         string response;
         byte[] bytes = new byte[] { };
         try
         {
-            // Program is suspended while waiting for an incoming connection.  
-            data = null;
             response = "1";
-            // An incoming connection needs to be processed.  
-            double SizeOfMsg = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
-            //PingClient = PingRemote(handler.RemoteEndPoint);
-
+            double SizeOfMsgRec = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
             // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
             response = CheckMessage(data);
             response += "<EOF>";
@@ -475,7 +412,7 @@ public class Server
             byte[] msg = Encoding.UTF8.GetBytes(response);
             double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response) / 1024, 2);
             Print.PrintCenterColorSingle("Connection: ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
-            Print.PrintCenterColorSingle("R: ", SizeOfMsg.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
+            Print.PrintCenterColorSingle("R: ", SizeOfMsgRec.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
             Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8) + "\n", ConsoleColor.Green);
             // Sender beskeden. 
             handler.Send(msg);
@@ -486,10 +423,7 @@ public class Server
         }
         finally
         {
-            //PingTotal.Stop();
-            // handler.Shutdown(SocketShutdown.Both); //--Skaber problemer på Linux
             handler.Close();
-            //Print.PrintColorLine($"Ping: {PingClient} ms | {Ping.ElapsedMilliseconds} ms | {PingObject.ElapsedMilliseconds} ms | {PingTotal.ElapsedMilliseconds} ms", ConsoleColor.Yellow);
         }
     }
 

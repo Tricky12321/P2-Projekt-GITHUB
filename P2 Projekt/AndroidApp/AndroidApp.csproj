@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objecter\Favorite.cs" />
     <Compile Include="BusResultsAdapter.cs" />
     <Compile Include="BusResultsCell.cs" />
     <Compile Include="Activities %28Sider%29\BusResults.cs" />

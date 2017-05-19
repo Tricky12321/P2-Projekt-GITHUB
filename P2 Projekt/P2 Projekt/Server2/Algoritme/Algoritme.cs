@@ -50,12 +50,14 @@ public static class Algoritme
         // Finder ud om der er tale om en weekend eller en hverdag
         // Hvis det er en hverdag: Så vælg alle dage som er hverdage
         // Hvis der er en weekend: Så vælg alle dage som er weekend
-        string whereCondition = (int)placeholderBus.StoppeStederMTid[AntalBesøgteStoppesteder].AfPåTidComb.First().UgeDag <= 5 ? $"day <= 5 AND busID = {placeholderBus.BusID}" : $"day >= 6 AND busID = {placeholderBus.BusID}";
+        string whereCondition = (int)placeholderBus.StoppeStederMTid[AntalBesøgteStoppesteder].AfPåTidComb.First().UgeDag <= 5 
+            ? $"day <= 5 AND busID = {placeholderBus.BusID}" 
+            : $"day >= 6 AND busID = {placeholderBus.BusID}";
         int WeekDaysInHistory = (int)placeholderBus.StoppeStederMTid[AntalBesøgteStoppesteder].AfPåTidComb.First().UgeDag <= 5 ? 5 : 2;
         // Henter en måneds historik, ikke nødvendigvis 4 uger, men den sidste måned af relevante dage.
         TableDecode MånedHistorik = MysqlControls.SelectAllWhere(new AfPåTidCombi().GetTableName(), $"{whereCondition} ORDER BY ID DESC LIMIT {AntalTotaleStopPåRute * WeekDaysInHistory * 4}");
         List<AfPåTidCombi> SidsteMånedAfPåTid = new List<AfPåTidCombi>();
-        foreach (var item in MånedHistorik.RowData)
+        foreach (Row item in MånedHistorik.RowData)
         {
             AfPåTidCombi NewAfPåTid = new AfPåTidCombi();
             NewAfPåTid.Update(item);
@@ -76,7 +78,7 @@ public static class Algoritme
         List<double> MånedAverage = new List<double>();
         BesøgteStopIDs.Reverse();
         // Vælger de seneste 5 stoppesteder fra ruten som der bliver kørt på lige nu. 
-        foreach (var item in BesøgteStopIDs.Take(5))
+        foreach (int item in BesøgteStopIDs.Take(5))
         {
             double AfstigningerAverage = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).Average(x => x.Afstigninger);
             double PåstigningerAverage = SidsteMånedAfPåTid.Where(x => x.Stop.StoppestedID == item).Average(x => x.Påstigninger);

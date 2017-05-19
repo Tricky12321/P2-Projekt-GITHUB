@@ -13,10 +13,10 @@ namespace ProgramTilBusselskab
 {
     public partial class OpretBus : Form
     {
-        const int busNameMaxLenght = 200;
-        const int busNameMinLenght = 1;
-        const int busIDMaxLenght = 100000000;
-        const int busIDMinLenght = 0;
+        const int busNameMaxLength = 200;
+        const int busNameMinLength = 1;
+        const int busIDMaxLength = 100000000;
+        const int busIDMinLength = 0;
         const int capacityMax = 1000;
         const int capacityMin = 0;
 
@@ -35,9 +35,9 @@ namespace ProgramTilBusselskab
             int capacityStaPlaceholder = 0;
             int busIDplaceholder = 0;
 
-            if (txtbox_busName.Text.Length > busNameMinLenght && txtbox_busName.Text.Length <= busNameMaxLenght)
+            if (txtbox_busName.Text.Length > busNameMinLength && txtbox_busName.Text.Length <= busNameMaxLength)
             {
-                if (int.TryParse(txt_busID.Text, out busIDplaceholder) && busIDplaceholder < busIDMaxLenght && busIDplaceholder >= busIDMinLenght)
+                if (int.TryParse(txt_busID.Text, out busIDplaceholder) && busIDplaceholder < busIDMaxLength && busIDplaceholder >= busIDMinLength)
                 {
                     if (!Lists.listWithBusses.Any(x => x.BusID == busIDplaceholder))
                     {

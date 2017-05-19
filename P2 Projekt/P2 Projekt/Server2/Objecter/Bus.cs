@@ -70,21 +70,22 @@ public class Bus : MysqlObject
 
     public void Update(Row Row)
     {
-        BusID = Convert.ToInt32(Row.Values[0]);                            // INT 32 ID
-        placering = new GPS();
-        busName = Convert.ToString(Row.Values[1]);
-        placering.xCoordinate = Convert.ToDouble(Row.Values[2]);    // DOUBLE
-        placering.yCoordinate = Convert.ToDouble(Row.Values[3]);    // DOUBLE
-        PassengersTotal = Convert.ToInt32(Row.Values[4]);
-        CapacitySitting = Convert.ToInt32(Row.Values[5]);
-        CapacityStanding = Convert.ToInt32(Row.Values[6]);
         Rute = new Rute();
-        Rute.RuteID = Convert.ToInt32(Row.Values[7]);            // Ruten her mangler at være korrekt
-        Rute.GetUpdate();
+        placering = new GPS();
+
+        BusID = Convert.ToInt32(Row.Values[0]);                             // INT 32 ID
+        busName = Convert.ToString(Row.Values[1]);                          // VARCHAR
+        placering.xCoordinate = Convert.ToDouble(Row.Values[2]);            // DOUBLE
+        placering.yCoordinate = Convert.ToDouble(Row.Values[3]);            // DOUBLE
+        PassengersTotal = Convert.ToInt32(Row.Values[4]);                   // INT
+        CapacitySitting = Convert.ToInt32(Row.Values[5]);                   // INT
+        CapacityStanding = Convert.ToInt32(Row.Values[6]);                  // INT
+        Rute.RuteID = Convert.ToInt32(Row.Values[7]);                       // INT
+        Rute.GetUpdate();  // Henter ruten fra databasen
         string[] StoppeSteder = Row.Values[8].Replace(".",",").Split(',');
         string[] Afvigelser = Row.Values[9].Replace(".",",").Split(',');
         int i = 0;
-        foreach (var stop in Rute.StoppeSteder)
+        foreach (Stoppested stop in Rute.StoppeSteder)
         {
             List<AfPåTidCombi> AfTidList = new List<AfPåTidCombi>();
             // {11:30;12:30;13:30}
@@ -94,7 +95,7 @@ public class Bus : MysqlObject
             string[] tider = times.Split(';');
             string[] Afvigelse = AfvigelseStpå.Split(';');
             int k = 0;
-            foreach (var singleTid in tider)
+            foreach (string singleTid in tider)
             {
                 // 11:30
                 Regex TidRegex = new Regex("^[0-9]{2}:[0-9]{2}$");
@@ -122,18 +123,17 @@ public class Bus : MysqlObject
         Output.Add(placering.xCoordinate.ToString().Replace(",","."));   // 3
         Output.Add(placering.yCoordinate.ToString().Replace(",", "."));  // 4
         Output.Add(PassengersTotal.ToString());                          // 5
-        Output.Add(CapacitySitting.ToString());                         // 6
-        Output.Add(CapacityStanding.ToString());                          // 7
-        //Output.Add(besøgteStop.ToString());                            // 8
-        Output.Add(Rute.RuteID.ToString());                              // 9
+        Output.Add(CapacitySitting.ToString());                          // 6
+        Output.Add(CapacityStanding.ToString());                         // 7
+        Output.Add(Rute.RuteID.ToString());                              // 8
         StringBuilder StoppeStederTID = new StringBuilder();
         StringBuilder AfvigelseSTB = new StringBuilder();
         int i = 0;
-        foreach (var stop in Rute.StoppeSteder)
+        foreach (Stoppested stop in Rute.StoppeSteder)
         {
             StoppeStederTID.Append("{");
             AfvigelseSTB.Append("{");
-            foreach (var stopmtid in StoppeStederMTid[i].AfPåTidComb)
+            foreach (AfPåTidCombi stopmtid in StoppeStederMTid[i].AfPåTidComb)
             {
                     StoppeStederTID.Append(stopmtid.Tidspunkt.SinpleString() + ";");
                     AfvigelseSTB.Append(stopmtid.ForventetPassagere.ToString() + ";");
@@ -180,26 +180,6 @@ public class Bus : MysqlObject
     }
 
     public EventHandler PassengerUpdate;
-
-    public void TjekInd()
-    {
-        ++PassengersTotal;
-        OnPassengerUpdated();
-    }
-
-    public void TjekUd()
-    {
-        --PassengersTotal;
-        OnPassengerUpdated();
-    }
-
-    protected virtual void OnPassengerUpdated()
-    {
-        if (PassengerUpdate != null)
-        {
-            PassengerUpdate(this, EventArgs.Empty);
-        }
-    }
 
     public override string ToString()
     {

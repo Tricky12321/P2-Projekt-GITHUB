@@ -110,7 +110,16 @@
     <Compile Include="Server\ServerType.cs" />
     <Compile Include="SImulering\SimBus.cs" />
     <Compile Include="SImulering\SimRoute.cs" />
-    <Compile Include="Utilities\Exceptions.cs" />
+    <Compile Include="Utilities\Exceptions\NoEndOfFileFoundException.cs" />
+    <Compile Include="Utilities\Exceptions\NotCorrectObjectException.cs" />
+    <Compile Include="Utilities\Exceptions\UnknownObjectException.cs" />
+    <Compile Include="Utilities\Exceptions\TooManyBytesException.cs" />
+    <Compile Include="Utilities\Exceptions\NotConnectedException.cs" />
+    <Compile Include="Utilities\Exceptions\ConnectionFailedException.cs" />
+    <Compile Include="Utilities\Exceptions\EmptyTableException.cs" />
+    <Compile Include="Utilities\Exceptions\InvalidQueryException.cs" />
+    <Compile Include="Utilities\Exceptions\NotValidQueryException.cs" />
+    <Compile Include="Utilities\Exceptions\NoObjectFoundException.cs" />
     <Compile Include="Utilities\IpAdresse.cs" />
     <Compile Include="Utilities\Json.cs" />
     <Compile Include="Utilities\JsonCache.cs" />

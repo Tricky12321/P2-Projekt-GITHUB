@@ -18,22 +18,27 @@ namespace AndroidApp
     {
         BusResultsCell[] Busser;
         Activity context;
-        public BusResultsAdapter(Activity context, BusResultsCell[] Busser) : base() {
+        public BusResultsAdapter(Activity context, BusResultsCell[] Busser) : base()
+        {
             this.context = context;
             this.Busser = Busser;
         }
+
         public override long GetItemId(int position)
         {
             return position;
         }
+
         public override BusResultsCell this[int position]
         {
             get { return Busser[position]; }
         }
+
         public override int Count
         {
             get { return Busser.Length; }
         }
+
         public override Android.Views.View GetView(int position, Android.Views.View convertView, ViewGroup parent)
         {
             Android.Views.View view = convertView; // re-use an existing view, if one is available
@@ -43,8 +48,7 @@ namespace AndroidApp
             }
             view.FindViewById<TextView>(Resource.Id.text1).Text = Busser[position].ToString();
             view.FindViewById<ImageView>(Resource.Id.KapacitetIkon).SetImageResource(Busser[position].KapacitetStatusBillede);
-            // Lav en funktion til det her \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
-            view.FindViewById<Android.Widget.Button>(Resource.Id.FavoritKnap).Click += (object sender, EventArgs e) => 
+            view.FindViewById<Android.Widget.Button>(Resource.Id.FavoritKnap).Click += (object sender, EventArgs e) =>
             {
                 Favorite tempbus = new Favorite(Busser[position].BusNavn, Busser[position].Stoppested, Busser[position].Tidspunkt);
                 if (!FavoriteBusses.favoritListe.Contains(tempbus))
@@ -53,7 +57,6 @@ namespace AndroidApp
                     Toast.MakeText(this.context, "Tilføjet til favoritter!", ToastLength.Short).Show();
                 }
             };
-
             return view;
         }
     }

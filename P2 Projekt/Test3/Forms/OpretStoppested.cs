@@ -13,10 +13,10 @@ namespace ProgramTilBusselskab
 {
     public partial class OpretStoppested : Form
     {
-        const int stopNameMinLenght = 0;
-        const int stopNameMaxLenght = 200;
-        const int stopIDMaxLenght = 100000000;
-        const int stopIDMinLenght = 0;
+        private const int stopNameMinLength = 0;
+        private const int stopNameMaxLength = 200;
+        private const int stopIDMaxLength = 100000000;
+        private const int stopIDMinLength = 0;
 
         List<AfPåTidCombi> listTimes = new List<AfPåTidCombi>();
         public OpretStoppested()
@@ -28,9 +28,9 @@ namespace ProgramTilBusselskab
         {
             int stopIDPlaceholder = 0;
 
-            if (txtbox_stopName.Text.Length > stopNameMinLenght && txtbox_stopName.Text.Length <= stopNameMaxLenght)
+            if (txtbox_stopName.Text.Length > stopNameMinLength && txtbox_stopName.Text.Length <= stopNameMaxLength)
             {
-                if (int.TryParse(txtbox_stoppestedID.Text, out stopIDPlaceholder) && stopIDPlaceholder < stopIDMaxLenght && stopIDPlaceholder >= stopIDMinLenght)
+                if (int.TryParse(txtbox_stoppestedID.Text, out stopIDPlaceholder) && stopIDPlaceholder < stopIDMaxLength && stopIDPlaceholder >= stopIDMinLength)
                 {
                     if (!Lists.listWithStops.Any(x => x.StoppestedID == stopIDPlaceholder))
                     {

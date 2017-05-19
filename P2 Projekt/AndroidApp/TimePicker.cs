@@ -30,7 +30,7 @@ namespace AndroidApp
 
         public override Dialog OnCreateDialog(Bundle savedState)
         {
-            var dialog = new TimePickerDialog(context, listener, hour, minute, true);
+            TimePickerDialog dialog = new TimePickerDialog(context, listener, hour, minute, true);
             return dialog;
         }
     }

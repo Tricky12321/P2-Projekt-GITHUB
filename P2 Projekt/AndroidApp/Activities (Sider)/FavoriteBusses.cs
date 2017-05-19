@@ -12,19 +12,6 @@ using Android.Widget;
 
 namespace AndroidApp
 {
-    public struct Favorite
-    {
-        public string Bus;
-        public string Stoppested;
-        public string Tid;
-
-        public Favorite(string bus, string stoppested, string tid)
-        {
-            Bus = bus;
-            Stoppested = stoppested;
-            Tid = tid;
-        }
-    }
     [Activity(Label = "SmartBus")]
     public class FavoriteBusses : Activity
     {
@@ -37,12 +24,10 @@ namespace AndroidApp
             SetContentView(Resource.Layout.Favorite);
 
             Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
-            HomeButton.Click += (object sender, EventArgs e) =>
-            {
-                this.OnBackPressed();
-            };
+            HomeButton.Click += (object sender, EventArgs e) => OnBackPressed();
 
-            var favoritArray = MakeFavoriteStrings();
+
+            string[] favoritArray = MakeFavoriteStrings();
 
             ListView FavoritListe = FindViewById<ListView>(Resource.Id.FavoriteList);
             FavoritListe.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, favoritArray);
@@ -50,7 +35,7 @@ namespace AndroidApp
             FavoritListe.ItemClick += (object sender, AdapterView.ItemClickEventArgs args) =>
             {
                 string[] arrayToSearch = ArrayToSearch(args);
-                var intent = new Intent(this, typeof(BusResults));
+                Intent intent = new Intent(this, typeof(BusResults));
                 intent.PutStringArrayListExtra("stopOgTid", arrayToSearch);
                 Toast.MakeText(this, $"Søger på stoppested {favoritListe[args.Position].Stoppested}", ToastLength.Short).Show();
                 StartActivity(intent);
@@ -60,16 +45,17 @@ namespace AndroidApp
         protected override void OnResume()
         {
             base.OnResume();
-            var favoritArray = MakeFavoriteStrings();
+            string[] favoritArray = MakeFavoriteStrings();
             ListView FavoritListe = FindViewById<ListView>(Resource.Id.FavoriteList);
             FavoritListe.Adapter = new ArrayAdapter(this, Android.Resource.Layout.SimpleListItem1, favoritArray);
         }
 
         private string[] MakeFavoriteStrings()
         {
-            var favoritArray = new string[favoritListe.Count];
+            int favListCount = favoritListe.Count;
+            string[] favoritArray = new string[favListCount];
 
-            for (int i = 0; i < favoritListe.Count; i++)
+            for (int i = 0; i < favListCount; i++)
             {
                 favoritArray[i] = $"Bus: {favoritListe[i].Bus} \nAnkommer ved: {favoritListe[i].Stoppested} \nTid: {favoritListe[i].Tid}";
             }
@@ -81,9 +67,7 @@ namespace AndroidApp
         {
             Favorite favorit = favoritListe[args.Position];
             string[] splitTid = favorit.Tid.Split(':');
-            var arrayToSearch = new string[4] { favorit.Stoppested, splitTid[0], splitTid[1], favorit.Bus};
-
-            return arrayToSearch;
+            return new string[] { favorit.Stoppested, splitTid[0], splitTid[1], favorit.Bus};
         }
     }
 }

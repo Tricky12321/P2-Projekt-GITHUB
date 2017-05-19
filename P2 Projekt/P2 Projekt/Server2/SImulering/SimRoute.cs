@@ -20,7 +20,7 @@ namespace ProgramTilBusselskab
             PointLatLng end = new PointLatLng();
             
             int listLenght = rute.StoppeSteder.Count() - 1;
-            Console.WriteLine($"Listen er: {listLenght} lang");
+            Print.WriteLine($"Listen er: {listLenght} lang");
             for (int i = 0; i < listLenght; i++)
             {
                 start.Lat = rute.StoppeSteder[i].StoppestedLok.xCoordinate;
@@ -36,11 +36,6 @@ namespace ProgramTilBusselskab
                     {
                         direction.Add(point);
                     }
-                }
-                else
-                {
-                    // Console.WriteLine("Ukendt Punkt");
-                    // throw new Exception("Ukendt punkt");
                 }
             }
             route = new GMapRoute(direction, routeName);

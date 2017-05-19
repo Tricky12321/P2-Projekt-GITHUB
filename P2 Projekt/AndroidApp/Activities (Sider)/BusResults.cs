@@ -14,43 +14,16 @@ namespace AndroidApp
     [Activity(Label = "SmartBus")]
     public class BusResults : Activity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        private List<BusResultsCell> GetBusResultList(List<Bus> sorteretBusListe, bool FiltrerEfterBusNavn, int IntervalStart, int IntervalSlut, string[] _stopOgTid)
         {
-            base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.Results);
-            
-            IList<string> _stopOgTid = Intent.Extras.GetStringArrayList("stopOgTid") ?? new string[0];
-
-            int IntervalStart, IntervalSlut, Tidspunkt;
-            Interval(_stopOgTid[1], _stopOgTid[2], out IntervalStart, out IntervalSlut, out Tidspunkt);
-
-            bool FiltrerEfterBusNavn;
-            var busCelleListe = new List<BusResultsCell>();
-            var ServerBusListe = HentBusser();
-            var sorteretBusListe = new List<Bus>();
-
-            
-            if (_stopOgTid.Count == 4)
-                FiltrerEfterBusNavn = true;
-            else
-                FiltrerEfterBusNavn = false;
-
-            
-            /* Først sorterer vi de busser fra, som ikke indeholder det stoppested vi søger efter.
-             * Derefter sorterer vi de busser fra, som ikke holder ved stoppestedet inden for en halv time af det indtastede tidspunkt */
-            sorteretBusListe = ServerBusListe.
-                Where(bus => bus.StoppeStederMTid.
-                Any(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0] && StopMTid.AfPåTidComb.
-                Any(afpåtidcombi => AnkomstInterval(afpåtidcombi.Tidspunkt, IntervalStart, IntervalSlut)))).ToList();
-
-
+            List<BusResultsCell> busCelleListe = new List<BusResultsCell>();
             foreach (Bus bus in sorteretBusListe)
             {
                 foreach (var StopMTid in bus.StoppeStederMTid.Where(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0]))
                 {
                     foreach (var TidCombi in StopMTid.AfPåTidComb)
                     {
-                        if(AnkomstInterval(TidCombi.Tidspunkt, IntervalStart, IntervalSlut))
+                        if (AnkomstInterval(TidCombi.Tidspunkt, IntervalStart, IntervalSlut))
                         {
                             if (FiltrerEfterBusNavn)
                             {
@@ -67,11 +40,37 @@ namespace AndroidApp
                     }
                 }
             }
+            return busCelleListe;
+        }
+
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            SetContentView(Resource.Layout.Results);
+
+            IList<string> _stopOgTid = Intent.Extras.GetStringArrayList("stopOgTid") ?? new string[0];
+
+            int IntervalStart, IntervalSlut, Tidspunkt;
+            Interval(_stopOgTid[1], _stopOgTid[2], out IntervalStart, out IntervalSlut, out Tidspunkt);
+
+            bool FiltrerEfterBusNavn = _stopOgTid.Count() == 4;
+            List<BusResultsCell> busCelleListe = new List<BusResultsCell>();
+            List<Bus> ServerBusListe = HentBusser();
+            /* Først sorterer vi de busser fra, som ikke indeholder det stoppested vi søger efter.
+            * Derefter sorterer vi de busser fra, som ikke holder ved stoppestedet inden for en halv time af det indtastede tidspunkt */
+            List<Bus> sorteretBusListe = ServerBusListe.
+                Where(bus => bus.StoppeStederMTid.
+                Any(StopMTid => StopMTid.Stop.StoppestedName == _stopOgTid[0] && StopMTid.AfPåTidComb.
+                Any(afpåtidcombi => AnkomstInterval(afpåtidcombi.Tidspunkt, IntervalStart, IntervalSlut)))).ToList();
+
+
+            busCelleListe = GetBusResultList(sorteretBusListe, FiltrerEfterBusNavn, IntervalStart, IntervalSlut, _stopOgTid.ToArray());
+
 
             Button HomeButton = FindViewById<Button>(Resource.Id.HomeButton);
             HomeButton.Click += (object sender, EventArgs e) =>
             {
-                this.OnBackPressed();
+                OnBackPressed();
             };
 
             ListView BusList = FindViewById<ListView>(Resource.Id.BusList);
@@ -82,14 +81,11 @@ namespace AndroidApp
         private bool AnkomstInterval(Tidspunkt tidspunkt, int IntervalStart, int IntervalSlut)
         {
             int Tidspunkt = (tidspunkt.hour * 60 * 60 + tidspunkt.minute * 60);
-            if (Tidspunkt >= IntervalStart && Tidspunkt <= IntervalSlut)
-            {
-                return true;
-            }
-            else return false;
+
+            return (Tidspunkt >= IntervalStart && Tidspunkt <= IntervalSlut);
         }
 
-        private void Interval (string timers, string minutters,  out int IntervalStart, out int IntervalSlut, out int Tidspunkt)
+        private void Interval(string timers, string minutters, out int IntervalStart, out int IntervalSlut, out int Tidspunkt)
         {
             int timer = Convert.ToInt32(timers);
             int minutter = Convert.ToInt32(minutters);
@@ -104,7 +100,7 @@ namespace AndroidApp
             List<NetworkObject> BusserFraServer = NewRealClient.RequestAllWhere(ObjectTypes.Bus, "None");
             List<Bus> Busser = new List<Bus>();
 
-            foreach (var obj in BusserFraServer)
+            foreach (NetworkObject obj in BusserFraServer)
             {
                 Busser.Add(obj as Bus);
             }

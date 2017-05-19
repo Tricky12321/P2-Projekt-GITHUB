@@ -16,6 +16,13 @@ namespace AndroidApp
 {
     class BusResultsCell
     {
+        public string BusNavn;
+        public string Tidspunkt;
+        public string PasNu;
+        public string PasForv;
+        public string Stoppested;
+        public int KapacitetStatusBillede;
+
         /* Skal tage imod et bus objekt + hvad den ellers har brug for, og omdanne det til strings,
          * som BusResultsAdapter kan vise */
         public BusResultsCell(Bus bus, Tidspunkt tidspunkt, string stoppested)
@@ -27,20 +34,22 @@ namespace AndroidApp
             Stoppested = stoppested;
 
             if (bus.PassengersTotal < bus.CapacitySitting * 0.8)
+            {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusMasserafplads;
+            }
             else if ((bus.PassengersTotal >= bus.CapacitySitting * 0.8) && (bus.PassengersTotal < bus.CapacitySitting))
+            {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusNaesteningensiddepladser;
+            }
             else if ((bus.PassengersTotal >= bus.CapacitySitting) && (bus.PassengersTotal < bus.CapacitySitting + bus.CapacityStanding))
+            {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusIngenSiddepladser;
+            }
             else
+            {
                 KapacitetStatusBillede = Resource.Drawable.KapacitetStatusOverfyldt;
+            }
         }
-        public string BusNavn;
-        public string Tidspunkt;
-        public string PasNu;
-        public string PasForv;
-        public string Stoppested;
-        public int KapacitetStatusBillede;
 
         public override string ToString()
         {
