@@ -40,20 +40,20 @@ namespace ProgramTilBusselskab
         private void btn_opretBus_Click(object sender, EventArgs e)
         {
             OpretBus busForm = new OpretBus();
-            busForm.Show();
+            new Thread(new ThreadStart(busForm.Show)).Start();
         }
 
         private void btn_opretRute_Click(object sender, EventArgs e)
         {
             OpretRute ruteForm = new OpretRute();
-            ruteForm.Show();
+            new Thread(new ThreadStart(ruteForm.Show)).Start();
         }
 
         private void Simulation_Load(object sender, EventArgs e)
         {
-            RealClient NewClient = new RealClient();
+            RealClient BusClient = new RealClient();
             int downloadedBusses = 0;
-            List<NetworkObject> DatabaseBus = NewClient.RequestAllWhere(ObjectTypes.Bus, "None"); 
+            List<NetworkObject> DatabaseBus = BusClient.RequestAllWhere(ObjectTypes.Bus, "None"); 
 
             foreach (Bus item in DatabaseBus)
             {
@@ -61,8 +61,9 @@ namespace ProgramTilBusselskab
                 downloadedBusses++;
             }
 
+            RealClient RuteClient = new RealClient();
             int downloadedRoutes = 0;
-            List<NetworkObject> AlleRuter = NewClient.RequestAllWhere(ObjectTypes.Rute, "None");
+            List<NetworkObject> AlleRuter = RuteClient.RequestAllWhere(ObjectTypes.Rute, "None");
 
             foreach (Rute item in AlleRuter)
             {
@@ -70,8 +71,9 @@ namespace ProgramTilBusselskab
                 downloadedRoutes++;
             }
 
+            RealClient StopClient = new RealClient();
             int downloadedStops = 0;
-            List<NetworkObject> Stoppesteder = NewClient.RequestAllWhere(ObjectTypes.BusStop, "None");
+            List<NetworkObject> Stoppesteder = StopClient.RequestAllWhere(ObjectTypes.BusStop, "None");
 
             foreach (Stoppested item in Stoppesteder)
             {
@@ -171,8 +173,7 @@ namespace ProgramTilBusselskab
             }
             catch (Exception)
             {
-                timer_UpdateMap.Enabled = false;
-                MessageBox.Show("Bussen kunne ikke hentes fra serveren");
+                Debug.WriteLine("Der blev ikke modtaget noget data fra serveren");
             }
 
             ShowBus(valgtBus);
@@ -185,8 +186,101 @@ namespace ProgramTilBusselskab
             return (ListOfObjs.First() as Bus);
         }
 
-        private void ShowBus(Bus bus)
+        private void HandleAllStops(ref Bus bus, ref GMapOverlay stopLayer, ref bool warningRed, ref bool warningYellow)
         {
+            foreach (Stoppested stop in bus.Rute.StoppeSteder)
+            {
+                GMapMarker stoppested =
+                new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
+                new PointLatLng(stop.StoppestedLok.xCoordinate, stop.StoppestedLok.yCoordinate),
+                Test3.Properties.Resources.busSkilt);
+                stopLayer.Markers.Add(stoppested);
+
+
+
+                //Indsætter tekst med antal passagerer
+                stoppested.ToolTipText = stop.StoppestedName + " " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().Tidspunkt.ToString() + "\nForventede passagerer " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere;
+
+                if ((bus.CapacitySitting + bus.CapacityStanding) < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
+                {
+                    stoppested.ToolTip.Fill = Brushes.Red;
+                    warningRed = true;
+                }
+                else if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
+                {
+                    stoppested.ToolTip.Fill = Brushes.Yellow;
+                    warningYellow = true;
+                }
+                else
+                {
+                    stoppested.ToolTip.Fill = Brushes.Green;
+                }
+
+                //Bestemmer farverne på tekstbobble
+                stoppested.ToolTip.Foreground = Brushes.Black;
+            }
+
+        }
+
+        private void HandleBusMark(ref Bus bus, ref GMapMarker busMark)
+        {
+            if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.PassengersTotal)
+            {
+                busMark.ToolTip.Fill = Brushes.Red;
+            }
+            else if ((bus.CapacitySitting + bus.CapacityStanding) * 0.6 < bus.PassengersTotal)
+            {
+                busMark.ToolTip.Fill = Brushes.Yellow;
+            }
+            else
+            {
+                busMark.ToolTip.Fill = Brushes.Green;
+            }
+        }
+
+        private void HandleCheckedRute(ref Bus bus, ref GMapOverlay busOverlay)
+        {
+            if (chkbox_medRute.Checked)
+            {
+                GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
+                SimRoute placeholderRute = new SimRoute(bus.Rute, "Placeholder Rute");
+                routesOverlay.Routes.Add(placeholderRute.route);
+                gMapsMap.Overlays.Add(routesOverlay);
+
+                GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
+
+                bool warningRed = false;
+                bool warningYellow = false;
+                WarningLabel.Visible = false;
+
+                HandleAllStops(ref bus, ref stopLayer, ref warningRed, ref warningYellow);
+
+
+                if (warningRed)
+                {
+                    WarningLabel.ForeColor = Color.Red;
+                    WarningLabel.Visible = true;
+                }
+                else if (warningYellow)
+                {
+                    WarningLabel.ForeColor = Color.Yellow;
+                    WarningLabel.Visible = true;
+                }
+
+                gMapsMap.Overlays.Add(stopLayer);
+                gMapsMap.Overlays.Add(busOverlay);
+                gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
+            }
+            else
+            {
+                gMapsMap.Overlays.Add(busOverlay);
+                gMapsMap.ZoomAndCenterMarkers("busLayer");
+            }
+        }
+
+        private void ShowBus(object busPlace)
+        {
+            Bus bus = (busPlace as Bus);
             gMapsMap.Overlays.Clear();
             try
             {
@@ -199,87 +293,12 @@ namespace ProgramTilBusselskab
                 busMark.ToolTip.Foreground = Brushes.Black;
                 busMark.ToolTipMode = MarkerTooltipMode.Always;
 
-                if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.PassengersTotal)
-                {
-                    busMark.ToolTip.Fill = Brushes.Red;
-                }
-                else if ((bus.CapacitySitting + bus.CapacityStanding) * 0.6 < bus.PassengersTotal)
-                {
-                    busMark.ToolTip.Fill = Brushes.Yellow;
-                }
-                else
-                {
-                    busMark.ToolTip.Fill = Brushes.Green;
-                }
+                HandleBusMark(ref bus, ref busMark);
 
                 busOverlay.Markers.Add(busMark);
-
-                if (chkbox_medRute.Checked)
-                {
-                    GMapOverlay routesOverlay = new GMapOverlay("routeLayer");
-                    SimRoute placeholderRute = new SimRoute(bus.Rute, "Placeholder Rute");
-                    routesOverlay.Routes.Add(placeholderRute.route);
-                    gMapsMap.Overlays.Add(routesOverlay);
-
-                    GMapOverlay stopLayer = new GMapOverlay("Stoplayer");
-
-                    bool warningRed = false;
-                    bool warningYellow = false;
-                    WarningLabel.Visible = false;
-                    
-
-                    foreach (Stoppested stop in bus.Rute.StoppeSteder)
-                    {
-                        GMapMarker stoppested =
-                        new GMap.NET.WindowsForms.Markers.GMarkerGoogle(
-                        new PointLatLng(stop.StoppestedLok.xCoordinate, stop.StoppestedLok.yCoordinate),
-                        Test3.Properties.Resources.busSkilt);
-                        stopLayer.Markers.Add(stoppested);
+                HandleCheckedRute(ref bus, ref busOverlay);
 
 
-
-                        //Indsætter tekst med antal passagerer
-                        stoppested.ToolTipText = stop.StoppestedName + " " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().Tidspunkt.ToString() + "\nForventede passagerer " + bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere;
-
-                        if ((bus.CapacitySitting + bus.CapacityStanding) < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
-                        {
-                            stoppested.ToolTip.Fill = Brushes.Red;
-                            warningRed = true;
-                        }
-                        else if ((bus.CapacitySitting + bus.CapacityStanding) * 0.8 < bus.StoppeStederMTid.Where(x => x.Stop.StoppestedID == stop.StoppestedID).First().AfPåTidComb.First().ForventetPassagere)
-                        {
-                            stoppested.ToolTip.Fill = Brushes.Yellow;
-                            warningYellow = true;
-                        }
-                        else
-                        {
-                            stoppested.ToolTip.Fill = Brushes.Green;
-                        }
-
-                        //Bestemmer farverne på tekstbobble
-                        stoppested.ToolTip.Foreground = Brushes.Black;
-                    }
-
-                    if (warningRed)
-                    {
-                        WarningLabel.ForeColor = Color.Red;
-                        WarningLabel.Visible = true;
-                    }
-                    else if (warningYellow)
-                    {
-                        WarningLabel.ForeColor = Color.Yellow;
-                        WarningLabel.Visible = true;
-                    }
-
-                    gMapsMap.Overlays.Add(stopLayer);
-                    gMapsMap.Overlays.Add(busOverlay);
-                    gMapsMap.ZoomAndCenterRoute(placeholderRute.route);
-                }
-                else
-                {
-                    gMapsMap.Overlays.Add(busOverlay);
-                    gMapsMap.ZoomAndCenterMarkers("busLayer");
-                }
             }
             catch (NullReferenceException)
             {

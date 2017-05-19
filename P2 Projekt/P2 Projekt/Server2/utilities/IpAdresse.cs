@@ -5,11 +5,13 @@ public static class IPHandler
 {
     public static bool IsIPV4(string IP)
     {
+        // Burde laves som regex
         return (IP.ToString().Contains(".") && !IP.ToString().Contains(":"));
     }
 
     public static bool IsIPV6(string IP)
     {
+        // Burde laves som regex
         return (IP.ToString().Contains(":") && !IP.ToString().Contains("."));
     }
 

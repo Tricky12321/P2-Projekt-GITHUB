@@ -74,7 +74,7 @@
             this.gMapsMap.Size = new System.Drawing.Size(1022, 523);
             this.gMapsMap.TabIndex = 0;
             this.gMapsMap.Zoom = 13D;
-            this.gMapsMap.Load += new System.EventHandler(this.gMapsMap_Load);
+            this.gMapsMap.Load += new System.EventHandler(gMapsMap_Load);
             // 
             // btn_opretBus
             // 

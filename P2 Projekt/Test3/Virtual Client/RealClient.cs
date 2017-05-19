@@ -4,17 +4,15 @@ using System.Net.Sockets;
 using System.Text;
 using System.Collections.Generic;
 using JsonSerializer;
-using System.Diagnostics;
-using System.Threading;
-using System.Windows.Forms;
 public class RealClient
 {
-    private const bool _localTest = false;
-    private string _host = _localTest ? "127.0.0.1" : "172.25.11.120";
+    private string _host = "172.25.11.120";
+    //private string _host = "127.0.0.1";
     private uint _port = 12943;
 
     public void SendObject(object ObjToSend, Type TypeOfObj)
     {
+
         // Data buffer for incoming data.  
         byte[] bytes = new byte[] { };
         string output = "No response";
@@ -51,7 +49,7 @@ public class RealClient
                 // Receive the response from the remote device.  
                 int bytesRec = sender.Receive(bytes);
                 output = Encoding.UTF8.GetString(bytes, 0, bytesRec);
-                //Print.PrintColorLine(output, ConsoleColor.Cyan);
+                // Print.PrintColorLine(output, ConsoleColor.Cyan);
                 // Release the socket.  
                 sender.Shutdown(SocketShutdown.Both);
                 sender.Close();
@@ -105,29 +103,31 @@ public class RealClient
             {
                 sender.Connect(remoteEP);
                 // Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
+
                 // Encode the data string into a byte array.  
                 //Console.WriteLine(LongString + LongString + LongString + LongString + LongString);
                 string RequestStringFinal = RequestString + "<EOF>";
-                Debug.Print($"Requestion ALL: {RequestString}");
+                System.Diagnostics.Debug.Print($"Requestion ALL: {RequestString}");
                 byte[] msg = Encoding.UTF8.GetBytes(RequestStringFinal);
                 // Send the data through the socket.  
                 int bytesSent = sender.Send(msg);
                 // Receive the response from the remote device. 
                 long bytesRec = HandleConnection(sender, ref bytes, ref ReturnString);
                 //long bytesRec = sender.Receive(bytes);
-                //Thread.Sleep(10);
                 if (ReturnString != "1<EOF>")
                 {
-
                     ReturnList = Json.Deserialize(ReturnString);
                 }
                 else
                 {
-                    Debug.Print("Der er ikke noget at deseralisere");
+                    System.Diagnostics.Debug.Print("Der er ikke noget at deseralisere");
 
                 }
                 //Print.PrintColorLine(ReturnString, ConsoleColor.Cyan);
 
+                // Release the socket.  
+                sender.Shutdown(SocketShutdown.Both);
+                sender.Close();
 
             }
             catch (ArgumentNullException ane)
@@ -142,16 +142,10 @@ public class RealClient
             {
                 Console.WriteLine("Unexpected exception : {0}", e.ToString());
             }
-            finally
-            {
-                // Release the socket.  
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
-            }
         }
         catch (Exception e)
         {
-            MessageBox.Show($"Der er ikke forbindelse til serveren. \n{e.ToString()}");
+            Console.WriteLine(e.ToString());
         }
         return ReturnList;
         // return output;
@@ -160,11 +154,12 @@ public class RealClient
     private long HandleConnection(Socket handler, ref byte[] bytes, ref string data)
     {
         data = "";
+        int bytesRec = 0;
         List<byte> Bytes = new List<byte>(1024 * 4);
         do
         {
             bytes = new byte[1];
-            handler.Receive(bytes);
+            bytesRec = handler.Receive(bytes);
             Bytes.Add(bytes[0]);
         } while (handler.Available > 0);
         data = Encoding.UTF8.GetString(Bytes.ToArray(), 0, Bytes.Count);

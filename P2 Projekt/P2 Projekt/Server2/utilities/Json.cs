@@ -171,8 +171,7 @@ namespace JsonSerializer
         public static Stream StringToStream(string Input)
         {
             byte[] byteArray = Encoding.UTF8.GetBytes(Input);
-            MemoryStream stream = new MemoryStream(byteArray);
-            return stream;
+            return new MemoryStream(byteArray);
         }
 
         public static string StreamToString(Stream stream)

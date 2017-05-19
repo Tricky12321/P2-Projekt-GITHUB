@@ -170,7 +170,7 @@ namespace ServerGPSSimulering
             }
         }
 
-        public void BusMovement()
+        private void BusMovement()
         {
             int ElementerIRute = SimulatedRute.route.Points.Count();
             int steps = 3;

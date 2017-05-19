@@ -136,8 +136,6 @@ public class Server
 
     private string GenerateResponse(ObjectTypes ObjType, string WhereCondition, bool All)
     {
-        string OutputString;
-
         //Stregen er : request,ALL,{OBJECT},{WHERE}
         if (All)
         {

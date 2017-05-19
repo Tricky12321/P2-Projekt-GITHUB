@@ -14,7 +14,7 @@ namespace Tests
         [TestCase(",None", ExpectedResult = "None")]
         public string GetWhereConditionTest(string Test)
         {
-            Server TestServer = new Server(12943);
+            Server TestServer = new Server(12943, ServerType.Ipv4);
             string WhereCondition = TestServer.GetWhereCondition(ref Test);
             return WhereCondition;
         }

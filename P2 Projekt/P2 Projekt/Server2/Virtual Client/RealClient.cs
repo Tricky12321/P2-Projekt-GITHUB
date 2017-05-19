@@ -12,7 +12,6 @@ public class RealClient
 
     public void SendObject(object ObjToSend, Type TypeOfObj)
     {
-
         // Data buffer for incoming data.  
         byte[] bytes = new byte[] { };
         string output = "No response";
@@ -27,23 +26,12 @@ public class RealClient
             sender = new Socket(IPHandler.IsIPV6(ipAddress.ToString()) ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Create a TCP/IP  socket.  
             // Connect the socket to the remote endpoint. Catch any errors.
-
             try
             {
                 sender.Connect(remoteEP);
-                // Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
-
                 // Encode the data string into a byte array.  
-                //Console.WriteLine(LongString + LongString + LongString + LongString + LongString);
                 string JsonString = Json.Serialize(ObjToSend) + "<EOF>";
                 byte[] msg = Encoding.UTF8.GetBytes(JsonString);
-
-                /*
-                if (msg.Length > BytesToSend)
-                {
-                    throw new TooManyBytesException("Der blev sendt for meget data");
-                }
-                */
                 // Send the data through the socket.  
                 int bytesSent = sender.Send(msg);
                 // Receive the response from the remote device.  
@@ -72,7 +60,6 @@ public class RealClient
         {
             Print.WriteLine(e.ToString());
         }
-        // return output;
     }
 
     public List<NetworkObject> RequestAllWhere(ObjectTypes ObjType, string WhereCondition)
@@ -98,14 +85,10 @@ public class RealClient
             sender = new Socket(IPHandler.IsIPV6(ipAddress.ToString()) ? AddressFamily.InterNetworkV6 : AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             // Create a TCP/IP  socket.  
             // Connect the socket to the remote endpoint. Catch any errors.
-
             try
             {
                 sender.Connect(remoteEP);
-                // Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
-
                 // Encode the data string into a byte array.  
-                //Console.WriteLine(LongString + LongString + LongString + LongString + LongString);
                 string RequestStringFinal = RequestString + "<EOF>";
                 System.Diagnostics.Debug.Print($"Requestion ALL: {RequestString}");
                 byte[] msg = Encoding.UTF8.GetBytes(RequestStringFinal);
@@ -113,7 +96,6 @@ public class RealClient
                 int bytesSent = sender.Send(msg);
                 // Receive the response from the remote device. 
                 long bytesRec = HandleConnection(sender, ref bytes, ref ReturnString);
-                //long bytesRec = sender.Receive(bytes);
                 if (ReturnString != "1<EOF>")
                 {
                     ReturnList = Json.Deserialize(ReturnString);
@@ -123,12 +105,9 @@ public class RealClient
                     System.Diagnostics.Debug.Print("Der er ikke noget at deseralisere");
 
                 }
-                //Print.PrintColorLine(ReturnString, ConsoleColor.Cyan);
-
                 // Release the socket.  
                 sender.Shutdown(SocketShutdown.Both);
                 sender.Close();
-
             }
             catch (ArgumentNullException ane)
             {
@@ -148,7 +127,6 @@ public class RealClient
             Print.WriteLine(e.ToString());
         }
         return ReturnList;
-        // return output;
     }
 
     private long HandleConnection(Socket handler, ref byte[] bytes, ref string data)
