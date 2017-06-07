@@ -20,15 +20,15 @@ public class Server
 
     public static Server IPv6Server = null;
 
-    private const int NumberOfWorkers = 5;
+    // private const int NumberOfWorkers = 5;
 
     public static bool IPV4Started = false;
 
     public static bool IPV6Started = false;
 
-    private const uint ByteSize = 1024; // Data buffer size for incommming data
+    // private const uint ByteSize = 1024; // Data buffer size for incommming data
 
-    private const uint KBSize = 1024;
+    // private const uint KBSize = 1024;
 
     private Thread WorkerDelagateThread;
 
@@ -303,7 +303,7 @@ public class Server
     {
 
         listener.Bind(localEndPoint);
-        listener.Listen(100);
+        listener.Listen(100); // hvor mange forbindelser der kan være i kø ad gangen. 
         // Start listening for connections. 
         Print.WriteLine($"IP: {localEndPoint.Address}");
         Print.Write("Server Starting...");
@@ -394,35 +394,39 @@ public class Server
         {
             Print.WriteLine("Der er ikke noget object?!");
         }
-        Socket handler = Handler_pre as Socket;
-        string data = null;
-        string response;
-        byte[] bytes = new byte[] { };
-        try
+        else
         {
-            response = "1";
-            double SizeOfMsgRec = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
-            // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
-            response = CheckMessage(data);
-            response += "<EOF>";
-            // Tester om objectet der skal retuneres kan deserailiseres...
-            // Laver Response om fra en string til bytes baseret på UTF8
-            byte[] msg = Encoding.UTF8.GetBytes(response);
-            double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response) / 1024, 2);
-            Print.PrintCenterColorSingle("Connection: ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
-            Print.PrintCenterColorSingle("R: ", SizeOfMsgRec.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
-            Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8) + "\n", ConsoleColor.Green);
-            // Sender beskeden. 
-            handler.Send(msg);
+            Socket handler = Handler_pre as Socket;
+            string data = null;
+            string response;
+            byte[] bytes = new byte[] { };
+            try
+            {
+                response = "1";
+                double SizeOfMsgRec = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
+                                                                                                                    // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
+                response = CheckMessage(data);
+                response += "<EOF>";
+                // Tester om objectet der skal retuneres kan deserailiseres...
+                // Laver Response om fra en string til bytes baseret på UTF8
+                byte[] msg = Encoding.UTF8.GetBytes(response);
+                double SizeOfMsgSent = Math.Round((double)Encoding.UTF8.GetByteCount(response) / 1024, 2);
+                Print.PrintCenterColorSingle("Connection: ", handler.RemoteEndPoint.ToString().PadRight(25), " | ", ConsoleColor.Yellow);
+                Print.PrintCenterColorSingle("R: ", SizeOfMsgRec.ToString().PadRight(5), (" KB | ").PadRight(8), ConsoleColor.Green);
+                Print.PrintCenterColorSingle("S: ", SizeOfMsgSent.ToString().PadRight(5), (" KB").PadRight(8) + "\n", ConsoleColor.Green);
+                // Sender beskeden. 
+                handler.Send(msg);
+            }
+            catch (Exception e)
+            {
+                Print.WriteLine(e.ToString());
+            }
+            finally
+            {
+                handler.Close();
+            }
         }
-        catch (Exception e)
-        {
-            Print.WriteLine(e.ToString());
-        }
-        finally
-        {
-            handler.Close();
-        }
+
     }
 
     private void HandleWorkers()

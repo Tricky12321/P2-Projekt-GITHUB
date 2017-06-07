@@ -12,6 +12,7 @@ namespace Tests
         [TestCase(",ALL", ExpectedResult = "ALL")]
         [TestCase(",Tast,", ExpectedResult = "Tast,")]
         [TestCase(",None", ExpectedResult = "None")]
+        [TestCase("Tesad,", ExpectedResult = "")]
         public string GetWhereConditionTest(string Test)
         {
             Server TestServer = new Server(12943, ServerType.Ipv4);

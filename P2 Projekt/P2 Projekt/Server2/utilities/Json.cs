@@ -127,6 +127,7 @@ namespace JsonSerializer
                 }
             }
         }
+        
 
         public static List<NetworkObject> Deserialize(string Obj, bool IsList = false)
         {
