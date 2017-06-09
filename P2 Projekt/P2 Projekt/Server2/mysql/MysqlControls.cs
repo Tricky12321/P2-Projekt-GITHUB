@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,6 +66,7 @@ public static class MysqlControls
         ValuesQuery += ")";
         #endregion
         // --------------------------------------------------
+        //sat sammen til total query
         string TotalQuery = $"INSERT INTO `{table}` {ColumsQuery} VALUES {ValuesQuery};";
         Mysql.RunQuery(TotalQuery, NoLog);
 

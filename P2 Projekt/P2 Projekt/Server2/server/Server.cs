@@ -23,7 +23,6 @@ public class Server
     // private const int NumberOfWorkers = 5;
 
     public static bool IPV4Started = false;
-
     public static bool IPV6Started = false;
 
     // private const uint ByteSize = 1024; // Data buffer size for incommming data
@@ -56,6 +55,10 @@ public class Server
         //and without preservation of boundaries.
         //SocketType.Stream kræver InterNetwork, og Tcp
         //InterNetwork =Address for IP version 4. Ipv4
+        //SocketOptionLevel.Socket, gælder for alle sockettyper
+        //SocketOptionName.ReuseAddress kan genbruge samme addresse
+        //IPEndPoint alle ipadresser som kan bruges på serveren
+        //en thread til at handle en connection
         if (_serverType == ServerType.Ipv4)
         {
             Print.WriteLine("Type: IPv4");
@@ -134,14 +137,15 @@ public class Server
     public string GetWhereCondition(ref string input)
     {
         // Retunere alt efter hvad der er valgt som object, så der kun er where condition tilbage
-        //Stregen er : request,ALL,{OBJECT},{WHERE}
+        //Strengen er : request,ALL,{OBJECT},{WHERE}
+        //wherecondition efter andet komma
         return input.Substring(input.IndexOf(',') + 1);
     }
 
 
     private string GenerateResponse(ObjectTypes ObjType, string WhereCondition, bool All)
     {
-        //Stregen er : request,ALL,{OBJECT},{WHERE}
+        //Strengen er : request,ALL,{OBJECT},{WHERE}
         if (All)
         {
             switch (ObjType)
@@ -166,6 +170,9 @@ public class Server
         string OutputString;
         TableDecode RowsFromDB;
         Bus SingleBus = new Bus();
+        //ingen where conidition bliver alle busser retuneret
+        //hvis der busser i cachen bliver de returneret, ellers retuneres fra DB
+        //SingleBus.GetTableName får navn på tabel
         if (WhereCondition == "None")
         {
             if (JsonCache.AlleBusserCache != null)
@@ -273,6 +280,7 @@ public class Server
 
     public string CheckMessage(string data)
     {
+        //tjekker om besked er et objekt eller en request
         if (IsObject(ref data))
         {
             HandleObject(data);
@@ -291,7 +299,7 @@ public class Server
 
     private bool CheckAll(ref string data)
     {
-
+        //om all er en del af beskeden og fjerner all + komma
         if (data.Substring(0, data.IndexOf(',')) == "ALL")
         {
             data = data.Substring(data.IndexOf(',') + 1);
@@ -306,7 +314,7 @@ public class Server
 
     private void SocketServer(IPEndPoint localEndPoint, Socket listener)
     {
-
+        //binder til ip af porten
         listener.Bind(localEndPoint);
         listener.Listen(100); // hvor mange forbindelser der kan være i kø ad gangen. 
         // Start listening for connections. 
@@ -319,6 +327,8 @@ public class Server
         while (true)
         {
             Socket handler = listener.Accept();
+            //tilføjer en forbindelse til køen
+            //lock for thread safety
             lock (ConnectionWaiting)
             {
                 ConnectionWaiting.Add(handler);
@@ -347,19 +357,24 @@ public class Server
         }
 
     }
-
+    //byte array fra tidligere version, bliver ikke brugt
     private long HandleConnection(Socket handler, ref byte[] bytes, ref string data)
     {
         data = "";
+        //bytes recieved
         int bytesRec = 0;
+        //allokerer 4 kb
         List<byte> Bytes = new List<byte>(1024 * 4);
+        //fylder listen op med bytes indtil der ikke er mere i handler.Available
         do
         {
             bytes = new byte[1];
             bytesRec = handler.Receive(bytes);
             Bytes.Add(bytes[0]);
         } while (handler.Available > 0);
+        //bytes til streng af UTF8, data retuneres gennem ref
         data = Encoding.UTF8.GetString(Bytes.ToArray(), 0, Bytes.Count);
+        //hvis der ikke er en EOF
         if (data.IndexOf("<EOF>") == -1)
         {
             throw new NoEndOfFileFoundException();
@@ -370,10 +385,12 @@ public class Server
 
     private void HandleObject(string Obj)
     {
-
+        //type er anvendt til debugging
         Type type = Json.GetTypeFromString(Obj);
+            
         List<NetworkObject> Objects = Json.Deserialize(Obj);
         Print.PrintCenterColor("Got: ", Objects.Count.ToString(), " Objects", ConsoleColor.Cyan);
+        //objektet får en thread som uploader det til databasen
         foreach (NetworkObject SingleObject in Objects)
         {
             Thread SingleObjectThread = new Thread(new ThreadStart(SingleObject.Start));
@@ -401,12 +418,14 @@ public class Server
         }
         else
         {
+            //paramatiseret tråd kan kun tage object, derfor as socket
             Socket handler = Handler_pre as Socket;
             string data = null;
             string response;
             byte[] bytes = new byte[] { };
             try
             {
+                //til debug
                 response = "1";
                 double SizeOfMsgRec = Math.Round((double)HandleConnection(handler, ref bytes, ref data) / 1024, 2); // Retunere hvor mange KB der er blevet modtaget
                                                                                                                     // Checker om beskeden der er modtaget, indeholder noget data som skal bruges. 
@@ -436,9 +455,9 @@ public class Server
 
     private void HandleWorkers()
     {
+        //hvis der connectionswaiting laves ny tråd som handler den
         while (true)
         {
-
             if (_connectionsWaiting > 0)
             {
                 if (ConnectionWaiting[0] != null)

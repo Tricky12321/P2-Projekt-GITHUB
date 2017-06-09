@@ -44,6 +44,7 @@ public static class Mysql
         try
         {
             // Åben en forbindelse
+            // _firstconnect beskriver om der er forbindelse til database ved program opstart
             _sqlConnect.Open();
             Connected = true;
             _firstConnect = true;
@@ -51,6 +52,7 @@ public static class Mysql
         }
         catch (MySqlException ex)
         {
+            //0 og 1045 errorcode fra mysql
             switch (ex.Number)
             {
                 case 0:
@@ -69,6 +71,7 @@ public static class Mysql
 
     public static bool CheckConnection()
     {
+        //hvis der ikke er connection smider exception
         if (!_firstConnect)
         {
             throw new NotConnectedException("There is no connection made to the Database");
