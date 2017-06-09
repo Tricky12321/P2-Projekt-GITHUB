@@ -51,6 +51,11 @@ public class Server
         // Hoster på 0.0.0.0:?????
         // PrintIps();
         // IPV4 SERVER ->->->->->->->->->->->->->->->->->
+
+        //SocketType.Stream, Supports reliable, two-way, connection-based byte streams without the duplication of data 
+        //and without preservation of boundaries.
+        //SocketType.Stream kræver InterNetwork, og Tcp
+        //InterNetwork =Address for IP version 4. Ipv4
         if (_serverType == ServerType.Ipv4)
         {
             Print.WriteLine("Type: IPv4");
