@@ -8,6 +8,7 @@ using System.Threading;
 
 public static class Algoritme
 {
+    //finder bussens sidst besøgte stoppested
     private static Stoppested GetCurrentStop(Bus EnEllerAndenBus)
     {
         Stoppested SidsteStop = new Stoppested();
@@ -116,7 +117,7 @@ public static class Algoritme
         // Total er bussen Totale passageretal før algoritmen
         int Total = 0;
         BesøgteStopIDs.Reverse();
-        // For alle stoppesteder som er besøgt, skal der beregnes forventet passagere tal
+        // For alle stoppesteder som ikke er besøgt, skal der beregnes forventet passagere tal
         for (int i = 0; i < TotaleAntalStops; i++)
         {
             // Sætter nogle hjælpe variabler for at gøre udtryk kortere

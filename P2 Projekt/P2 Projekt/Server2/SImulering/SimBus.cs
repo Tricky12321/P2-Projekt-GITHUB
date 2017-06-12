@@ -195,7 +195,7 @@ namespace ServerGPSSimulering
                     GPS FirstPoint = new GPS(SimulatedRute.route.Points[i].Lat, SimulatedRute.route.Points[i].Lng);
                     GPS NextPoint = new GPS(SimulatedRute.route.Points[i + 1].Lat, SimulatedRute.route.Points[i + 1].Lng);
                     // for steps = 10, vil kordinaterne for single point, være 1/10 af afstanden mellem 2 punkter
-                    double DistanceBetweenNextStops = DistanceBetweenPoints(NextPoint.xCoordinate, NextPoint.yCoordinate, FirstPoint.xCoordinate, FirstPoint.yCoordinate);
+                    //double DistanceBetweenNextStops = DistanceBetweenPoints(NextPoint.xCoordinate, NextPoint.yCoordinate, FirstPoint.xCoordinate, FirstPoint.yCoordinate);
                     GPS SinglePoint = new GPS((FirstPoint.xCoordinate - NextPoint.xCoordinate) / steps, (FirstPoint.yCoordinate - NextPoint.yCoordinate) / steps);
                     double DistanceToNextStop = DistanceBetweenPoints(SimulatedBus.placering, NextPoint);
                     double distance = DistanceBetweenPoints(SimulatedBus.placering, NextStop);
